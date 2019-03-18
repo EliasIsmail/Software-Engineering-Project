@@ -4,32 +4,48 @@ import java.util.ArrayList;
 
 public class Activity {
 	public String name;
-	public int id;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
-	public ArrayList<Employee> retiredEmployees = new ArrayList<Employee>();
+	public Project project;
+	public int estimatedTime = 0;
+	public int startTime = 0;
+	public int endTime = 0;
 	
-	public Activity(String name, int id) {
+	public Activity(String name, Project project) {
 		this.name = name;
-		this.id = id;
+		this.project = project;
 	}
 	
 	public void addEmployee(Employee employee) {
 		//assigns employee to an activity
 		if (!employees.contains(employee)){
 			employees.add(employee);
-		} else {
-			//TODO throw exception
 		}
+		
+		project.addEmployee(employee); //adding employee to project
+		employee.addActivity(this); //adding activity to employee
+		employee.addProject(project); //adding project to employee
 	}
 	
-	public void removeEmployee(Employee employee) {
-		//unassigns an employee from an activity
-		if (employees.contains(employee)){
-			employees.remove(employee);
-			retiredEmployees.add(employee);
-		} else {
-			//TODO throw exception
+	public void setEstimatedTime(int estimatedTime) {
+		this.estimatedTime = estimatedTime;
+	}
+	
+	public void setStartTime(int startTime) {
+		this.startTime = startTime;
+	}
+	
+	public void setEndTime(int endTime) {
+		this.endTime = endTime;
+	}
+	
+	public void printStatus() {
+		System.out.println("Activity: "+name+" from project "+project.name);
+		System.out.println("Members: ");
+		for (Employee employee: employees) {
+			System.out.print(employee.name+", ");
 		}
+		System.out.println("\nEstimated time: "+estimatedTime);
+		System.out.println("-------------------------");
 	}
 	
 }
