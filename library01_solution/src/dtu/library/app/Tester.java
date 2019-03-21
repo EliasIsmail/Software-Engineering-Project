@@ -5,9 +5,7 @@ import java.util.ArrayList;
 public class Tester {
 	
 	public static void main(String[] args) {
-		
 		testActivitiesAndProjects();
-		
 	}
 	
 	public static void testActivitiesAndProjects() {
@@ -24,11 +22,13 @@ public class Tester {
 		
 		activity1.addEmployee(app.employees.get(0));
 		activity1.addEmployee(app.employees.get(1));
+		activity1.addEmployee(app.employees.get(2));
 		activity2.addEmployee(app.employees.get(2));
+		activity2.addEmployee(app.employees.get(0));
 		activity2.addEmployee(app.employees.get(3));
 		
 		activity1.estimatedTime = 10;
-		activity2.estimatedTime = 20;
+		activity2.estimatedTime = 10;
 		
 		activity1.setStartTime(1);
 		activity1.setEndTime(10);
@@ -51,6 +51,23 @@ public class Tester {
 		System.out.println("Vacant: ");
 		for (Employee employee: vacantEmployees) {
 			System.out.println(employee.name);
+		}
+		
+		System.out.println();
+		
+		Employee jonas = app.employees.get(0);
+		activity2.addEmployee(jonas);
+		jonas.logHours(10, activity1, 1);
+		jonas.logHours(11, activity1, 2);
+		jonas.logHours(11, activity2, 3);
+		jonas.logHours(12, activity1, 4);
+		
+		for (int date = 10; date < 13; date++) {
+			System.out.println("Looking at date "+date);
+			ArrayList<LogElement> dailyLog = jonas.getLogElementFromDate(date);
+			for (LogElement logElement: dailyLog) {
+				System.out.println("worked on "+logElement.activity.name+", in "+logElement.hours+" hours");
+			}
 		}
 	}
 	

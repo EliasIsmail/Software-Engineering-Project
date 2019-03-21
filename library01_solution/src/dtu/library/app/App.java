@@ -38,14 +38,12 @@ public class App {
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
 		
 		for (Employee employee: employees) {
-			boolean isOccupied = true;
+			boolean isOccupied = false;
 			innerLoop:
-			for (Project project: employee.assignedProjects) {
-				for (Activity activity: project.activities) {
-					if (activity.endTime < fromWeek || activity.startTime > fromWeek) {
-						isOccupied = false;
-						break innerLoop;
-					}
+			for (Activity activity: employee.assignedActivities) {
+				if (activity.endTime > fromWeek && activity.startTime < fromWeek) {
+					isOccupied = true;
+					break innerLoop;
 				}
 			}
 			

@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 public class Project {
 	public String name;
-	public int projectId;
+	public String client;
+	private int projectId;
 	public Employee leader;
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -18,6 +19,10 @@ public class Project {
 		Activity activity = new Activity(name,this);
 		activities.add(activity);
 		return activity;
+	}
+	
+	public int getProjectId() {
+		return projectId;
 	}
 	
 	public void addEmployee(Employee employee) {
