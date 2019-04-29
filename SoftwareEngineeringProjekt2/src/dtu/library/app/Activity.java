@@ -1,14 +1,15 @@
 package dtu.library.app;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Activity {
 	public String name;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime = 0;
-	public int startTime = 0;
-	public int endTime = 0;
+	public Date startDate = null;
+	public Date endDate = null;
 	
 	public Activity(String name, Project project) {
 		this.name = name;
@@ -30,12 +31,12 @@ public class Activity {
 		this.estimatedTime = estimatedTime;
 	}
 	
-	public void setStartTime(int startTime) {
-		this.startTime = startTime;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 	
-	public void setEndTime(int endTime) {
-		this.endTime = endTime;
+	public void setEndDate(Date startDate) {
+		this.startDate = startDate;
 	}
 	
 	public void printStatus() {

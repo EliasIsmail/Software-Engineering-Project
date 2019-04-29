@@ -1,6 +1,9 @@
 package dtu.library.app;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Employee {
@@ -8,7 +11,7 @@ public class Employee {
 	
 	public ArrayList<Project> assignedProjects = new ArrayList<Project>();
 	public ArrayList<Activity> assignedActivities = new ArrayList<Activity>();
-	public HashMap<Integer,ArrayList<LogElement>> log = new HashMap<Integer,ArrayList<LogElement>>();
+	public HashMap<Date,ArrayList<LogElement>> log = new HashMap<Date,ArrayList<LogElement>>();
 	
 	public Employee(String name) {
 		this.name = name;
@@ -28,10 +31,11 @@ public class Employee {
 		return activity;
 	}
 	
-	public void logHours(int date, Activity activity, int hours) {
+	public void addActivityToLog(Date date, Activity activity, int hours) {
 		LogElement logElement = new LogElement(activity, hours);
+		
 		if(log.containsKey(date)) {
-			//already had elemenets
+			//already had elements in specific date
 			log.get(date).add(logElement);
 		} else {
 			//was empty
@@ -40,7 +44,7 @@ public class Employee {
 		}
 	}
 	
-	public ArrayList<LogElement> getLogElementFromDate(int date){
+	public ArrayList<LogElement> getLogElementFromDate(Date date){
 		return log.get(date);
 	}
 }

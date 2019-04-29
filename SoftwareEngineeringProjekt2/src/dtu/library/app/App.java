@@ -1,5 +1,8 @@
 package dtu.library.app;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class App {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
@@ -34,14 +37,14 @@ public class App {
 		employee.addProject(activity.project); //adding project to employee*/
 	}
 	
-	public ArrayList<Employee> getOccupiedEmployees(int fromWeek){
+	public ArrayList<Employee> getOccupiedEmployees(Date date){
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
 		
 		for (Employee employee: employees) {
 			boolean isOccupied = false;
 			innerLoop:
 			for (Activity activity: employee.assignedActivities) {
-				if (activity.endTime > fromWeek && activity.startTime < fromWeek) {
+				if (activity.endDate.after(date) && activity.startDate.before(date)) {
 					isOccupied = true;
 					break innerLoop;
 				}
@@ -55,9 +58,9 @@ public class App {
 		return occupiedEmployees;
 	}
 	
-	public ArrayList<Employee> getVacantEmployees(int fromWeek){
+	public ArrayList<Employee> getVacantEmployees(Date date){
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
-		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(fromWeek);
+		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(date);
 		
 		for (Employee employee: employees) {
 			if (!occupiedEmployees.contains(employee)) {
@@ -67,4 +70,29 @@ public class App {
 		
 		return vacantEmployees;
 	}
+	
+	public Date getCurrentDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = format.format(new Date());
+		try {
+			return format.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Date getSpecificDate(String date) {
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		try {
+			return simpleDateFormat.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
