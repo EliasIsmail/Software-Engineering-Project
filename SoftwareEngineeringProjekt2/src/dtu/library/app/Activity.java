@@ -40,7 +40,7 @@ public class Activity {
 	}
 	
 	public void printStatus() {
-		System.out.println("Activity: "+name+" from project "+project.name);
+		System.out.println("Activity: "+name+" from project "+project.title);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");

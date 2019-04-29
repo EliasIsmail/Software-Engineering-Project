@@ -23,8 +23,8 @@ public class App {
 		return employee;
 	}
 	
-	public Project createProject(String name) {
-		Project project = new Project(name, projectId);
+	public Project createProject(String title, String client) {
+		Project project = new Project(title, client, projectId);
 		projects.add(project);
 		projectId++;
 		return project;

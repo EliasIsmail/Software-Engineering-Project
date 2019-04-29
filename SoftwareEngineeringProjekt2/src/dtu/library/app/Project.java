@@ -2,7 +2,7 @@ package dtu.library.app;
 import java.util.ArrayList;
 
 public class Project {
-	public String name;
+	public String title;
 	public String client;
 	private int projectId;
 	public Employee leader;
@@ -10,8 +10,9 @@ public class Project {
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
-	public Project(String name, int projectId) {
-		this.name = name;
+	public Project(String title, String client, int projectId) {
+		this.title = title;
+		this.client = client;
 		this.projectId = projectId;
 	}
 	
@@ -46,7 +47,7 @@ public class Project {
 	}
 	
 	public void printStatus() {
-		System.out.println("Project "+name);
+		System.out.println("Project "+title);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");

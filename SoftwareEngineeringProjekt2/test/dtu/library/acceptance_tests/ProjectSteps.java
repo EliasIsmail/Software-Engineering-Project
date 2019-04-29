@@ -1,9 +1,9 @@
 package dtu.library.acceptance_tests;
 
-import cucumber.api.java.en.Then;
+import cucumber.api.java.en.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import dtu.library.app.Project;
 public class ProjectSteps {
 
 	private App app;
+	private Project project;
 	
 	/*
 	 * Note that the constructor is apparently never called, but there are no null
@@ -35,6 +36,22 @@ public class ProjectSteps {
 	
 	public ProjectSteps(App app) {
 		this.app = app;
+	}
+	
+	@Given("the user is an employee")
+	public void theUserIsAnEmployee() {
+	    app.createEmployee("Erik");
+	}
+
+	@When("the employee creates a project with title {string} and the client {string}")
+	public void theEmployeeCreatesAProjectWithTitleAndTheClient(String title, String client) {
+	    app.createProject(title, client);
+	}
+	
+	@Then("the project is created with the title {string} and client {string}")
+	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
+		assertTrue(app.projects.get(0).title.equals(title));
+		assertTrue(app.projects.get(0).client.equals(client));
 	}
 }
 

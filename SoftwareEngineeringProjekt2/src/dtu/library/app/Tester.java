@@ -56,7 +56,6 @@ public class Tester {
 		}
 		
 		System.out.println();
-		
 		Employee jonas = app.employees.get(0);
 		activity2.addEmployee(jonas);
 		Date today = app.getCurrentDate();
