@@ -35,6 +35,7 @@ public class Project {
 	public void setLeader(Employee employee) {
 		leader = employee;
 	}
+		
 	
 	public int getEstimatedTime() {
 		int estimatedTime= 0;
