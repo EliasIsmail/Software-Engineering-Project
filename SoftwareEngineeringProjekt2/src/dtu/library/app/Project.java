@@ -39,6 +39,11 @@ public class Project {
 	public void setLeader(Employee employee) {
 		leader = employee;
 	}
+	public boolean isLeader(Employee employee) {
+		if(employee == leader) {
+			return true;
+		} else return false;
+	}
 		
 	
 	public int getEstimatedTime() {
