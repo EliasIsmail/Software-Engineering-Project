@@ -7,7 +7,7 @@ import java.util.Date;
 public class App {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public ArrayList<Project> projects = new ArrayList<Project>();
-	private int projectId = 0;
+	private int projectId = 0001;
 	
 	/*
 	 * Projects are created in App
@@ -23,11 +23,10 @@ public class App {
 		return employee;
 	}
 	
-	public Project createProject(String title, String client) {
-		Project project = new Project(title, client, projectId);
-		projects.add(project);
-		projectId++;
-		return project;
+	public void createProject(String title, String client) throws OperationNotAllowedException {
+			Project project = new Project(title, client, projectId);
+			projects.add(project);
+			projectId++;	
 	}
 	
 	public ArrayList<Employee> getOccupiedEmployees(Date date){

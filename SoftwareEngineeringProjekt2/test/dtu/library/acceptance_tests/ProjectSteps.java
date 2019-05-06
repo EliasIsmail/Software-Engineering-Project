@@ -8,16 +8,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
 public class ProjectSteps {
 
 	private App app;
 	private Project project;
+	private ErrorMessageHolder errorMessage;
+	
 	
 	/*
 	 * Note that the constructor is apparently never called, but there are no null
@@ -34,24 +36,40 @@ public class ProjectSteps {
 	 * be found in the "Cucumber for Java" book available online from the DTU Library.
 	 */
 	
-	public ProjectSteps(App app) {
+	public ProjectSteps(App app, ErrorMessageHolder errorMessage) {
 		this.app = app;
-	}
-	
-	@Given("the user is an employee")
-	public void theUserIsAnEmployee() {
-	    app.createEmployee("Erik");
+		this.errorMessage = errorMessage;
 	}
 
 	@When("the employee creates a project with title {string} and the client {string}")
 	public void theEmployeeCreatesAProjectWithTitleAndTheClient(String title, String client) {
-	    app.createProject(title, client);
+	    try {
+			app.createProject(title, client);
+		} catch (OperationNotAllowedException e) {
+			System.out.println(e.getMessage());
+			errorMessage.setErrorMessage(e.getMessage());
+		}
 	}
 	
 	@Then("the project is created with the title {string} and client {string}")
 	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
 		assertTrue(app.projects.get(0).title.equals(title));
 		assertTrue(app.projects.get(0).client.equals(client));
+	}
+	
+	@When("the employee creates a project without a title or a client")
+	public void theEmployeeCreatesAProjectWithoutATitleOrAClient() {
+		try {
+			    app.createProject(null, null);
+			} catch (OperationNotAllowedException e) {
+				errorMessage.setErrorMessage(e.getMessage());
+			}
+		}
+
+	
+	@Then("I get the errorMessage: {string}")
+	public void iGetTheErrorMessage(String errorMessage) {
+		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 	}
 }
 
