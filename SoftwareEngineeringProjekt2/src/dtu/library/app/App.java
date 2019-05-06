@@ -8,6 +8,11 @@ public class App {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public ArrayList<Project> projects = new ArrayList<Project>();
 	private int projectId = 0;
+	public Employee user;
+	
+	public App() {
+		user = createEmployee("Admin");	
+	}
 	
 	/*
 	 * Projects are created in App
@@ -26,12 +31,13 @@ public class App {
 	public Project createProject(String title, String client) {
 		Project project = new Project(title, client, projectId);
 		projects.add(project);
-		projectId++;
+
+
 		return project;
 	}
 	
 	public ArrayList<Employee> getOccupiedEmployees(Date date){
-		//employees are occupied if they are assigned to at least one activity
+		//employees are occupied if they are assigned to at least one project
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
 		
 		for (Employee employee: employees) {
