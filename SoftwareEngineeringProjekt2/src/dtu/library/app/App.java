@@ -7,8 +7,7 @@ import java.util.Date;
 public class App {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public ArrayList<Project> projects = new ArrayList<Project>();
-
-	private int projectId = 0001;
+	private int projectCounter = 0001;
 	public Employee user;
 	
 	public App() {
@@ -30,9 +29,10 @@ public class App {
 	}
 	
 	public void createProject(String title, String client) throws OperationNotAllowedException {
+			String projectId = Integer.toString(getCurrentDate().getYear()).substring(2,4)+Integer.toString(projectCounter);
+			projectCounter++;	
 			Project project = new Project(title, client, projectId);
 			projects.add(project);
-			projectId++;	
 	}
 	
 	public ArrayList<Employee> getOccupiedEmployees(Date date){
