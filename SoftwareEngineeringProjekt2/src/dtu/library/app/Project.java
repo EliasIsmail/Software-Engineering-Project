@@ -1,17 +1,21 @@
 package dtu.library.app;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Project {
-	public String name;
+	public String title;
 	public String client;
 	private int projectId;
 	public Employee leader;
+	public Date startDate = null;
+	public Date endDate = null;
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
-	public Project(String name, int projectId) {
-		this.name = name;
+	public Project(String title, String client, int projectId) {
+		this.title = title;
+		this.client = client;
 		this.projectId = projectId;
 	}
 	
@@ -45,8 +49,26 @@ public class Project {
 		return estimatedTime;
 	}
 	
+	public void setStartDate(Date startDate) throws Exception {
+		for (Activity activity: activities) {
+			if (startDate.after(activity.startDate)) {
+				throw new Exception("Acitivity start date before project start date");
+			}
+		}
+		this.startDate = startDate;
+	}
+	
+	public void setEndDate(Date endDate) throws Exception {
+		for (Activity activity: activities) {
+			if (endDate.after(activity.endDate)) {
+				throw new Exception("Acitivity start date before project start date");
+			}
+		}
+		this.endDate = endDate;
+	}
+	
 	public void printStatus() {
-		System.out.println("Project "+name);
+		System.out.println("Project "+title);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");

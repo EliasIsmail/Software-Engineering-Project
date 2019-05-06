@@ -31,16 +31,22 @@ public class Activity {
 		this.estimatedTime = estimatedTime;
 	}
 	
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) throws Exception {
+		if (startDate.before(project.startDate)) {
+			throw new Exception("Acitivity start date before project start date");
+		}
 		this.startDate = startDate;
 	}
 	
-	public void setEndDate(Date startDate) {
-		this.startDate = startDate;
+	public void setEndDate(Date endDate) throws Exception {
+		if (endDate.before(project.endDate)) {
+			throw new Exception("Acitivity end date before project end date");
+		}
+		this.endDate = endDate;
 	}
 	
 	public void printStatus() {
-		System.out.println("Activity: "+name+" from project "+project.name);
+		System.out.println("Activity: "+name+" from project "+project.title);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");
