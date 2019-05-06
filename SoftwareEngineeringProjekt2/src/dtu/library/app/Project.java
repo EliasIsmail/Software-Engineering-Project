@@ -13,7 +13,10 @@ public class Project {
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
-	public Project(String title, String client, int projectId) {
+	public Project(String title, String client, int projectId) throws OperationNotAllowedException {
+		if (title == null || client == null) {
+			throw new OperationNotAllowedException("Missing project information");
+		}
 		this.title = title;
 		this.client = client;
 		this.projectId = projectId;
