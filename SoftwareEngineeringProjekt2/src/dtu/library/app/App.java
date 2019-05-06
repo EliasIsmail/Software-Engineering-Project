@@ -30,21 +30,15 @@ public class App {
 		return project;
 	}
 	
-	public void addEmployeeToActivity(Employee employee, Activity activity) {
-		activity.addEmployee(employee); //adding employee to activity
-		/*activity.project.addEmployee(employee); //adding employee to project
-		employee.addActivity(activity); //adding activity to employee
-		employee.addProject(activity.project); //adding project to employee*/
-	}
-	
 	public ArrayList<Employee> getOccupiedEmployees(Date date){
+		//employees are occupied if they are assigned to at least one activity
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
 		
 		for (Employee employee: employees) {
 			boolean isOccupied = false;
 			innerLoop:
-			for (Activity activity: employee.assignedActivities) {
-				if (activity.endDate.after(date) && activity.startDate.before(date)) {
+			for (Project project: employee.assignedProjects) {
+				if (project.endDate.after(date) && project.startDate.before(date)) {
 					isOccupied = true;
 					break innerLoop;
 				}
@@ -77,7 +71,6 @@ public class App {
 		try {
 			return format.parse(dateString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -89,7 +82,6 @@ public class App {
 		try {
 			return simpleDateFormat.parse(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
