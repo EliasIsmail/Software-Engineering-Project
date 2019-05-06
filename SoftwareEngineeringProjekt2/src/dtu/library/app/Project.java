@@ -5,7 +5,7 @@ import java.util.Date;
 public class Project {
 	public String title;
 	public String client;
-	private int projectId;
+	private String projectId;
 	public Employee leader;
 	public Date startDate = null;
 	public Date endDate = null;
@@ -13,7 +13,10 @@ public class Project {
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
-	public Project(String title, String client, int projectId) {
+	public Project(String title, String client, String projectId) throws OperationNotAllowedException {
+		if (title == null || client == null) {
+			throw new OperationNotAllowedException("Missing project information");
+		}
 		this.title = title;
 		this.client = client;
 		this.projectId = projectId;
@@ -25,7 +28,7 @@ public class Project {
 		return activity;
 	}
 	
-	public int getProjectId() {
+	public String getProjectId() {
 		return projectId;
 	}
 	
