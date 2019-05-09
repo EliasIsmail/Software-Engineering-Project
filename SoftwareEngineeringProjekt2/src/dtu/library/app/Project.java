@@ -53,7 +53,7 @@ public class Project {
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
 		if (leader == null || leader.equals(app.user)) {
 			leader = employee;
-		} else throw new OperationNotAllowedException("Projectleader must be the user");
+		} else throw new OperationNotAllowedException("The user isn't leader of the project");
 	}
 
 	public boolean isLeader() {

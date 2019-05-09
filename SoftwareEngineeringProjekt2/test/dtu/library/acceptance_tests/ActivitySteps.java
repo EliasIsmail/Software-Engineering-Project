@@ -94,22 +94,6 @@ public class ActivitySteps {
 		assertTrue(app.projects.get(0).activities.contains(app.projects.get(0).activities.get(0)));
 	}
 	
-	@When("the user sets the start week to {int} and client to {string}")
-	public void theUserSetsTheStartWeekToAndClientTo(Integer int1, String string) {
-		try {
-	    app.projects.get(0).activities.get(0).setStartWeek(week);
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	    app.projects.get(0).activities.get(0).setClient("IT Minds");
-	}
-
-	@Then("both the start time and client of the activity has been set")
-	public void bothTheStartTimeAndClientOfTheActivityHasBeenSet() {
-		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
-		assertTrue(app.projects.get(0).activities.get(0).client.equals("IT Minds"));
-	}
-	
 	@When("the user sets the start week to {int}")
 	public void theUserSetsTheStartWeekTo(Integer int1) {
 		try {

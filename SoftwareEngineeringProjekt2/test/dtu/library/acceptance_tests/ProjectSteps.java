@@ -110,26 +110,37 @@ public class ProjectSteps {
 	
 	@Given("there is a project with a leader")
 	public void thereIsAProjectWithALeader() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	    try {
+			project = app.createProject("Test", "Intern");
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	    employee = app.createEmployee("emp1");
+	    try {
+			project.setLeader(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Given("a user who isn't the leader is the user")
 	public void aUserWhoIsnTTheLeaderIsTheUser() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	    employee = app.createEmployee("emp2");
+	    app.login("emp2");
 	}
 
 	@When("the leader of is change")
 	public void theLeaderOfIsChange() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
+		try {
+			project.setLeader(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+}
 
 	@Then("I get an error message: {string}")
-	public void iGetAnErrorMessage(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	public void iGetAnErrorMessage(String ErrorMessage) {
+	    assertTrue(errorMessage.getErrorMessage().equals(ErrorMessage));
 	}
 
 
