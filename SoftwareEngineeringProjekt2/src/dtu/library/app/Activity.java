@@ -40,6 +40,9 @@ public class Activity {
 		if (startWeek < project.startWeek) { //before
 			throw new Exception("Activity start date before project start date");
 		}
+		if (startWeek > 53 || startWeek < 1) {
+			throw new Exception("Undefined week number");
+		}
 		this.startWeek = startWeek;
 	}
 	

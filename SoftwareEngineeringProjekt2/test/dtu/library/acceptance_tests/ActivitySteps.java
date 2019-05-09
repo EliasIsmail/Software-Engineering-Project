@@ -1,4 +1,6 @@
 package dtu.library.acceptance_tests;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -18,7 +20,7 @@ public class ActivitySteps {
 		this.app = app;
 		this.errorMessageHolder = errorMessageHolder;
 	}
-	Date date = new Date(System.currentTimeMillis());
+	int week = 1;
 	
 	@Given("there exists an activity in a project")
 	public void thereExistsAnActivityInAProject() {
@@ -38,7 +40,7 @@ public class ActivitySteps {
 	@Given("an employee is available")
 	public void anEmployeeIsAvailable() {
 		app.createEmployee("Erik");
-		assertTrue(app.getVacantEmployees(date).contains(app.employees.get(0)));
+		assertTrue(app.getVacantEmployees(week).contains(app.employees.get(0)));
 	}
 
 	@Given("the user is the leader of the project")
@@ -83,10 +85,10 @@ public class ActivitySteps {
 		assertTrue(app.projects.get(0).activities.contains(app.projects.get(0).activities.get(0)));
 	}
 	
-	@When("the user sets the start time to {int} and client to {string}")
+	@When("the user sets the start week to {int} and client to {string}")
 	public void theUserSetsTheStartTimeToAndClientTo(Integer int1, String string) {
 		try {
-	    app.projects.get(0).activities.get(0).setStartDate(date);
+	    app.projects.get(0).activities.get(0).setStartWeek(week);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -95,9 +97,23 @@ public class ActivitySteps {
 
 	@Then("both the start time and client of the activity has been set")
 	public void bothTheStartTimeAndClientOfTheActivityHasBeenSet() {
-		assertTrue(app.projects.get(0).activities.get(0).startDate.equals(date));
+		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 		assertTrue(app.projects.get(0).activities.get(0).client.equals("IT Minds"));
 	}
+
+	@When("the user sets the start week of the activity to {int}")
+	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
+		try {
+			 app.projects.get(0).activities.get(0).setStartWeek(number);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the following message will be displayed: {string}")
+	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
+		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
+}
 
 //	@When("the user adds an unavailable employee to the activity")
 //	public void theUserAddsAnUnavailableEmployeeToTheActivity() {

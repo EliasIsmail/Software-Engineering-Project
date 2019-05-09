@@ -55,6 +55,7 @@ public class Project {
 		if(employee == leader) {
 			return true;
 		} else return false;
+	}
 	
 	public Employee getLeader() {
 		return leader;
