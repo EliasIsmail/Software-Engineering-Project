@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class Activity {
 	public String name;
-	public String client;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
-	public int estimatedTime = 0;
-	public int startWeek;
+	public int estimatedTime;
+	public int startWeek = 0;
 	public int endWeek;
+	public Employee employee;
 	
 	public Activity(String name, Project project) throws OperationNotAllowedException {
 		if(name == null || project == null) {
@@ -31,8 +31,18 @@ public class Activity {
 		employee.addProject(project); //adding project to employee
 	}
 	
-	public void setEstimatedTime(int estimatedTime) {
+	public void setEstimatedTime(int estimatedTime) throws Exception {
+		if (project.isLeader(App.user) == false) {
+			throw new Exception("Only project leaders can edit times");
+		}
+		if (estimatedTime < 1) {
+			throw new Exception("Impossible time frame for activity");
+		}
+		if (this.startWeek == 0) {
+			throw new Exception("Start week of activity hasn't been set yet");
+		}
 		this.estimatedTime = estimatedTime;
+		this.endWeek = estimatedTime + startWeek;
 	}
 	
 
@@ -43,6 +53,10 @@ public class Activity {
 		if (startWeek > 53 || startWeek < 1) {
 			throw new Exception("Undefined week number");
 		}
+		if (this.startWeek != 0) {
+			throw new Exception("Start week has already been set");
+		}
+			
 		this.startWeek = startWeek;
 	}
 	
@@ -51,9 +65,6 @@ public class Activity {
 			throw new Exception("Activity end date after project end date");
 		}
 		this.endWeek = endWeek;
-	}
-	public void setClient(String client) {
-		this.client = client;
 	}
 	
 	public void printStatus() {

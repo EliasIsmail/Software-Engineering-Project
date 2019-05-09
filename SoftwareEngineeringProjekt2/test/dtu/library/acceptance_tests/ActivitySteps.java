@@ -10,17 +10,20 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.library.app.App;
+import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
 
 public class ActivitySteps {
 	private App app;
+	private Employee leader;
+	int week = 1;
 	private ErrorMessageHolder errorMessageHolder;
 	
 	public ActivitySteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
 		this.errorMessageHolder = errorMessageHolder;
 	}
-	int week = 1;
+	
 	
 	@Given("there exists an activity in a project")
 	public void thereExistsAnActivityInAProject() {
@@ -34,7 +37,7 @@ public class ActivitySteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		assertTrue(app.projects.get(0).activities.contains(app.projects.get(0).activities.get(0)));
+		assertTrue(app.projects.get(0).activities.get(0).name.equals("User Interface"));
 	}
 
 	@Given("an employee is available")
@@ -45,20 +48,26 @@ public class ActivitySteps {
 
 	@Given("the user is the leader of the project")
 	public void theUserIsTheLeaderOfTheProject() {
-		app.createEmployee("Leader");
-		app.projects.get(0).setLeader(app.employees.get(1));
-		assertTrue(app.projects.get(0).isLeader(app.employees.get(1)));
+		leader = app.createEmployee("leader");
+		app.login("leader");
+		try {
+			app.projects.get(0).setLeader(leader);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+//		for(Project p:app.projects) {
+//			
+//		}
+		assertTrue(app.projects.get(0).isLeader());
 	}
 
 	@When("the user adds the available employee to the activity")
 	public void theUserAddsTheAvailableEmployeeToTheActivity() {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
-		assertTrue(app.projects.get(0).activities.get(0).employees.contains(app.employees.get(0)));
 	}
 
 	@Then("the employee is added to the activity in the system")
 	public void theEmployeeIsAddedToTheActivityInTheSystem() {
-		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 		assertTrue(app.projects.get(0).activities.get(0).employees.contains(app.employees.get(0)));
 	}
 	@Given("there exists a project")
@@ -86,7 +95,7 @@ public class ActivitySteps {
 	}
 	
 	@When("the user sets the start week to {int} and client to {string}")
-	public void theUserSetsTheStartTimeToAndClientTo(Integer int1, String string) {
+	public void theUserSetsTheStartWeekToAndClientTo(Integer int1, String string) {
 		try {
 	    app.projects.get(0).activities.get(0).setStartWeek(week);
 		} catch (Exception e) {
@@ -99,6 +108,20 @@ public class ActivitySteps {
 	public void bothTheStartTimeAndClientOfTheActivityHasBeenSet() {
 		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 		assertTrue(app.projects.get(0).activities.get(0).client.equals("IT Minds"));
+	}
+	
+	@When("the user sets the start week to {int}")
+	public void theUserSetsTheStartWeekTo(Integer int1) {
+		try {
+		    app.projects.get(0).activities.get(0).setStartWeek(week);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+	}
+
+	@Then("the start time is set")
+	public void theStartTimeIsSet() {
+		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 	}
 
 	@When("the user sets the start week of the activity to {int}")
@@ -113,7 +136,40 @@ public class ActivitySteps {
 	@Then("the following message will be displayed: {string}")
 	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
+	}
+
+	@When("the user sets the estimated time for an activity to {int} weeks")
+		public void theUserSetsTheEstimatedTimeForAnActivity(int number) {
+			try{
+				app.projects.get(0).activities.get(0).setEstimatedTime(number);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	@Given("the start week of the project has been set")
+	public void theStartWeekOfTheProjectHasBeenSet() {
+		try {
+			app.projects.get(0).activities.get(0).setStartWeek(week);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+	}
+
+	@When("the user sets the estimated time for an activity to a negative number of weeks")
+		public void theUserSetsTheEstimatedTimeForAnActivityToANegativeNumberOfWeeks() {
+			try{
+				app.projects.get(0).activities.get(0).setEstimatedTime(-4);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+		}
+	
+	@Then("the estimated time is updated to {int} weeks for the activity in the system")
+	public void theEstimatedTimeIsUpdatedToWeeksForTheActivityInTheSystem(int number) {
+	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
+	}
 }
+
 
 //	@When("the user adds an unavailable employee to the activity")
 //	public void theUserAddsAnUnavailableEmployeeToTheActivity() {
@@ -128,5 +184,3 @@ public class ActivitySteps {
 //	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 //		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
 //	}
-
-}
