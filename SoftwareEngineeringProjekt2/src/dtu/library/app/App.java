@@ -29,7 +29,8 @@ public class App {
 	}
 	
 	public void createProject(String title, String client) throws OperationNotAllowedException {
-			String projectId = Integer.toString(getCurrentDate().getYear()).substring(2,4)+Integer.toString(projectCounter);
+//			String projectId = Integer.toString(getCurrentDate().getYear()).substring(2,4)+Integer.toString(projectCounter);
+			String projectId = "0001";
 			projectCounter++;	
 			Project project = new Project(title, client, projectId);
 			projects.add(project);

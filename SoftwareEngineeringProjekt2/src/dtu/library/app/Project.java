@@ -22,7 +22,7 @@ public class Project {
 		this.projectId = projectId;
 	}
 	
-	public Activity createActivity(String name) {
+	public Activity createActivity(String name) throws OperationNotAllowedException {
 		Activity activity = new Activity(name,this);
 		activities.add(activity);
 		return activity;

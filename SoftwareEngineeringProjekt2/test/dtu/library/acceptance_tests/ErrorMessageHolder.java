@@ -1,7 +1,7 @@
 package dtu.library.acceptance_tests;
 
 public class ErrorMessageHolder {
-	private String errorMessage = "";
+	private String errorMessage;
 
 	public String getErrorMessage() {
 		return errorMessage;

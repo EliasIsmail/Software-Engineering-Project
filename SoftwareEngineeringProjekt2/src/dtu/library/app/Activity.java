@@ -5,13 +5,17 @@ import java.util.Date;
 
 public class Activity {
 	public String name;
+	public String client;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime = 0;
 	public Date startDate = null;
 	public Date endDate = null;
 	
-	public Activity(String name, Project project) {
+	public Activity(String name, Project project) throws OperationNotAllowedException {
+		if(name == null || project == null) {
+			throw new OperationNotAllowedException("Missing activity information");
+	}
 		this.name = name;
 		this.project = project;
 	}
@@ -33,7 +37,7 @@ public class Activity {
 	
 	public void setStartDate(Date startDate) throws Exception {
 		if (startDate.before(project.startDate)) {
-			throw new Exception("Acitivity start date before project start date");
+			throw new Exception("Activity start date is before project start date");
 		}
 		this.startDate = startDate;
 	}
@@ -43,6 +47,9 @@ public class Activity {
 			throw new Exception("Acitivity end date before project end date");
 		}
 		this.endDate = endDate;
+	}
+	public void setClient(String client) {
+		this.client = client;
 	}
 	
 	public void printStatus() {
