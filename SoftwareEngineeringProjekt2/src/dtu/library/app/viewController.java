@@ -10,6 +10,8 @@ public class viewController {
 	
 	static App app = new App();
 	static String scene = "loginScreen";
+	static Project currentProject;
+	static Activity currentActivity;
 	
 	public static void main(String args[]) throws OperationNotAllowedException {
 		Scanner console = new Scanner(System.in);
@@ -22,10 +24,24 @@ public class viewController {
 		actions.put("mainMenu", new String[] {
 				"createEmployee(name)",
 				"createProject(title,client)",
-				"getOccupiedEmployees(yyyy-MM-dd)"
+				"getEmployees()",
+				"getOccupiedEmployees(weekNumber)",
+				"getVacantEmployees(weekNumber",
+				"getProjects()",
+				"getAssignedProjects()",
+				"openProject(title)"
 		});
-		actions.put("lesserMenu", new String[] {
-				"someMethod"
+		actions.put("currentProject", new String[] {
+				"createActivity(name)",
+				"addEmployee(name)",
+				"setLeader(name)",
+				"getLeader()",
+				"getEstimatedTime()",
+				"setStartWeek(weekNumber)",
+				"setEndWeek(weekNumber)",
+				"printStatus()",
+				"getAssignedActivities()",
+				"openActivity(name)"
 		});
 		
 		while (true) {
@@ -34,17 +50,14 @@ public class viewController {
 			System.out.println("---------------");
 			System.out.println("List of actions:");
 			printActions(actionsCurrent);
+			System.out.println();
+			System.out.print(">>> ");
+			
 			
 			//user input goes here
 			String[] input = getInput();
-			executeCommand(input);
-			
-			
+			executeCommand(input);	
 		}
-			
-		
-		
-		
 	}
 	
 	public static void printActions(String[] actions) {
@@ -78,7 +91,8 @@ public class viewController {
 	}
 	
 	public static ArrayList<String> getParameters(String parameter) {
-		return (ArrayList<String>) Arrays.asList(parameter.split(","));
+		ArrayList<String> items = new ArrayList<String>(Arrays.asList(parameter.split("\\s*,\\s*")));
+		return items;
 	}
 	
 	public static void executeCommand(String[] input) throws OperationNotAllowedException {
@@ -87,7 +101,7 @@ public class viewController {
 		String parameter = input[1];
 		
 		switch(command) {
-		
+			//login menu
 			case "login":
 				app.login(parameter);
 				if (!app.loggedIn) {
@@ -98,6 +112,7 @@ public class viewController {
 				}
 				break;
 			
+			//main menu
 			case "createEmployee":
 				app.createEmployee(parameter);
 				System.out.println("Employee created succesfully");
@@ -108,32 +123,123 @@ public class viewController {
 				app.createProject(parameters.get(0),parameters.get(1));
 				System.out.println("Project created succesfully");
 				break;
-			
+				
+			case "getEmployees":
+				System.out.println("All employees");
+				for (Employee employee: app.employees) {
+					System.out.println(employee.name);
+				}
+				break;
 			case "getOccupiedEmployees":
-				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(app.getSpecificDate(parameter));
+				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(Integer.parseInt(parameter));
 				System.out.println("All occupied employees at "+parameter);
 				for (Employee employee: occupiedEmployees) {
-					System.out.println(employee);
+					System.out.println(employee.name);
 				}
 				break;
 			
 			case "getVacantEmployees":
-				ArrayList<Employee> vacantEmployees = app.getVacantEmployees(app.getSpecificDate(parameter));
+				ArrayList<Employee> vacantEmployees = app.getVacantEmployees(Integer.parseInt(parameter));
 				System.out.println("All vacant employees at "+parameter);
 				for (Employee employee: vacantEmployees) {
-					System.out.println(employee);
+					System.out.println(employee.name);
+				}
+				break;
+			
+			case "getProjects":
+				System.out.println("All projects ");
+				for (Project project: app.projects) {
+					System.out.println(project.getTitle());
+				}
+				break;	
+				
+			case "getAssignedProjects":
+				System.out.println("All assigned projects ");
+				for (Project project: app.user.assignedProjects) {
+					System.out.println(project.getTitle());
+				}
+				break;
+			
+			case "openProject":
+				for (Project project: app.projects) {
+					if (project.getTitle().equals(parameter)) {
+						currentProject = project;
+						scene = "currentProject";
+					}
+				}
+				break;
+			
+			//current project
+			case "createActivity":
+				currentProject.createActivity(parameter);
+				break;		
+			
+			case "addEmployee":
+				for (Employee employee: app.employees) {
+					if (employee.name.equals(parameter)) {
+						currentProject.addEmployee(employee);
+					}
+				}
+				break;
+			
+			case "setLeader":
+				for (Employee employee: app.employees) {
+					if (employee.name.equals(parameter)) {
+						currentProject.setLeader(employee);
+					}
+				}
+				break;
+			
+			case "getLeader":
+				System.out.println("Current leader is "+currentProject.getLeader().name);
+				break;
+			
+			case "getEstimatedTime":
+				System.out.println("Estimated time is "+currentProject.getEstimatedTime());
+				break;
+			
+			case "setStartWeek":
+				try {
+					currentProject.setStartWeek(Integer.parseInt(parameter));
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number");
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			
+			case "setEndWeek":
+				try {
+					currentProject.setEndWeek(Integer.parseInt(parameter));
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number");
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				break;
 				
-			case "getAllProjects":
-				ArrayList<Employee> vacantEmployees = app.getVacantEmployees(app.getSpecificDate(parameter));
-				System.out.println("All vacant employees at "+parameter);
-				for (Employee employee: vacantEmployees) {
-					System.out.println(employee);
-				}
+			case "printStatus":
+				currentProject.printStatus();
 				break;
 				
-			}
+			case "getAssignedActivities":
+				System.out.println("All assigned activities ");
+				for (Activity activity: currentProject.activities) {
+					System.out.println(activity);
+				}
+				break;
+			
+			case "openActivity":
+				for (Activity activity: currentProject.activities) {
+					if (activity.name.equals(parameter)) {
+						currentActivity = activity;
+						scene = "currentActivity";
+					}
+				}
+				break;
+		}
 	}
 	
 	
