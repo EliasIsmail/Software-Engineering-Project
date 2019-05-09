@@ -54,7 +54,9 @@ public class Project {
 	public boolean isLeader(Employee employee) {
 		if(employee == leader) {
 			return true;
-		} else return false;
+		} else {
+			return false;
+		}
 	}
 	
 	public Employee getLeader() {
@@ -71,7 +73,7 @@ public class Project {
 		return estimatedTime;
 	}
 	
-	public void setStartDate(int startWeek) throws Exception {
+	public void setStartWeek(int startWeek) throws Exception {
 		for (Activity activity: activities) {
 			if (startWeek > activity.startWeek) {
 				throw new Exception("Activity start date before project start date");
