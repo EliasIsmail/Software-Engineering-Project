@@ -8,7 +8,7 @@ public class App {
 	public static ArrayList<Employee> employees = new ArrayList<Employee>();
 	public ArrayList<Project> projects = new ArrayList<Project>();
 
-	private int projectCounter = 0001;
+	private int projectCounter = 1001;
 	
 	static boolean loggedIn = false;
 	public static Employee user = null;
