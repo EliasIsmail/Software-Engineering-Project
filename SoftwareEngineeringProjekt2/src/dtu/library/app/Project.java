@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Project {
-	public String title;
-	public String client;
+	private String title;
+	private String client;
 	private String projectId;
-	public Employee leader;
-	public Date startDate = null;
-	public Date endDate = null;
+	private Employee leader;
+	public int startWeek;
+	public int endWeek;
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
@@ -32,6 +32,14 @@ public class Project {
 		return projectId;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getClient() {
+		return client;
+	}
+	
 	public void addEmployee(Employee employee) {
 		//adds employee to project
 		if (!employees.contains(employee)){
@@ -42,10 +50,15 @@ public class Project {
 	public void setLeader(Employee employee) {
 		leader = employee;
 	}
+
 	public boolean isLeader(Employee employee) {
 		if(employee == leader) {
 			return true;
 		} else return false;
+	
+	public Employee getLeader() {
+		return leader;
+
 	}
 		
 	
@@ -57,22 +70,22 @@ public class Project {
 		return estimatedTime;
 	}
 	
-	public void setStartDate(Date startDate) throws Exception {
+	public void setStartDate(int startWeek) throws Exception {
 		for (Activity activity: activities) {
-			if (startDate.after(activity.startDate)) {
-				throw new Exception("Acitivity start date before project start date");
+			if (startWeek > activity.startWeek) {
+				throw new Exception("Activity start date before project start date");
 			}
 		}
-		this.startDate = startDate;
+		this.startWeek = startWeek;
 	}
 	
-	public void setEndDate(Date endDate) throws Exception {
+	public void setEndWeek(int endWeek) throws Exception {
 		for (Activity activity: activities) {
-			if (endDate.after(activity.endDate)) {
-				throw new Exception("Acitivity start date before project start date");
+			if (endWeek < activity.endWeek) { //before
+				throw new Exception("Activity end date after project end date");
 			}
 		}
-		this.endDate = endDate;
+		this.endWeek = endWeek;
 	}
 	
 	public void printStatus() {
