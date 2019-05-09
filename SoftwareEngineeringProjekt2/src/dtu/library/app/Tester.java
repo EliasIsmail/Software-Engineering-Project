@@ -2,12 +2,43 @@ package dtu.library.app;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+
 
 public class Tester {
 	
+	private static int projectCounter = 0001;
+	
 	public static void main(String[] args) {
-		testActivitiesAndProjects();
+
+		
+		
+		
+	}
+	
+	public static Date getCurrentDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = format.format(new Date());
+		try {
+			return format.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Date getSpecificDate(String date) {
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		try {
+			return simpleDateFormat.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static void testActivitiesAndProjects() {

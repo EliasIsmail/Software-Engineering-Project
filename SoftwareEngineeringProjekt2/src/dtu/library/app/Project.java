@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Project {
-	public String title;
-	public String client;
+	private String title;
+	private String client;
 	private String projectId;
-	public Employee leader;
+	private Employee leader;
 	public Date startDate = null;
 	public Date endDate = null;
 	
@@ -32,6 +32,14 @@ public class Project {
 		return projectId;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getClient() {
+		return client;
+	}
+	
 	public void addEmployee(Employee employee) {
 		//adds employee to project
 		if (!employees.contains(employee)){
@@ -41,6 +49,10 @@ public class Project {
 	
 	public void setLeader(Employee employee) {
 		leader = employee;
+	}
+	
+	public Employee getLeader() {
+		return leader;
 	}
 		
 	
