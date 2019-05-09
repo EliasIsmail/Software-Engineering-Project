@@ -46,7 +46,7 @@ public class Activity {
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndDate(int endWeek) throws Exception {
+	public void setEndWeek(int endWeek) throws Exception {
 		if (endWeek > project.endWeek) { //after
 			throw new Exception("Activity end date after project end date");
 		}
