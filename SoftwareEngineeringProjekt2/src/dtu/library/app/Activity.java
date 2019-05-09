@@ -8,8 +8,8 @@ public class Activity {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime = 0;
-	public Date startDate = null;
-	public Date endDate = null;
+	public int startWeek;
+	public int endWeek;
 	
 	public Activity(String name, Project project) {
 		this.name = name;
@@ -31,22 +31,22 @@ public class Activity {
 		this.estimatedTime = estimatedTime;
 	}
 	
-	public void setStartDate(Date startDate) throws Exception {
-		if (startDate.before(project.startDate)) {
-			throw new Exception("Acitivity start date before project start date");
+	public void setStartWeek(int startWeek) throws Exception {
+		if (startWeek < project.startWeek) { //before
+			throw new Exception("Activity start date before project start date");
 		}
-		this.startDate = startDate;
+		this.startWeek = startWeek;
 	}
 	
-	public void setEndDate(Date endDate) throws Exception {
-		if (endDate.before(project.endDate)) {
-			throw new Exception("Acitivity end date before project end date");
+	public void setEndDate(int endWeek) throws Exception {
+		if (endWeek > project.endWeek) { //after
+			throw new Exception("Activity end date after project end date");
 		}
-		this.endDate = endDate;
+		this.endWeek = endWeek;
 	}
 	
 	public void printStatus() {
-		System.out.println("Activity: "+name+" from project "+project.title);
+		System.out.println("Activity: "+name+" from project "+project.getTitle());
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");

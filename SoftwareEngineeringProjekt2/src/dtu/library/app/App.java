@@ -32,7 +32,7 @@ public class App {
 		return employee;
 	}
 	
-	public void createProject(String title, String client) throws OperationNotAllowedException {
+	public Project createProject(String title, String client) throws OperationNotAllowedException {
 			String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
 
 			projectCounter++;	
@@ -41,7 +41,7 @@ public class App {
 			return project;
 	}
 	
-	public ArrayList<Employee> getOccupiedEmployees(Date date){
+	public ArrayList<Employee> getOccupiedEmployees(int week){
 		//employees are occupied if they are assigned to at least one project
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
 		
@@ -49,7 +49,7 @@ public class App {
 			boolean isOccupied = false;
 			innerLoop:
 			for (Project project: employee.assignedProjects) {
-				if (project.endDate.after(date) && project.startDate.before(date)) {
+				if (project.endWeek > week && project.startWeek < week) {
 					isOccupied = true;
 					break innerLoop;
 				}
@@ -63,9 +63,9 @@ public class App {
 		return occupiedEmployees;
 	}
 	
-	public ArrayList<Employee> getVacantEmployees(Date date){
+	public ArrayList<Employee> getVacantEmployees(int week){
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
-		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(date);
+		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(week);
 		
 		for (Employee employee: employees) {
 			if (!occupiedEmployees.contains(employee)) {
