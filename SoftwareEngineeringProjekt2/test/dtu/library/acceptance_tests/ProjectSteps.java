@@ -18,6 +18,7 @@ public class ProjectSteps {
 
 	private App app;
 	private Project project;
+	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 	
 	
@@ -53,8 +54,8 @@ public class ProjectSteps {
 	
 	@Then("the project is created with the title {string} and client {string}")
 	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
-		assertTrue(app.projects.get(0).title.equals(title));
-		assertTrue(app.projects.get(0).client.equals(client));
+		assertTrue(app.projects.get(0).getTitle().equals(title));
+		assertTrue(app.projects.get(0).getClient().equals(client));
 	}
 	
 	@When("the employee creates a project without a title or a client")
@@ -70,6 +71,36 @@ public class ProjectSteps {
 	@Then("I get the errorMessage: {string}")
 	public void iGetTheErrorMessage(String errorMessage) {
 		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+	}
+	
+
+	@When("I create two projects")
+	public void iCreateTwoProjects() throws OperationNotAllowedException {
+	    app.createProject("project1", "client1");
+	    app.createProject("project2", "client2");
+	}
+	
+	@Then("they have the correct project id's")
+	public void theyHaveTheCorrectProjectIdS() {
+	    assertTrue(app.projects.get(0).getProjectId().equals("191001"));
+	    assertTrue(app.projects.get(1).getProjectId().equals("191002"));
+	}
+	
+	@Given("there exist an employee")
+	public void thereExistAnEmployee() {
+	    app.createEmployee("Erik");
+	    employee = app.employees.get(0);
+	}
+
+	@When("the employee sets himself as leader")
+	public void theEmployeeSetsHimselfAsLeader() throws OperationNotAllowedException {
+	    app.createProject("project1", "client1");
+	    app.projects.get(0).setLeader(employee);
+	}
+
+	@Then("he is the leader of the project")
+	public void heIsTheLeaderOfTheProject() {
+	    assertTrue(app.projects.get(0).getLeader().equals(employee));
 	}
 }
 
