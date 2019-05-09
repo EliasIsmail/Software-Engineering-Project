@@ -9,17 +9,20 @@ public class Project {
 	private Employee leader;
 	public int startWeek;
 	public int endWeek;
+	private App app;
+	
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
-	public Project(String title, String client, String projectId) throws OperationNotAllowedException {
+	public Project(String title, String client, String projectId, App app) throws OperationNotAllowedException {
 		if (title == null || client == null) {
 			throw new OperationNotAllowedException("Missing project information");
 		}
 		this.title = title;
 		this.client = client;
 		this.projectId = projectId;
+		this.app = app;
 	}
 	
 	public Activity createActivity(String name) throws OperationNotAllowedException {
@@ -47,12 +50,14 @@ public class Project {
 		}
 	}
 	
-	public void setLeader(Employee employee) {
-		leader = employee;
+	public void setLeader(Employee employee) throws OperationNotAllowedException {
+		if (leader == null || leader.equals(app.user)) {
+			leader = employee;
+		} else throw new OperationNotAllowedException("Projectleader must be the user");
 	}
 
-	public boolean isLeader(Employee employee) {
-		if(employee == leader) {
+	public boolean isLeader() {
+		if(app.user.name.equals(leader.name)) {
 			return true;
 		} else {
 			return false;
@@ -61,7 +66,6 @@ public class Project {
 	
 	public Employee getLeader() {
 		return leader;
-
 	}
 		
 	

@@ -25,6 +25,8 @@ public class App {
 	 * Employees are assigned in Activity
 	 */
 
+	
+	
 	public Employee createEmployee(String name) {
 		//creates new employee
 		Employee employee = new Employee(name);
@@ -38,7 +40,7 @@ public class App {
 			String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
 
 			projectCounter++;	
-			Project project = new Project(title, client, projectId);
+			Project project = new Project(title, client, projectId,this);
 			projects.add(project);
 			return project;
 	}
@@ -100,7 +102,7 @@ public class App {
 		return null;
 	}
 	
-	public static void login(String loginName) {
+	public void login(String loginName) {
 		//searches employees to find matching name
 		for (Employee employee: employees) {
 			if (employee.name.equals(loginName)) {
@@ -110,5 +112,4 @@ public class App {
 			  }
 		  }
 	}
-	
 }

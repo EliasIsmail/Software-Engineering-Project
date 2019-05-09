@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class Activity {
 	public String name;
-	public String client;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime;
@@ -66,9 +65,6 @@ public class Activity {
 			throw new Exception("Activity end date after project end date");
 		}
 		this.endWeek = endWeek;
-	}
-	public void setClient(String client) {
-		this.client = client;
 	}
 	
 	public void printStatus() {

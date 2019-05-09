@@ -91,6 +91,11 @@ public class ProjectSteps {
 	    app.createEmployee("Erik");
 	    employee = app.employees.get(0);
 	}
+	
+	@Given("the employee is logged in")
+	public void theEmployeeIsLoggedIn() {
+	   app.login(employee.name);
+	}
 
 	@When("the employee sets himself as leader")
 	public void theEmployeeSetsHimselfAsLeader() throws OperationNotAllowedException {
@@ -102,6 +107,32 @@ public class ProjectSteps {
 	public void heIsTheLeaderOfTheProject() {
 	    assertTrue(app.projects.get(0).getLeader().equals(employee));
 	}
+	
+	@Given("there is a project with a leader")
+	public void thereIsAProjectWithALeader() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new cucumber.api.PendingException();
+	}
+
+	@Given("a user who isn't the leader is the user")
+	public void aUserWhoIsnTTheLeaderIsTheUser() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new cucumber.api.PendingException();
+	}
+
+	@When("the leader of is change")
+	public void theLeaderOfIsChange() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new cucumber.api.PendingException();
+	}
+
+	@Then("I get an error message: {string}")
+	public void iGetAnErrorMessage(String string) {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new cucumber.api.PendingException();
+	}
+
+
 }
 
 

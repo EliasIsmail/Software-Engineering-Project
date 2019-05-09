@@ -10,17 +10,20 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.library.app.App;
+import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
 
 public class ActivitySteps {
 	private App app;
+	private Employee leader;
+	int week = 1;
 	private ErrorMessageHolder errorMessageHolder;
 	
 	public ActivitySteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
 		this.errorMessageHolder = errorMessageHolder;
 	}
-	int week = 1;
+	
 	
 	@Given("there exists an activity in a project")
 	public void thereExistsAnActivityInAProject() {
@@ -34,7 +37,7 @@ public class ActivitySteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		assertTrue(app.projects.get(0).activities.contains(app.projects.get(0).activities.get(0)));
+		assertTrue(app.projects.get(0).activities.get(0).name.equals("User Interface"));
 	}
 
 	@Given("an employee is available")
@@ -45,8 +48,17 @@ public class ActivitySteps {
 
 	@Given("the user is the leader of the project")
 	public void theUserIsTheLeaderOfTheProject() {
-		app.projects.get(0).setLeader(app.user);
-		assertTrue(app.projects.get(0).isLeader(app.user));
+		leader = app.createEmployee("leader");
+		app.login("leader");
+		try {
+			app.projects.get(0).setLeader(leader);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+//		for(Project p:app.projects) {
+//			
+//		}
+		assertTrue(app.projects.get(0).isLeader());
 	}
 
 	@When("the user adds the available employee to the activity")
@@ -96,6 +108,20 @@ public class ActivitySteps {
 	public void bothTheStartTimeAndClientOfTheActivityHasBeenSet() {
 		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 		assertTrue(app.projects.get(0).activities.get(0).client.equals("IT Minds"));
+	}
+	
+	@When("the user sets the start week to {int}")
+	public void theUserSetsTheStartWeekTo(Integer int1) {
+		try {
+		    app.projects.get(0).activities.get(0).setStartWeek(week);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+	}
+
+	@Then("the start time is set")
+	public void theStartTimeIsSet() {
+		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 	}
 
 	@When("the user sets the start week of the activity to {int}")

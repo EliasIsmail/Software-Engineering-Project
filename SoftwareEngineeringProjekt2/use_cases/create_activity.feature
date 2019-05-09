@@ -9,9 +9,9 @@ Then the activity is created in the system
 Scenario: Set attributes of activity
 Given there exists an activity in a project
 And the user is the leader of the project
-When the user sets the start week to 21 and client to "DTU: Aqua"
-Then both the start time and client of the activity has been set
-
+When the user sets the start week to 21
+Then the start time is set
+#
 Scenario: Set illegal attributes of activity
 Given there exists an activity in a project
 And the user is the leader of the project
