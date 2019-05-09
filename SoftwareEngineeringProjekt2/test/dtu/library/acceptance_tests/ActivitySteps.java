@@ -45,20 +45,17 @@ public class ActivitySteps {
 
 	@Given("the user is the leader of the project")
 	public void theUserIsTheLeaderOfTheProject() {
-		app.createEmployee("Leader");
-		app.projects.get(0).setLeader(app.employees.get(1));
-		assertTrue(app.projects.get(0).isLeader(app.employees.get(1)));
+		app.projects.get(0).setLeader(app.user);
+		assertTrue(app.projects.get(0).isLeader(app.user));
 	}
 
 	@When("the user adds the available employee to the activity")
 	public void theUserAddsTheAvailableEmployeeToTheActivity() {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
-		assertTrue(app.projects.get(0).activities.get(0).employees.contains(app.employees.get(0)));
 	}
 
 	@Then("the employee is added to the activity in the system")
 	public void theEmployeeIsAddedToTheActivityInTheSystem() {
-		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 		assertTrue(app.projects.get(0).activities.get(0).employees.contains(app.employees.get(0)));
 	}
 	@Given("there exists a project")
@@ -86,7 +83,7 @@ public class ActivitySteps {
 	}
 	
 	@When("the user sets the start week to {int} and client to {string}")
-	public void theUserSetsTheStartTimeToAndClientTo(Integer int1, String string) {
+	public void theUserSetsTheStartWeekToAndClientTo(Integer int1, String string) {
 		try {
 	    app.projects.get(0).activities.get(0).setStartWeek(week);
 		} catch (Exception e) {
@@ -113,7 +110,40 @@ public class ActivitySteps {
 	@Then("the following message will be displayed: {string}")
 	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
+	}
+
+	@When("the user sets the estimated time for an activity to {int} weeks")
+		public void theUserSetsTheEstimatedTimeForAnActivity(int number) {
+			try{
+				app.projects.get(0).activities.get(0).setEstimatedTime(number);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	@Given("the start week of the project has been set")
+	public void theStartWeekOfTheProjectHasBeenSet() {
+		try {
+			app.projects.get(0).activities.get(0).setStartWeek(week);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+	}
+
+	@When("the user sets the estimated time for an activity to a negative number of weeks")
+		public void theUserSetsTheEstimatedTimeForAnActivityToANegativeNumberOfWeeks() {
+			try{
+				app.projects.get(0).activities.get(0).setEstimatedTime(-4);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+		}
+	
+	@Then("the estimated time is updated to {int} weeks for the activity in the system")
+	public void theEstimatedTimeIsUpdatedToWeeksForTheActivityInTheSystem(int number) {
+	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
+	}
 }
+
 
 //	@When("the user adds an unavailable employee to the activity")
 //	public void theUserAddsAnUnavailableEmployeeToTheActivity() {
@@ -128,5 +158,3 @@ public class ActivitySteps {
 //	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 //		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
 //	}
-
-}
