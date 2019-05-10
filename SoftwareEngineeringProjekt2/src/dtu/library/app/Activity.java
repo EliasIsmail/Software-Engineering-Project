@@ -53,9 +53,9 @@ public class Activity {
 		if (startWeek > 53 || startWeek < 1) {
 			throw new Exception("Undefined week number");
 		}
-		if (this.startWeek != 0) {
-			throw new Exception("Start week has already been set");
-		}
+//		if (this.startWeek != 0) {
+//			throw new Exception("Start week has already been set");
+//		}
 			
 		this.startWeek = startWeek;
 	}

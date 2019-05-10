@@ -12,6 +12,7 @@ import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.MissingAuthenticity;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -34,28 +35,30 @@ public class ActivitySteps {
 	
 	
 	@Given("there exists an activity in a project")
-	public void thereExistsAnActivityInAProject() {
+	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
 		try {
-		app.createProject("Snake", "Ubisoft");
+		project = app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
 		errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		try {
-		app.projects.get(0).createActivity("User Interface");
+		activity = project.createActivity("User Interface");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		assertTrue(app.projects.get(0).activities.get(0).name.equals("User Interface"));
+		System.out.println(app.projects.get(0).activities.get(0).name);
+		assertTrue(activity.name.equals("User Interface"));
+			
 	}
 
 	@Given("an employee is available")
 	public void anEmployeeIsAvailable() throws Exception {
 		app.createEmployee("Erik");
-		assertTrue(app.getVacantEmployees(week).contains(app.employees.get(0)));
+		assertTrue(app.getVacantEmployees(week,week+1).contains(app.employees.get(0)));
 	}
 
 	@Given("the user is the leader of the project")
-	public void theUserIsTheLeaderOfTheProject() {
+	public void theUserIsTheLeaderOfTheProject() throws MissingAuthenticity {
 		leader = app.createEmployee("leader");
 		app.login("leader");
 		try {
@@ -70,7 +73,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user adds the available employee to the activity")
-	public void theUserAddsTheAvailableEmployeeToTheActivity() {
+	public void theUserAddsTheAvailableEmployeeToTheActivity() throws MissingAuthenticity, OperationNotAllowedException {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 	}
 
@@ -89,7 +92,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user creates an activity with title {string}")
-	public void theUserCreatesAnActivityWithTitle(String string) {
+	public void theUserCreatesAnActivityWithTitle(String string) throws MissingAuthenticity {
 	    try {
 		app.projects.get(0).createActivity("Design GUI");
 	    } catch (OperationNotAllowedException e) {
@@ -119,9 +122,11 @@ public class ActivitySteps {
 	@When("the user sets the start week of the activity to {int}")
 	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
 		try {
-			 app.projects.get(0).setStartWeek(1);
-			 app.projects.get(0).setEndWeek(6);
-			 app.projects.get(0).activities.get(0).setStartWeek(number);
+			 app.projects.get(1).setStartWeek(1);
+			 System.out.println(app.projects.get(0).startWeek);
+			 app.projects.get(1).setEndWeek(6);
+			 app.projects.get(1).activities.get(0).setStartWeek(100);
+			 System.out.println(app.projects.get(0).activities.get(0).startWeek);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -163,7 +168,7 @@ public class ActivitySteps {
 	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
 	}
 	@Given("there exists an activity in a project with a project leader")
-	public void thereExistsAnActivityInAProjectWithAProjectLeader() {
+	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
 		  try {
 				project = app.createProject("Test", "Intern");
 			} catch (OperationNotAllowedException e) {
@@ -184,7 +189,7 @@ public class ActivitySteps {
 		}
 	
 	@Given("the necessary info for an activity status is filled out")
-	public void theNecessaryInfoForAnActivityStatusIsFilledOut() {
+	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity, OperationNotAllowedException {
 		try {
 				project.setStartWeek(1);
 				project.setEndWeek(6);

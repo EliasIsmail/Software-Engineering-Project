@@ -1,5 +1,6 @@
 package dtu.library.acceptance_tests;
 
+import cucumber.api.cli.Main;
 import cucumber.api.java.en.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.MissingAuthenticity;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -35,7 +37,7 @@ public class ProjectSteps {
 	@When("the employee creates a project with title {string} and the client {string}")
 	public void theEmployeeCreatesAProjectWithTitleAndTheClient(String title, String client) {
 	    try {
-			app.createProject(title, client);
+			project = app.createProject(title, client);
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -43,8 +45,8 @@ public class ProjectSteps {
 	
 	@Then("the project is created with the title {string} and client {string}")
 	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
-		assertTrue(app.projects.get(0).getTitle().equals(title));
-		assertTrue(app.projects.get(0).getClient().equals(client));
+		assertTrue(app.projects.get(1).getTitle().equals(title));
+		assertTrue(app.projects.get(1).getClient().equals(client));
 	}
 	
 	@When("the employee creates a project without a title or a client")
@@ -78,7 +80,7 @@ public class ProjectSteps {
 	@When("the user searches for available employees in week {int}")
 	public void theUserSearchesForAvailableEmployeesInWeek(int week) throws Exception {
 		try {
-			app.getVacantEmployees(week);
+			app.getVacantEmployees(week,week+1);
 		} catch (OperationNotAllowedException e) {
 		errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -88,17 +90,17 @@ public class ProjectSteps {
 
 	@Then("a list of available employees in week {int} is returned to the user")
 	public void aListOfAvailableEmployeesIsReturnedToTheUser(int week) throws Exception {
-		assertTrue(app.getVacantEmployees(week).contains(employee));
+		assertTrue(app.getVacantEmployees(week,week+1).contains(employee));
 	}
 	@Given("there is currently no available employees in week {int}")
 	public void thereIsCurrentlyNoAvailableEmployeesInWeek(int week) throws Exception {
 		app.projects.get(0).setStartWeek(1);
 		app.projects.get(0).setEndWeek(5);
-		for(Employee employee : app.getVacantEmployees(3)) {
+		for(Employee employee : app.getVacantEmployees(3,4)) {
 			employee.addProject(app.projects.get(0));
 		}
 		try {
-		assertTrue(app.getVacantEmployees(3).isEmpty());
+		assertTrue(app.getVacantEmployees(3,4).isEmpty());
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -120,7 +122,7 @@ public class ProjectSteps {
 	}
 
 	@When("the employee sets themselves as leader of the project")
-	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException {
+	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException, MissingAuthenticity {
 	    app.createProject("project1", "client1");
 	    app.projects.get(0).setLeader(employee);
 	}
@@ -131,7 +133,7 @@ public class ProjectSteps {
 	}
 	
 	@Given("there exists a project with a project leader")
-	public void thereExistsAProjectWithAProjectLeader() {
+	public void thereExistsAProjectWithAProjectLeader() throws MissingAuthenticity {
 	    try {
 			project = app.createProject("Test", "Intern");
 		} catch (OperationNotAllowedException e) {
@@ -153,7 +155,7 @@ public class ProjectSteps {
 	}
 
 	@When("the user attempts to change the leader of the project")
-	public void theUserAttemptsToChangeTheLeaderOfTheProject() {
+	public void theUserAttemptsToChangeTheLeaderOfTheProject() throws MissingAuthenticity {
 		try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
@@ -168,7 +170,7 @@ public class ProjectSteps {
 	}
 	
 	@Given("the necessary info for a status is filled out")
-	public void theNecessaryInfoForAStatusIsFilledOut() {
+	public void theNecessaryInfoForAStatusIsFilledOut() throws MissingAuthenticity, OperationNotAllowedException {
 		try {
 				project.setStartWeek(3);
 				project.setEndWeek(6);
@@ -262,10 +264,10 @@ public class ProjectSteps {
 	}
 
 	@When("the user sets the project end week to {int}")
-	public void theUserSetsTheProjectEndWeekTo(Integer week) {
+	public void theUserSetsTheProjectEndWeekTo(Integer week) throws MissingAuthenticity {
 		 try {
 				project.setEndWeek(week);
-			} catch (Exception e) {
+			} catch (OperationNotAllowedException e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
 			}
 	}
