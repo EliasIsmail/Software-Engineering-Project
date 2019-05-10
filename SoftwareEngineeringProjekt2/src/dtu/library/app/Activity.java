@@ -9,7 +9,7 @@ public class Activity {
 	public Project project;
 	public int estimatedTime = 0;
 	public int startWeek = 0;
-	public int endWeek;
+	public int endWeek = 0;
 	public Employee employee;
 	
 	public Activity(String name, Project project) throws OperationNotAllowedException {
@@ -47,7 +47,7 @@ public class Activity {
 	
 
 	public void setStartWeek(int startWeek) throws Exception {
-		if (project.endWeek != 0 && startWeek < project.startWeek) { //before
+		if (project.startWeek != 0 && startWeek < project.startWeek) { //before
 			throw new Exception("Activity start date before project start date");
 		}
 		if (startWeek > 53 || startWeek < 1) {
@@ -61,7 +61,7 @@ public class Activity {
 	}
 	
 	public void setEndWeek(int endWeek) throws Exception {
-		if (project.endWeek != 0 &&  endWeek > project.endWeek) { //after
+		if (project.endWeek != 0 && endWeek > project.endWeek) { //after
 			throw new Exception("Activity end date after project end date");
 		}
 		this.endWeek = endWeek;
