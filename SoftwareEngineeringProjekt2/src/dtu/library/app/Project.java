@@ -39,6 +39,15 @@ public class Project {
 		return title;
 	}
 	
+	public void setTitle(String newTitle) throws Exception {
+		for (Project project: app.projects) {
+			if (newTitle.equals(project.getTitle())){
+				throw new Exception ("Project title already used");
+			}
+		}
+		title = newTitle;
+	}
+	
 	public String getClient() {
 		return client;
 	}

@@ -316,6 +316,14 @@ public class viewController {
 		} else if (currentScene.equals("Project")){
 			switch(command) {
 			
+			case "rename":
+				try {
+					currentProject.setTitle(parameter);
+				} catch (Exception e1) {
+					System.out.println("Title already in use");
+					e1.printStackTrace();
+				}
+			
 			case "createActivity":
 				currentProject.createActivity(parameter);
 				break;		
