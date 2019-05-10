@@ -19,11 +19,10 @@ import dtu.library.app.Project;
 public class ProjectSteps {
 
 	private App app;
+	private Project project;
 	private Employee employee;
 	private ErrorMessageHolder errorMessageHolder;
 	ArrayList<Employee> list;
-	private Project project;
-	private Employee employee;
 	private boolean printed = false;
 	
 	
@@ -189,7 +188,7 @@ public class ProjectSteps {
 				project.setStartWeek(3);
 				project.setEndWeek(6);
 		} catch (Exception e) {
-				errorMessage.setErrorMessage(e.getMessage());
+				errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	    for (int i = 0; i < 3; ++i) {
 	    	employee = app.createEmployee("emp" + i);
@@ -202,7 +201,7 @@ public class ProjectSteps {
 	    try {
 			project.printStatus();
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 			return;
 		}
 	    printed = true;
@@ -216,7 +215,7 @@ public class ProjectSteps {
 	@Then("I get an errormessage saying: {string}")
 	public void iGetAnErrormessageSaying(String errormessage) {
 	    assertFalse(printed);
-	    assertTrue(errorMessage.getErrorMessage().equals(errormessage));
+	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
 	}
 }
 	
