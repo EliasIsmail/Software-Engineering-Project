@@ -16,6 +16,19 @@ public class App {
 	
 	public App() {
 		user = createEmployee("Admin");	
+		Project misc;
+		try {
+			misc = createProject("Misc","Administration");
+			misc.createActivity("Holiday");
+			misc.createActivity("SickDay");
+			misc.createActivity("Course");
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MissingAuthenticity e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -25,8 +38,6 @@ public class App {
 	 * Employees are assigned in Activity
 	 */
 
-	
-	
 	public Employee createEmployee(String name) {
 		//creates new employee
 		Employee employee = new Employee(name);

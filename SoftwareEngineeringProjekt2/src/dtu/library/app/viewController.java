@@ -16,7 +16,7 @@ public class viewController {
 	static int autoCommand = -1;
 	static int autoIndex = 0;
 	
-	public static void main(String args[]) throws NumberFormatException, Exception {
+	public static void main(String args[]) throws OperationNotAllowedException, MissingAuthenticity {
 		Scanner console = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
@@ -49,6 +49,7 @@ public class viewController {
 				"printStatus()",
 				"getActivities()",
 				"openActivity(name)",
+				"getSummery()"
 		});
 		actions.put("Activity", new String[] {
 				"addEmployee(name)",
@@ -200,7 +201,7 @@ public class viewController {
 		return scenes.get(scenes.size()-1);
 	}
 	
-	public static void executeCommand(String[] input) throws NumberFormatException, Exception {
+	public static void executeCommand(String[] input) throws OperationNotAllowedException, MissingAuthenticity {
 		
 		String command = input[0];
 		String parameter = input[1];
@@ -220,6 +221,7 @@ public class viewController {
 			case "logout":
 				scenes.clear();
 				scenes.add("Login menu");
+				app.loggedIn = false;
 				break;
 			}
 		} 
@@ -282,7 +284,15 @@ public class viewController {
 				break;
 			
 			case "getVacantEmployees":
-				ArrayList<Employee> vacantEmployees = app.getVacantEmployees(Integer.parseInt(parameter));
+				ArrayList<Employee> vacantEmployees = null;
+				try {
+					vacantEmployees = app.getVacantEmployees(Integer.parseInt(parameter));
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number");
+					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Something went wrong. Try a different parameter");
+				}
 				System.out.println("All vacant employees at "+parameter);
 				for (Employee employee: vacantEmployees) {
 					System.out.println(employee.name);
@@ -424,19 +434,24 @@ public class viewController {
 				}
 				System.out.println("Could not find the specified activity");
 				break;
+			case "getSummery":
+				currentProject.printStatus();
 			}
 		} else if (currentScene.equals("Activity")){
 			
 			switch(command) {
 			case "addEmployee":
+				boolean succes = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
 						System.out.println("Succesfully added the employee");
+						succes = true;
 						break;
 					}
 				}
-				System.out.println("Could not find the specified employee");
+
+
 				break;
 				
 			case "setEstimatedTime":
@@ -487,7 +502,7 @@ public class viewController {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					System.out.println("Unexpected exception - try another parameter");
 					e.printStackTrace();
 				}
 				break;
@@ -530,7 +545,7 @@ public class viewController {
 					System.out.println("No logs at the given date");
 					break;
 				}
-				int totalHours = 0;
+				float totalHours = 0;
 				System.out.println("Log for "+parameter);
 				System.out.println("...............");
 				

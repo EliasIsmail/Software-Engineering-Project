@@ -20,7 +20,7 @@ public class Activity {
 		this.project = project;
 	}
 	
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws MissingAuthenticity {
 		//assigns employee to an activity
 		if (!employees.contains(employee)){
 			employees.add(employee);

@@ -5,7 +5,7 @@ public class Project {
 	private String title;
 	private String client;
 	private String projectId;
-	private Employee leader;
+	private Employee leader = null;
 	public int startWeek = 0;
 	public int endWeek = 0;
 	private App app;
@@ -26,7 +26,16 @@ public class Project {
 		this.app = app;
 	}
 	
-	public Activity createActivity(String name) throws OperationNotAllowedException {
+	public void checkAuthenticity() throws MissingAuthenticity {
+		if (leader != null) {
+			if (leader != app.user) {
+				throw new MissingAuthenticity("User is not project leader");
+			}
+		}
+	}
+	
+	public Activity createActivity(String name) throws OperationNotAllowedException, MissingAuthenticity {
+		checkAuthenticity();
 		Activity activity = new Activity(name,this);
 		activities.add(activity);
 		return activity;
@@ -40,10 +49,11 @@ public class Project {
 		return title;
 	}
 	
-	public void setTitle(String newTitle) throws Exception {
+	public void setTitle(String newTitle) throws OperationNotAllowedException, MissingAuthenticity {
+		checkAuthenticity();
 		for (Project project: app.projects) {
 			if (newTitle.equals(project.getTitle())){
-				throw new Exception ("Project title already used");
+				throw new OperationNotAllowedException ("Project title already used");
 			}
 		}
 		title = newTitle;
@@ -53,14 +63,16 @@ public class Project {
 		return client;
 	}
 	
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws MissingAuthenticity {
+		checkAuthenticity();
 		//adds employee to project
 		if (!employees.contains(employee)){
 			employees.add(employee);
 		}
 	}
 	
-	public void setLeader(Employee employee) throws OperationNotAllowedException {
+	public void setLeader(Employee employee) throws OperationNotAllowedException, MissingAuthenticity {
+		checkAuthenticity();
 		if (leader == null || leader.equals(app.user)) {
 			leader = employee;
 
@@ -90,10 +102,8 @@ public class Project {
 		return estimatedTime;
 	}
 	
-	public void setStartWeek(int startWeek) throws Exception {
-		if(leader != null && !app.user.equals(leader)) {
-			throw new OperationNotAllowedException("The user isn't leader of the project");
-		}
+	public void setStartWeek(int startWeek) throws OperationNotAllowedException, MissingAuthenticity {
+		checkAuthenticity();
 		for (Activity activity: activities) {
 			if (activity.startWeek!= 0 && startWeek > activity.startWeek) {
 				throw new Exception("Activity start date before project start week");
@@ -102,7 +112,8 @@ public class Project {
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndWeek(int endWeek) throws Exception {
+	public void setEndWeek(int endWeek) throws OperationNotAllowedException, MissingAuthenticity {
+		checkAuthenticity();
 		for (Activity activity: activities) {
 			if (activity.endWeek!= 0 && endWeek < activity.endWeek) { //before
 				throw new Exception("Activity end date after project end date");
@@ -112,15 +123,16 @@ public class Project {
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
-		if (title == null || projectId == null || leader == null || startWeek == 0 || endWeek == 0) {
-			throw new OperationNotAllowedException("Missing information for status report");
-		}
 		System.out.println("Project: "+title+", #"+projectId + " for " + client);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
-			System.out.print(employee.name+", ");
+			System.out.println(employee.name);
 		}
-		System.out.println("\nProject leader: "+leader.name);
+		if (leader != null) {
+			System.out.println("\nProject leader: "+leader.name);
+		} else {
+			System.out.println("\nProject leader: no leader");
+		}
 		System.out.println("Start week: " + startWeek);
 		System.out.println("Total estimated time: "+getEstimatedTime());
 		System.out.println("End week: " + endWeek);
