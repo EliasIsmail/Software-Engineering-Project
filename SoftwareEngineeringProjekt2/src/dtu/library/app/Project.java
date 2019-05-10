@@ -10,6 +10,8 @@ public class Project {
 	public int endWeek = 0;
 	private App app;
 	
+	//	When a project leader is not yet chosen, any person can change the project
+	
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
@@ -89,9 +91,12 @@ public class Project {
 	}
 	
 	public void setStartWeek(int startWeek) throws Exception {
+		if(leader != null && !app.user.equals(leader)) {
+			throw new OperationNotAllowedException("The user isn't leader of the project");
+		}
 		for (Activity activity: activities) {
 			if (startWeek > activity.startWeek) {
-				throw new Exception("Activity start date before project start date");
+				throw new Exception("Activity start date before project start week");
 			}
 		}
 		this.startWeek = startWeek;

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
@@ -20,6 +21,7 @@ public class ProjectSteps {
 
 	private App app;
 	private Project project;
+	private Activity activity;
 	private Employee employee;
 	private ErrorMessageHolder errorMessageHolder;
 	ArrayList<Employee> list;
@@ -52,7 +54,6 @@ public class ProjectSteps {
 	    try {
 			app.createProject(title, client);
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -127,7 +128,7 @@ public class ProjectSteps {
 	@Given("there exist an employee")
 	public void thereExistAnEmployee() {
 	    app.createEmployee("Erik");
-	    employee = app.employees.get(0);
+	    employee = app.employees.get(1);
 	}
 	
 	@Given("the employee is logged in")
@@ -154,6 +155,7 @@ public class ProjectSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	    employee = app.createEmployee("emp1");
+	    app.login("emp1");
 	    try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
@@ -217,51 +219,42 @@ public class ProjectSteps {
 	    assertFalse(printed);
 	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
 	}
+	
+	@When("the user sets the start week of the project to {int}")
+	public void theUserSetsTheStartWeekOfTheProjectTo(Integer week) {
+	    try {
+			project.setStartWeek(week);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the start week of the project is updated to {int} in the system")
+	public void theStartWeekOfTheProjectIsUpdatedToInTheSystem(Integer week) {
+	    assertTrue(project.startWeek == week);
+	}
+	
+	@Given("an activity in the project starts in week {int}")
+	public void anActivityInTheProjectStartsInWeek(Integer week) {
+	    try {
+			activity = project.createActivity("Interface");
+		    activity.setStartWeek(week);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("the user sets the project start week to {int}")
+	public void theUserSetsTheProjectStartWeekTo(Integer week) {
+	    try {
+			project.setStartWeek(3);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
 }
 	
-//	@Given("there exists an employee")
-//	public void thereExistAnEmployee() {
-//	    app.createEmployee("Erik");
-//	    employee = app.employees.get(1);
-//	}
-//	
-//	@Given("the employee is logged in")
-//	public void theEmployeeIsLoggedIn() {
-//	   app.login(employee.name);
-//	   assertTrue(app.user.name.equals(employee.name));
-//	}
-//
-//	@When("the employee sets themselves as leader of the project")
-//	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException {
-//	    app.createProject("project1", "client1");
-//	    app.projects.get(0).setLeader(employee);
-//	    System.out.println(employee.name);
-//	}
-//
-//	@Then("the employee is the leader of the project")
-//	public void theEmployeeIsTheLeaderOfTheProject() {
-//		assertTrue(app.projects.get(0).getLeader().equals(employee));
-//	}
-//	
-//	@Given("the user is not the leader of the project")
-//	public void theUserIsNotTheLeaderOfTheProject() {
-//		assertFalse(app.user.equals(app.projects.get(0).getLeader()));
-//	}
-//
-//	@When("the user tries to change the project leader of the project")
-//	public void theUserTriesToChangeTheProjectLeaderOfTheProject() {
-//		try {
-//			app.projects.get(0).setLeader(app.user);
-//		}
-//		catch (OperationNotAllowedException e) {
-//			errorMessageHolder.setErrorMessage(e.getMessage());
-//		}
-//	}
-//
-//
-//}
-//
-//
+
 
 
 
