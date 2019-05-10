@@ -78,6 +78,23 @@ public class App {
 		return occupiedEmployees;
 	}
 	
+	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek){
+		ArrayList<ArrayList<Employee>> runs = new ArrayList<ArrayList<Employee>>();
+		for (int week=startWeek; week<endWeek; week++) {
+			runs.add(getOccupiedEmployees(week));
+		}
+		
+		if (runs.size() > 0) {
+			ArrayList<Employee> occupiedTrue = runs.get(0);
+			for (ArrayList<Employee> occupied: runs) {
+				occupiedTrue.retainAll(occupied);
+			}
+			return occupiedTrue;
+		}
+		
+		return new ArrayList<Employee>();
+	}
+	
 	public ArrayList<Employee> getVacantEmployees(int week) throws Exception {
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
 		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(week);

@@ -8,7 +8,7 @@ public class Activity {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime = 0;
-	public int startWeek = 0;
+	public int startWeek;
 	public int endWeek;
 	public Employee employee;
 	
@@ -35,14 +35,11 @@ public class Activity {
 		if (project.isLeader() == false) {
 			throw new Exception("Only project leaders can edit times");
 		}
-		if (estimatedTime < 1) {
+		if (estimatedTime < 0) {
 			throw new Exception("Impossible time frame for activity");
 		}
-		if (this.startWeek == 0) {
-			throw new Exception("Start week of activity hasn't been set yet");
-		}
+		
 		this.estimatedTime = estimatedTime;
-		this.endWeek = estimatedTime + startWeek;
 	}
 	
 

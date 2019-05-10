@@ -30,7 +30,7 @@ public class viewController {
 				"createEmployee(name)",
 				"createProject(title,client)",
 				"getEmployees()",
-				"getOccupiedEmployees(weekNumber)",
+				"getOccupiedEmployees(startWeek,endWeek)",
 				"getVacantEmployees(weekNumber",
 				"getProjects()",
 				"getAssignedProjects()",
@@ -46,6 +46,8 @@ public class viewController {
 				"getEstimatedTime()",
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
+				"getStartWeek()",
+				"getEndWeek()",
 				"printStatus()",
 				"getActivities()",
 				"openActivity(name)",
@@ -276,7 +278,11 @@ public class viewController {
 				break;
 				
 			case "getOccupiedEmployees":
-				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(Integer.parseInt(parameter));
+				parameters = getParameters(parameter);
+				int startWeek = Integer.parseInt(parameters.get(0));
+				int endWeek = Integer.parseInt(parameters.get(1));
+				
+				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(startWeek,endWeek);
 				System.out.println("All occupied employees at "+parameter);
 				for (Employee employee: occupiedEmployees) {
 					System.out.println(employee.name);
