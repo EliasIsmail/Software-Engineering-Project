@@ -32,6 +32,8 @@ public class Employee {
 	}
 	
 	public void addActivityToLog(Date date, Activity activity, float hours) {
+		activity.time = activity.time + hours;
+		
 		LogElement logElement = new LogElement(activity, hours);
 		
 		if(log.containsKey(date)) {
@@ -41,6 +43,16 @@ public class Employee {
 			//was empty
 			log.put(date, new ArrayList<LogElement>());
 			log.get(date).add(logElement);
+		}
+	}
+	
+	public void removeLogElement(Date date, Activity activity, float hours) {
+		LogElement logElement = new LogElement(activity, hours);
+		
+		if(log.containsKey(date)) {
+			//already had elements in specific date
+			log.get(date).remove(logElement);
+			activity.time = activity.time - hours;
 		}
 	}
 	

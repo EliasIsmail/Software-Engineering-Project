@@ -93,13 +93,22 @@ public class Project {
 	}
 		
 	
-	public int getEstimatedTime() {
+	public float getEstimatedTime() {
 		//estimated time is the sum of activities
-		int estimatedTime= 0;
+		float estimatedTime= 0;
 		for (Activity activity: activities) {
 			estimatedTime = estimatedTime +activity.estimatedTime;
 		}
 		return estimatedTime;
+	}
+	
+	public float getTime() {
+		//estimated time is the sum of activities
+		float time= 0;
+		for (Activity activity: activities) {
+			time = time +activity.time;
+		}
+		return time;
 	}
 	
 	public void setStartWeek(int startWeek) throws OperationNotAllowedException, MissingAuthenticity {
@@ -141,9 +150,17 @@ public class Project {
 			System.out.println("\nProject leader: no leader");
 		}
 		System.out.println("Start week: " + startWeek);
-		System.out.println("Total estimated time: "+getEstimatedTime());
 		System.out.println("End week: " + endWeek);
+		System.out.println("Estimated total work: "+getEstimatedTime());
+		System.out.println("Work done: "+getTime());
+		System.out.println("Estimated work left: "+(getEstimatedTime()-getTime()));
 		System.out.println("-------------------------");
+		
+		for (Activity activity: activities) {
+			activity.printStatus();
+		}
+		System.out.println("-------------------------");
+		
 	}
 	
 
