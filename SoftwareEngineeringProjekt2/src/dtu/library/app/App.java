@@ -67,14 +67,17 @@ public class App {
 		return occupiedEmployees;
 	}
 	
-	public ArrayList<Employee> getVacantEmployees(int week){
+	public ArrayList<Employee> getVacantEmployees(int week) throws Exception {
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
 		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(week);
-		
 		for (Employee employee: employees) {
 			if (!occupiedEmployees.contains(employee)) {
 				vacantEmployees.add(employee);
 			}
+		}
+		if(vacantEmployees.isEmpty()) {
+			System.out.println("It's empty!");
+			throw new Exception("Currently no available employees");
 		}
 		
 		return vacantEmployees;

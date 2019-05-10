@@ -2,24 +2,25 @@ package dtu.library.acceptance_tests;
 
 import cucumber.api.java.en.*;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
-import dtu.library.app.Project;
 
 public class ProjectSteps {
 
 	private App app;
-	private Project project;
 	private Employee employee;
-	private ErrorMessageHolder errorMessage;
+	private ErrorMessageHolder errorMessageHolder;
+	ArrayList<Employee> list;
+	
 	
 	
 	/*
@@ -37,9 +38,9 @@ public class ProjectSteps {
 	 * be found in the "Cucumber for Java" book available online from the DTU Library.
 	 */
 	
-	public ProjectSteps(App app, ErrorMessageHolder errorMessage) {
+	public ProjectSteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
-		this.errorMessage = errorMessage;
+		this.errorMessageHolder = errorMessageHolder;
 	}
 
 	@When("the employee creates a project with title {string} and the client {string}")
@@ -48,7 +49,7 @@ public class ProjectSteps {
 			app.createProject(title, client);
 		} catch (OperationNotAllowedException e) {
 			System.out.println(e.getMessage());
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 	
@@ -63,14 +64,14 @@ public class ProjectSteps {
 		try {
 			    app.createProject(null, null);
 			} catch (OperationNotAllowedException e) {
-				errorMessage.setErrorMessage(e.getMessage());
+				errorMessageHolder.setErrorMessage(e.getMessage());
 			}
 		}
 
 	
 	@Then("I get the errorMessage: {string}")
 	public void iGetTheErrorMessage(String errorMessage) {
-		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+		assertEquals(errorMessage, this.errorMessageHolder.getErrorMessage());
 	}
 	
 
@@ -86,56 +87,84 @@ public class ProjectSteps {
 	    assertTrue(app.projects.get(1).getProjectId().equals("191002"));
 	}
 	
-	@Given("there exist an employee")
-	public void thereExistAnEmployee() {
-	    app.createEmployee("Erik");
-	    employee = app.employees.get(0);
+	@When("the user searches for available employees in week {int}")
+	public void theUserSearchesForAvailableEmployeesInWeek(int week) throws Exception {
+		try {
+			app.getVacantEmployees(week);
+		} catch (OperationNotAllowedException e) {
+		errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		employee = app.createEmployee("Elias");
+		
+	}
+
+	@Then("a list of available employees in week {int} is returned to the user")
+	public void aListOfAvailableEmployeesIsReturnedToTheUser(int week) throws Exception {
+		assertTrue(app.getVacantEmployees(week).contains(employee));
+	}
+	@Given("there is currently no available employees in week {int}")
+	public void thereIsCurrentlyNoAvailableEmployeesInWeek(int week) throws Exception {
+		app.projects.get(0).setStartWeek(1);
+		app.projects.get(0).setEndWeek(5);
+		for(Employee employee : app.getVacantEmployees(3)) {
+			employee.addProject(app.projects.get(0));
+		}
+		try {
+		assertTrue(app.getVacantEmployees(3).isEmpty());
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	@Then("the following message will be displayed to the user: {string}")
+	public void theFollowingMessageWillBeDisplayedToTheUser(String errorMessage) {
+		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
 	}
 	
-	@Given("the employee is logged in")
-	public void theEmployeeIsLoggedIn() {
-	   app.login(employee.name);
-	}
-
-	@When("the employee sets himself as leader")
-	public void theEmployeeSetsHimselfAsLeader() throws OperationNotAllowedException {
-	    app.createProject("project1", "client1");
-	    app.projects.get(0).setLeader(employee);
-	}
-
-	@Then("he is the leader of the project")
-	public void heIsTheLeaderOfTheProject() {
-	    assertTrue(app.projects.get(0).getLeader().equals(employee));
-	}
-	
-	@Given("there is a project with a leader")
-	public void thereIsAProjectWithALeader() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
-
-	@Given("a user who isn't the leader is the user")
-	public void aUserWhoIsnTTheLeaderIsTheUser() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
-
-	@When("the leader of is change")
-	public void theLeaderOfIsChange() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
-
-	@Then("I get an error message: {string}")
-	public void iGetAnErrorMessage(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
-
-
 }
-
-
+	
+//	@Given("there exists an employee")
+//	public void thereExistAnEmployee() {
+//	    app.createEmployee("Erik");
+//	    employee = app.employees.get(1);
+//	}
+//	
+//	@Given("the employee is logged in")
+//	public void theEmployeeIsLoggedIn() {
+//	   app.login(employee.name);
+//	   assertTrue(app.user.name.equals(employee.name));
+//	}
+//
+//	@When("the employee sets themselves as leader of the project")
+//	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException {
+//	    app.createProject("project1", "client1");
+//	    app.projects.get(0).setLeader(employee);
+//	    System.out.println(employee.name);
+//	}
+//
+//	@Then("the employee is the leader of the project")
+//	public void theEmployeeIsTheLeaderOfTheProject() {
+//		assertTrue(app.projects.get(0).getLeader().equals(employee));
+//	}
+//	
+//	@Given("the user is not the leader of the project")
+//	public void theUserIsNotTheLeaderOfTheProject() {
+//		assertFalse(app.user.equals(app.projects.get(0).getLeader()));
+//	}
+//
+//	@When("the user tries to change the project leader of the project")
+//	public void theUserTriesToChangeTheProjectLeaderOfTheProject() {
+//		try {
+//			app.projects.get(0).setLeader(app.user);
+//		}
+//		catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
+//
+//
+//}
+//
+//
 
 
 

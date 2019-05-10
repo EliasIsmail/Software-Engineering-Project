@@ -1,6 +1,5 @@
 package dtu.library.app;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Project {
 	private String title;
@@ -53,7 +52,7 @@ public class Project {
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
 		if (leader == null || leader.equals(app.user)) {
 			leader = employee;
-		} else throw new OperationNotAllowedException("Projectleader must be the user");
+		} else throw new OperationNotAllowedException("The user isn't the leader of the project");
 	}
 
 	public boolean isLeader() {
@@ -105,4 +104,6 @@ public class Project {
 		System.out.println("Total estimated time: "+getEstimatedTime());
 		System.out.println("-------------------------");
 	}
+	
+
 }
