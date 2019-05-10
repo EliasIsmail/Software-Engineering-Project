@@ -7,7 +7,7 @@ public class Activity {
 	public String name;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
-	public int estimatedTime;
+	public int estimatedTime = 0;
 	public int startWeek = 0;
 	public int endWeek;
 	public Employee employee;

@@ -70,6 +70,7 @@ public class Project {
 		
 	
 	public int getEstimatedTime() {
+		//estimated time is the sum of activities
 		int estimatedTime= 0;
 		for (Activity activity: activities) {
 			estimatedTime = estimatedTime +activity.estimatedTime;
