@@ -31,7 +31,7 @@ public class Employee {
 		return activity;
 	}
 	
-	public void addActivityToLog(Date date, Activity activity, int hours) {
+	public void addActivityToLog(Date date, Activity activity, float hours) {
 		LogElement logElement = new LogElement(activity, hours);
 		
 		if(log.containsKey(date)) {
