@@ -26,10 +26,10 @@ public class Project {
 		this.app = app;
 	}
 	
-	public void checkAuthenticity() throws MissingAuthenticity {
+	public void checkAuthenticity() throws OperationNotAllowedException {
 		if (leader != null) {
 			if (leader != app.user) {
-				throw new MissingAuthenticity("User is not project leader");
+				throw new OperationNotAllowedException("User is not project leader");
 			}
 		}
 	}
@@ -63,7 +63,7 @@ public class Project {
 		return client;
 	}
 	
-	public void addEmployee(Employee employee) throws MissingAuthenticity {
+	public void addEmployee(Employee employee) throws OperationNotAllowedException {
 		checkAuthenticity();
 		//adds employee to project
 		if (!employees.contains(employee)){

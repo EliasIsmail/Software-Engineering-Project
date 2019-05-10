@@ -95,9 +95,9 @@ public class App {
 		return new ArrayList<Employee>();
 	}
 	
-	public ArrayList<Employee> getVacantEmployees(int week) throws Exception {
+	public ArrayList<Employee> getVacantEmployees(int weekStart, int weekEnd) throws Exception {
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
-		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(week);
+		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(weekStart,weekEnd);
 		for (Employee employee: employees) {
 			if (!occupiedEmployees.contains(employee)) {
 				vacantEmployees.add(employee);

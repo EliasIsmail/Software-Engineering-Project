@@ -31,7 +31,7 @@ public class viewController {
 				"createProject(title,client)",
 				"getEmployees()",
 				"getOccupiedEmployees(startWeek,endWeek)",
-				"getVacantEmployees(weekNumber",
+				"getVacantEmployees(startWeek,endWeek)",
 				"getProjects()",
 				"getAssignedProjects()",
 				"openProject(title)",
@@ -306,8 +306,11 @@ public class viewController {
 			
 			case "getVacantEmployees":
 				ArrayList<Employee> vacantEmployees = null;
+				parameters = getParameters(parameter);
+				startWeek = Integer.parseInt(parameters.get(0));
+				endWeek = Integer.parseInt(parameters.get(1));
 				try {
-					vacantEmployees = app.getVacantEmployees(Integer.parseInt(parameter));
+					vacantEmployees = app.getVacantEmployees(startWeek,endWeek);
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();

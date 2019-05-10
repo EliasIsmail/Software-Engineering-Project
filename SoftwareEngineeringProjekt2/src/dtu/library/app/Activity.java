@@ -22,7 +22,7 @@ public class Activity {
 		this.project = project;
 	}
 	
-	public void addEmployee(Employee employee) throws MissingAuthenticity {
+	public void addEmployee(Employee employee) throws OperationNotAllowedException {
 		//assigns employee to an activity
 		if (!employees.contains(employee)){
 			employees.add(employee);
