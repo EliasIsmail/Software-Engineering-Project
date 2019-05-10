@@ -16,7 +16,7 @@ public class viewController {
 	static int autoCommand = -1;
 	static int autoIndex = 0;
 	
-	public static void main(String args[]) throws OperationNotAllowedException {
+	public static void main(String args[]) throws NumberFormatException, Exception {
 		Scanner console = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
@@ -31,7 +31,7 @@ public class viewController {
 				"createProject(title,client)",
 				"getEmployees()",
 				"getOccupiedEmployees(weekNumber)",
-				"getVacantEmployees(weekNumber",
+				"getVacantEmployees(weekNumber)",
 				"getProjects()",
 				"getAssignedProjects()",
 				"openProject(title)",
@@ -200,7 +200,7 @@ public class viewController {
 		return scenes.get(scenes.size()-1);
 	}
 	
-	public static void executeCommand(String[] input) throws OperationNotAllowedException {
+	public static void executeCommand(String[] input) throws NumberFormatException, Exception {
 		
 		String command = input[0];
 		String parameter = input[1];

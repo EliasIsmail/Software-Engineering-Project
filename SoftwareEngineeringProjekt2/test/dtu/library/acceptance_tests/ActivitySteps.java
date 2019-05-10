@@ -9,15 +9,23 @@ import java.util.Date;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
+import dtu.library.app.Project;
 
 public class ActivitySteps {
 	private App app;
 	private Employee leader;
 	int week = 1;
+	int workhours = 5;
 	private ErrorMessageHolder errorMessageHolder;
+	private Project project;
+	private Employee employee;
+	private Activity activity;
+	private Date date = new Date(System.currentTimeMillis());
+	private boolean printed = false;
 	
 	public ActivitySteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
@@ -111,6 +119,8 @@ public class ActivitySteps {
 	@When("the user sets the start week of the activity to {int}")
 	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
 		try {
+			 app.projects.get(0).setStartWeek(1);
+			 app.projects.get(0).setEndWeek(6);
 			 app.projects.get(0).activities.get(0).setStartWeek(number);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -151,6 +161,60 @@ public class ActivitySteps {
 	@Then("the estimated time is updated to {int} weeks for the activity in the system")
 	public void theEstimatedTimeIsUpdatedToWeeksForTheActivityInTheSystem(int number) {
 	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
+	}
+	@Given("there exists an activity in a project with a project leader")
+	public void thereExistsAnActivityInAProjectWithAProjectLeader() {
+		  try {
+				project = app.createProject("Test", "Intern");
+			} catch (OperationNotAllowedException e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+		    employee = app.createEmployee("emp1");
+		    app.login("emp1");
+		    try {
+				project.setLeader(employee);
+			} catch (OperationNotAllowedException e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+		    try {
+		    	activity = project.createActivity("Game Mechanics");
+		    } catch (OperationNotAllowedException e) {
+		    	errorMessageHolder.setErrorMessage(e.getMessage());
+		    }
+		}
+	
+	@Given("the necessary info for an activity status is filled out")
+	public void theNecessaryInfoForAnActivityStatusIsFilledOut() {
+		try {
+				project.setStartWeek(1);
+				project.setEndWeek(6);
+				activity.setStartWeek(2);
+				activity.setEndWeek(3);
+		} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	    for (int i = 0; i < 3; ++i) {
+	    	employee = app.createEmployee("emp" + i);
+	    	project.addEmployee(employee);
+	    	employee.addActivity(activity);
+	    	employee.addActivityToLog(date, activity, workhours);
+	    }
+	}
+
+	@When("the user checks the status of an activity")
+	public void theUserChecksTheStatusOfAnActivity() {
+	    try {
+			activity.printStatus();
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+			return;
+		}
+	    printed = true;
+	}
+	@Then("the system returns a status of the activity")
+	public void theSystemReturnsAStatusOfTheActivity() {
+		System.out.println(activity.startWeek + " " + activity.endWeek);
+	    assertTrue(printed);
 	}
 }
 

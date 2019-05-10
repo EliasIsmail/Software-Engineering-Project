@@ -161,8 +161,8 @@ public class ProjectSteps {
 		}
 	}
 
-	@Then("I get an error message: {string}")
-	public void iGetAnErrorMessage(String ErrorMessage) {
+	@Then("the user gets an error message saying: {string}")
+	public void TheUserGetAnErrorMessageSaying(String ErrorMessage) {
 	    assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 
 	}
@@ -192,13 +192,13 @@ public class ProjectSteps {
 	    printed = true;
 	}
 
-	@Then("the system returns a status of the project and the activities in the project")
-	public void theSystemReturnsAStatusOfTheProjectAndTheActivitiesInTheProject() {
+	@Then("the system returns a status of the project")
+	public void theSystemReturnsAStatusOfTheProject() {
 	    assertTrue(printed);
 	}
 	
-	@Then("I get an errormessage saying: {string}")
-	public void iGetAnErrormessageSaying(String errormessage) {
+	@Then("I get an error message saying: {string}")
+	public void iGetAnErrorMessageSaying(String errormessage) {
 	    assertFalse(printed);
 	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
 	}

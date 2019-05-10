@@ -95,7 +95,7 @@ public class Project {
 			throw new OperationNotAllowedException("The user isn't leader of the project");
 		}
 		for (Activity activity: activities) {
-			if (startWeek > activity.startWeek) {
+			if (activity.startWeek!= 0 && startWeek > activity.startWeek) {
 				throw new Exception("Activity start date before project start week");
 			}
 		}
@@ -104,7 +104,7 @@ public class Project {
 	
 	public void setEndWeek(int endWeek) throws Exception {
 		for (Activity activity: activities) {
-			if (endWeek < activity.endWeek) { //before
+			if (activity.endWeek!= 0 && endWeek < activity.endWeek) { //before
 				throw new Exception("Activity end date after project end date");
 			}
 		}
