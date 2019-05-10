@@ -76,7 +76,6 @@ public class App {
 			}
 		}
 		if(vacantEmployees.isEmpty()) {
-			System.out.println("It's empty!");
 			throw new Exception("Currently no available employees");
 		}
 		

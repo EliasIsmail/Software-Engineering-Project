@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
+import dtu.library.app.Project;
 
 public class ProjectSteps {
 
@@ -20,6 +21,7 @@ public class ProjectSteps {
 	private Employee employee;
 	private ErrorMessageHolder errorMessageHolder;
 	ArrayList<Employee> list;
+	private Project project;
 	
 	
 	
@@ -118,6 +120,7 @@ public class ProjectSteps {
 	@Then("the following message will be displayed to the user: {string}")
 	public void theFollowingMessageWillBeDisplayedToTheUser(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
+	}
 
 	@Given("there exist an employee")
 	public void thereExistAnEmployee() {
@@ -130,50 +133,50 @@ public class ProjectSteps {
 	   app.login(employee.name);
 	}
 
-	@When("the employee sets himself as leader")
-	public void theEmployeeSetsHimselfAsLeader() throws OperationNotAllowedException {
+	@When("the employee sets themselves as leader of the project")
+	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException {
 	    app.createProject("project1", "client1");
 	    app.projects.get(0).setLeader(employee);
 	}
 
-	@Then("he is the leader of the project")
-	public void heIsTheLeaderOfTheProject() {
+	@Then("the employee is set as the leader of the project in the system")
+	public void theEmployeeIsSetAsTheLeaderOfTheProjectInTheSystem() {
 	    assertTrue(app.projects.get(0).getLeader().equals(employee));
 	}
 	
-	@Given("there is a project with a leader")
-	public void thereIsAProjectWithALeader() {
+	@Given("there exists a project with a project leader")
+	public void thereExistsAProjectWithAProjectLeader() {
 	    try {
 			project = app.createProject("Test", "Intern");
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	    employee = app.createEmployee("emp1");
 	    try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
-	@Given("a user who isn't the leader is the user")
-	public void aUserWhoIsnTTheLeaderIsTheUser() {
+	@Given("the user is not the leader of the project")
+	public void theUserIsNotTheLeaderOfTheProject() {
 	    employee = app.createEmployee("emp2");
 	    app.login("emp2");
 	}
 
-	@When("the leader of is change")
-	public void theLeaderOfIsChange() {
+	@When("the user attempts to change the leader of the project")
+	public void theUserAttemptsToChangeTheLeaderOfTheProject() {
 		try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 }
 
 	@Then("I get an error message: {string}")
 	public void iGetAnErrorMessage(String ErrorMessage) {
-	    assertTrue(errorMessage.getErrorMessage().equals(ErrorMessage));
+	    assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 
 	}
 	
