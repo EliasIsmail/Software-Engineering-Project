@@ -306,7 +306,7 @@ public class viewController {
 				break;
 				
 			case "setEstimatedTime":
-				currentActivity.setEstimatedTime(Integer.parseInt(parameter));
+//				currentActivity.setEstimatedTime(Integer.parseInt(parameter));
 				break;
 			
 			case "setStartWeek":
@@ -334,7 +334,7 @@ public class viewController {
 				break;
 			
 			case "setClient":
-				currentActivity.setClient(parameter);
+//				currentActivity.setClient(parameter);
 				break;
 				
 			case "printStatus":

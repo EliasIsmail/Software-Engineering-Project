@@ -6,8 +6,8 @@ public class Project {
 	private String client;
 	private String projectId;
 	private Employee leader;
-	public int startWeek;
-	public int endWeek;
+	public int startWeek = 0;
+	public int endWeek = 0;
 	private App app;
 	
 	
@@ -71,11 +71,7 @@ public class Project {
 		
 	
 	public int getEstimatedTime() {
-		int estimatedTime= 0;
-		for (Activity activity: activities) {
-			estimatedTime = estimatedTime +activity.estimatedTime;
-		}
-		return estimatedTime;
+		return endWeek-startWeek;
 	}
 	
 	public void setStartWeek(int startWeek) throws Exception {
@@ -96,14 +92,19 @@ public class Project {
 		this.endWeek = endWeek;
 	}
 	
-	public void printStatus() {
-		System.out.println("Project "+title);
+	public void printStatus() throws OperationNotAllowedException {
+		if (title == null || projectId == null || leader == null || startWeek == 0 || endWeek == 0) {
+			throw new OperationNotAllowedException("Missing information for status report");
+		}
+		System.out.println("Project: "+title+", #"+projectId + " for " + client);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
 			System.out.print(employee.name+", ");
 		}
-		System.out.println("\nProject leader: "+leader);
+		System.out.println("\nProject leader: "+leader.name);
+		System.out.println("Start week: " + startWeek);
 		System.out.println("Total estimated time: "+getEstimatedTime());
+		System.out.println("End week: " + endWeek);
 		System.out.println("-------------------------");
 	}
 	

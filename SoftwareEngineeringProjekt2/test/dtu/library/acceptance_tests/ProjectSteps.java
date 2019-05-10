@@ -5,6 +5,7 @@ import cucumber.api.java.en.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -22,6 +23,8 @@ public class ProjectSteps {
 	private ErrorMessageHolder errorMessageHolder;
 	ArrayList<Employee> list;
 	private Project project;
+	private Employee employee;
+	private boolean printed = false;
 	
 	
 	
@@ -172,7 +175,7 @@ public class ProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-}
+	}
 
 	@Then("I get an error message: {string}")
 	public void iGetAnErrorMessage(String ErrorMessage) {
@@ -180,6 +183,41 @@ public class ProjectSteps {
 
 	}
 	
+	@Given("the necessary info for a status is filled out")
+	public void theNecessaryInfoForAStatusIsFilledOut() {
+		try {
+				project.setStartWeek(3);
+				project.setEndWeek(6);
+		} catch (Exception e) {
+				errorMessage.setErrorMessage(e.getMessage());
+		}
+	    for (int i = 0; i < 3; ++i) {
+	    	employee = app.createEmployee("emp" + i);
+	    	project.addEmployee(employee);
+	    }
+	}
+
+	@When("the user checks the status of a project")
+	public void theUserChecksTheStatusOfAProject() {
+	    try {
+			project.printStatus();
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+			return;
+		}
+	    printed = true;
+	}
+
+	@Then("the system returns a status of the project and the activities in the project")
+	public void theSystemReturnsAStatusOfTheProjectAndTheActivitiesInTheProject() {
+	    assertTrue(printed);
+	}
+	
+	@Then("I get an errormessage saying: {string}")
+	public void iGetAnErrormessageSaying(String errormessage) {
+	    assertFalse(printed);
+	    assertTrue(errorMessage.getErrorMessage().equals(errormessage));
+	}
 }
 	
 //	@Given("there exists an employee")
