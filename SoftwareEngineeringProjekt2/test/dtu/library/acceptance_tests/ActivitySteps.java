@@ -35,25 +35,26 @@ public class ActivitySteps {
 	
 	
 	@Given("there exists an activity in a project")
-	public void thereExistsAnActivityInAProject() {
+	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
 		try {
-		app.createProject("Snake", "Ubisoft");
+		project = app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
 		errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		try {
-		app.projects.get(0).createActivity("User Interface");
-		} catch (OperationNotAllowedException| MissingAuthenticity e) {
+		activity = project.createActivity("User Interface");
+		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		assertTrue(app.projects.get(0).activities.get(0).name.equals("User Interface"));
+		System.out.println(app.projects.get(0).activities.get(0).name);
+		assertTrue(activity.name.equals("User Interface"));
 			
 	}
 
 	@Given("an employee is available")
 	public void anEmployeeIsAvailable() throws Exception {
 		app.createEmployee("Erik");
-		assertTrue(app.getVacantEmployees(week).contains(app.employees.get(0)));
+		assertTrue(app.getVacantEmployees(week,week+1).contains(app.employees.get(0)));
 	}
 
 	@Given("the user is the leader of the project")
@@ -72,7 +73,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user adds the available employee to the activity")
-	public void theUserAddsTheAvailableEmployeeToTheActivity() throws MissingAuthenticity {
+	public void theUserAddsTheAvailableEmployeeToTheActivity() throws MissingAuthenticity, OperationNotAllowedException {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 	}
 
@@ -121,9 +122,11 @@ public class ActivitySteps {
 	@When("the user sets the start week of the activity to {int}")
 	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
 		try {
-			 app.projects.get(0).setStartWeek(1);
-			 app.projects.get(0).setEndWeek(6);
-			 app.projects.get(0).activities.get(0).setStartWeek(number);
+			 app.projects.get(1).setStartWeek(1);
+			 System.out.println(app.projects.get(0).startWeek);
+			 app.projects.get(1).setEndWeek(6);
+			 app.projects.get(1).activities.get(0).setStartWeek(100);
+			 System.out.println(app.projects.get(0).activities.get(0).startWeek);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -186,7 +189,7 @@ public class ActivitySteps {
 		}
 	
 	@Given("the necessary info for an activity status is filled out")
-	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity {
+	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity, OperationNotAllowedException {
 		try {
 				project.setStartWeek(1);
 				project.setEndWeek(6);

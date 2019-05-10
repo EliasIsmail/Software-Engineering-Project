@@ -24,12 +24,13 @@ public class Project {
 		this.client = client;
 		this.projectId = projectId;
 		this.app = app;
+		System.out.println(title + " " + client);
 	}
 	
 	public void checkAuthenticity() throws OperationNotAllowedException {
 		if (leader != null) {
 			if (leader != app.user) {
-				throw new OperationNotAllowedException("User is not project leader");
+				throw new OperationNotAllowedException("The user isn't leader of the project");
 			}
 		}
 	}
@@ -73,11 +74,7 @@ public class Project {
 	
 	public void setLeader(Employee employee) throws OperationNotAllowedException, MissingAuthenticity {
 		checkAuthenticity();
-		if (leader == null || leader.equals(app.user)) {
-			leader = employee;
-
-		} else throw new OperationNotAllowedException("The user isn't leader of the project");
-
+		leader = employee;
 	}
 
 	public boolean isLeader() {

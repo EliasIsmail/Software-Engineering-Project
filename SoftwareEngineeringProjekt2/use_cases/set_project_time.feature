@@ -32,4 +32,4 @@ Scenario: The activity end time is after the project endweek
 Given there exists a project with a project leader
 And an activity in the project ends in week 4
 When the user sets the project end week to 3
-Then the following message will be displayed: "Activity ends after the project endweek"
+Then the following message will be displayed to the user: "Activity end date after project end date"
