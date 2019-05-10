@@ -108,6 +108,7 @@ public class Project {
 			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
 		}
 		for (Activity activity: activities) {
+
 			if (startWeek > activity.startWeek) {
 				activity.startWeek = startWeek;
 			}

@@ -8,8 +8,10 @@ public class Activity {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
 	public int estimatedTime = 0;
+
 	public int startWeek;
 	public int endWeek;
+
 	public Employee employee;
 	
 	public Activity(String name, Project project) throws OperationNotAllowedException {
@@ -44,7 +46,7 @@ public class Activity {
 	
 
 	public void setStartWeek(int startWeek) throws Exception {
-		if (startWeek < project.startWeek) { //before
+		if (project.startWeek != 0 && startWeek < project.startWeek) { //before
 			throw new Exception("Activity start date before project start date");
 		}
 		if (startWeek > 53 || startWeek < 1) {
@@ -58,13 +60,16 @@ public class Activity {
 	}
 	
 	public void setEndWeek(int endWeek) throws Exception {
-		if (endWeek > project.endWeek) { //after
+		if (project.endWeek != 0 && endWeek > project.endWeek) { //after
 			throw new Exception("Activity end date after project end date");
 		}
 		this.endWeek = endWeek;
 	}
 	
-	public void printStatus() {
+	public void printStatus() throws OperationNotAllowedException {
+		if (name == null || startWeek == 0 || endWeek == 0) {
+			throw new OperationNotAllowedException("Missing information for status report");
+		}
 		System.out.println("Activity: "+name+" from project "+project.getTitle());
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
@@ -73,5 +78,5 @@ public class Activity {
 		System.out.println("\nEstimated time: "+estimatedTime);
 		System.out.println("-------------------------");
 	}
-	
 }
+

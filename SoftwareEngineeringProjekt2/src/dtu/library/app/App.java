@@ -139,7 +139,7 @@ public class App {
 				//if name is found, user is set to that person
 				loggedIn = true;
 				user = employee;
-			  }
-		  }
+			}
+		}
 	}
 }

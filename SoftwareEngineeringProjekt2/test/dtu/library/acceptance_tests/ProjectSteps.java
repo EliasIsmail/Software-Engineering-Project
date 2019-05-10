@@ -161,8 +161,8 @@ public class ProjectSteps {
 		}
 	}
 
-	@Then("I get an error message: {string}")
-	public void iGetAnErrorMessage(String ErrorMessage) {
+	@Then("the user gets an error message saying: {string}")
+	public void TheUserGetAnErrorMessageSaying(String ErrorMessage) {
 	    assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 
 	}
@@ -192,13 +192,13 @@ public class ProjectSteps {
 	    printed = true;
 	}
 
-	@Then("the system returns a status of the project and the activities in the project")
-	public void theSystemReturnsAStatusOfTheProjectAndTheActivitiesInTheProject() {
+	@Then("the system returns a status of the project")
+	public void theSystemReturnsAStatusOfTheProject() {
 	    assertTrue(printed);
 	}
 	
-	@Then("I get an errormessage saying: {string}")
-	public void iGetAnErrormessageSaying(String errormessage) {
+	@Then("I get an error message saying: {string}")
+	public void iGetAnErrorMessageSaying(String errormessage) {
 	    assertFalse(printed);
 	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
 	}
@@ -230,11 +230,47 @@ public class ProjectSteps {
 	@When("the user sets the project start week to {int}")
 	public void theUserSetsTheProjectStartWeekTo(Integer week) {
 	    try {
-			project.setStartWeek(3);
+			project.setStartWeek(week);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
+	
+	@When("the user sets the end week of the project to {int}")
+	public void theUserSetsTheEndWeekOfTheProjectTo(Integer week) {
+		try {
+			project.setEndWeek(week);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the end week of the project is updated to {int} in the system")
+	public void theEndWeekOfTheProjectIsUpdatedToInTheSystem(Integer week) {
+	    assertTrue(project.endWeek == week);
+	}
+
+	@Given("an activity in the project ends in week {int}")
+	public void anActivityInTheProjectEndsInWeek(Integer week) {
+		try {
+			activity = project.createActivity("Interface");
+		    activity.setEndWeek(week);
+
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("the user sets the project end week to {int}")
+	public void theUserSetsTheProjectEndWeekTo(Integer week) {
+		 try {
+				project.setEndWeek(week);
+			} catch (Exception e) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
+	}
+
+
 }
 	
 

@@ -140,7 +140,22 @@ public class viewController {
 				"login(Admin)",
 				"createEmployee(Eric)",
 				"logout()",
-				"login(Eric)"
+				"login(Eric)",
+				"createProject(Project1, Intern)",
+				"createProject(Project2, Intern)",
+				"createProject(Project3, Intern)",
+				"createEmployee(Elias)",
+				"createEmployee(Oliver)",
+				"createEmployee(Jonas)",
+				"openLog()",
+				"back()",
+				"getEmployees()",
+				"getOccupiedEmployees(3)",
+//				"getVacantEmployees(weekNumber)",
+				"getProjects()",
+				"getAssignedProjects()",
+				"openProject(title)",
+
 		});
 		
 		if (autoCommand >= commands.size()) {
@@ -324,8 +339,11 @@ public class viewController {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
 						setScene("Project");
+						System.out.println("Project succesfully found");
+						break;
 					}
 				}
+				System.out.println("Project not found");
 				break;
 			}
 			
@@ -365,7 +383,7 @@ public class viewController {
 						currentProject.setLeader(employee);
 						System.out.println("Project leader succesfully set");
 						break;
-					}
+					} 
 				}
 				System.out.println("Employee not found");
 				break;
