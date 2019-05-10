@@ -1,12 +1,12 @@
 Feature: Overview of available employees
 
-#Scenario: Find available employees
-#Given the user is the leader of the project
-#When the user searches for available employees
-#Then a list of available employees is returned to the user
-#
-#Scenario: Find available employees when there is none
-#Given the user is the leader of the project
-#And there are no available employees
-#When the user searches for available employees
-#Then the following message will be displayed: "Currently no available employees"
+Scenario: Find available employees
+Given there exists a project
+When the user searches for available employees in week 1
+Then a list of available employees in week 1 is returned to the user
+
+Scenario: Find available employees when there is none
+Given there exists a project
+And there is currently no available employees in week 1
+When the user searches for available employees in week 1
+Then the following message will be displayed to the user: "Currently no available employees"

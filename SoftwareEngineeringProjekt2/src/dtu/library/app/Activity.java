@@ -32,7 +32,7 @@ public class Activity {
 	}
 	
 	public void setEstimatedTime(int estimatedTime) throws Exception {
-		if (project.isLeader(App.user) == false) {
+		if (project.isLeader() == false) {
 			throw new Exception("Only project leaders can edit times");
 		}
 		if (estimatedTime < 1) {

@@ -41,7 +41,7 @@ public class ActivitySteps {
 	}
 
 	@Given("an employee is available")
-	public void anEmployeeIsAvailable() {
+	public void anEmployeeIsAvailable() throws Exception {
 		app.createEmployee("Erik");
 		assertTrue(app.getVacantEmployees(week).contains(app.employees.get(0)));
 	}
@@ -94,22 +94,6 @@ public class ActivitySteps {
 		assertTrue(app.projects.get(0).activities.contains(app.projects.get(0).activities.get(0)));
 	}
 	
-	@When("the user sets the start week to {int} and client to {string}")
-	public void theUserSetsTheStartWeekToAndClientTo(Integer int1, String string) {
-		try {
-	    app.projects.get(0).activities.get(0).setStartWeek(week);
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	    app.projects.get(0).activities.get(0).setClient("IT Minds");
-	}
-
-	@Then("both the start time and client of the activity has been set")
-	public void bothTheStartTimeAndClientOfTheActivityHasBeenSet() {
-		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
-		assertTrue(app.projects.get(0).activities.get(0).client.equals("IT Minds"));
-	}
-	
 	@When("the user sets the start week to {int}")
 	public void theUserSetsTheStartWeekTo(Integer int1) {
 		try {
@@ -132,7 +116,7 @@ public class ActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
-
+	
 	@Then("the following message will be displayed: {string}")
 	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
