@@ -10,6 +10,8 @@ public class Project {
 	public int endWeek = 0;
 	private App app;
 	
+	//	When a project leader is not yet chosen, any person can change the project
+	
 	
 	public ArrayList<Activity> activities = new ArrayList<Activity>();
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
