@@ -123,15 +123,16 @@ public class Project {
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
-		if (title == null || projectId == null || leader == null || startWeek == 0 || endWeek == 0) {
-			throw new OperationNotAllowedException("Missing information for status report");
-		}
 		System.out.println("Project: "+title+", #"+projectId + " for " + client);
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
-			System.out.print(employee.name+", ");
+			System.out.println(employee.name);
 		}
-		System.out.println("\nProject leader: "+leader.name);
+		if (leader != null) {
+			System.out.println("\nProject leader: "+leader.name);
+		} else {
+			System.out.println("\nProject leader: no leader");
+		}
 		System.out.println("Start week: " + startWeek);
 		System.out.println("Total estimated time: "+getEstimatedTime());
 		System.out.println("End week: " + endWeek);

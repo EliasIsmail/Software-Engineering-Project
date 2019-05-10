@@ -49,6 +49,7 @@ public class viewController {
 				"printStatus()",
 				"getActivities()",
 				"openActivity(name)",
+				"getSummery()"
 		});
 		actions.put("Activity", new String[] {
 				"addEmployee(name)",
@@ -433,19 +434,24 @@ public class viewController {
 				}
 				System.out.println("Could not find the specified activity");
 				break;
+			case "getSummery":
+				currentProject.printStatus();
 			}
 		} else if (currentScene.equals("Activity")){
 			
 			switch(command) {
 			case "addEmployee":
+				boolean succes = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
 						System.out.println("Succesfully added the employee");
+						succes = true;
 						break;
 					}
 				}
-				System.out.println("Could not find the specified employee");
+
+
 				break;
 				
 			case "setEstimatedTime":
