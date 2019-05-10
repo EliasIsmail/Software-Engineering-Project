@@ -12,6 +12,7 @@ import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.MissingAuthenticity;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -34,7 +35,7 @@ public class ActivitySteps {
 	
 	
 	@Given("there exists an activity in a project")
-	public void thereExistsAnActivityInAProject() {
+	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
 		try {
 		app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
@@ -55,7 +56,7 @@ public class ActivitySteps {
 	}
 
 	@Given("the user is the leader of the project")
-	public void theUserIsTheLeaderOfTheProject() {
+	public void theUserIsTheLeaderOfTheProject() throws MissingAuthenticity {
 		leader = app.createEmployee("leader");
 		app.login("leader");
 		try {
@@ -70,7 +71,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user adds the available employee to the activity")
-	public void theUserAddsTheAvailableEmployeeToTheActivity() {
+	public void theUserAddsTheAvailableEmployeeToTheActivity() throws MissingAuthenticity {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 	}
 
@@ -89,7 +90,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user creates an activity with title {string}")
-	public void theUserCreatesAnActivityWithTitle(String string) {
+	public void theUserCreatesAnActivityWithTitle(String string) throws MissingAuthenticity {
 	    try {
 		app.projects.get(0).createActivity("Design GUI");
 	    } catch (OperationNotAllowedException e) {
@@ -163,7 +164,7 @@ public class ActivitySteps {
 	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
 	}
 	@Given("there exists an activity in a project with a project leader")
-	public void thereExistsAnActivityInAProjectWithAProjectLeader() {
+	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
 		  try {
 				project = app.createProject("Test", "Intern");
 			} catch (OperationNotAllowedException e) {
@@ -184,7 +185,7 @@ public class ActivitySteps {
 		}
 	
 	@Given("the necessary info for an activity status is filled out")
-	public void theNecessaryInfoForAnActivityStatusIsFilledOut() {
+	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity {
 		try {
 				project.setStartWeek(1);
 				project.setEndWeek(6);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.MissingAuthenticity;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -120,7 +121,7 @@ public class ProjectSteps {
 	}
 
 	@When("the employee sets themselves as leader of the project")
-	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException {
+	public void theEmployeeSetsThemselvesAsLeaderOfTheProject() throws OperationNotAllowedException, MissingAuthenticity {
 	    app.createProject("project1", "client1");
 	    app.projects.get(0).setLeader(employee);
 	}
@@ -131,7 +132,7 @@ public class ProjectSteps {
 	}
 	
 	@Given("there exists a project with a project leader")
-	public void thereExistsAProjectWithAProjectLeader() {
+	public void thereExistsAProjectWithAProjectLeader() throws MissingAuthenticity {
 	    try {
 			project = app.createProject("Test", "Intern");
 		} catch (OperationNotAllowedException e) {
@@ -153,7 +154,7 @@ public class ProjectSteps {
 	}
 
 	@When("the user attempts to change the leader of the project")
-	public void theUserAttemptsToChangeTheLeaderOfTheProject() {
+	public void theUserAttemptsToChangeTheLeaderOfTheProject() throws MissingAuthenticity {
 		try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
@@ -168,7 +169,7 @@ public class ProjectSteps {
 	}
 	
 	@Given("the necessary info for a status is filled out")
-	public void theNecessaryInfoForAStatusIsFilledOut() {
+	public void theNecessaryInfoForAStatusIsFilledOut() throws MissingAuthenticity {
 		try {
 				project.setStartWeek(3);
 				project.setEndWeek(6);
