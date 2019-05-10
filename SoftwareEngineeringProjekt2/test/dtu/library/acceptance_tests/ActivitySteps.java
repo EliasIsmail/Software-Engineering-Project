@@ -35,7 +35,7 @@ public class ActivitySteps {
 	
 	
 	@Given("there exists an activity in a project")
-	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
+	public void thereExistsAnActivityInAProject() {
 		try {
 		app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
@@ -43,10 +43,11 @@ public class ActivitySteps {
 		}
 		try {
 		app.projects.get(0).createActivity("User Interface");
-		} catch (OperationNotAllowedException e) {
+		} catch (OperationNotAllowedException| MissingAuthenticity e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		assertTrue(app.projects.get(0).activities.get(0).name.equals("User Interface"));
+			
 	}
 
 	@Given("an employee is available")
