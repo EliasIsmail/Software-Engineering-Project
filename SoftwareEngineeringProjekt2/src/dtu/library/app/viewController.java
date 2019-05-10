@@ -3,6 +3,7 @@ package dtu.library.app;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -12,6 +13,8 @@ public class viewController {
 	static ArrayList<String> scenes = new ArrayList<String>();
 	static Project currentProject;
 	static Activity currentActivity;
+	static int autoCommand = -1;
+	static int autoIndex = 0;
 	
 	public static void main(String args[]) throws OperationNotAllowedException {
 		Scanner console = new Scanner(System.in);
@@ -23,7 +26,7 @@ public class viewController {
 				"login(name)"
 		});
 		actions.put("Main menu", new String[] {
-				"logout()",
+				"openLog()",
 				"createEmployee(name)",
 				"createProject(title,client)",
 				"getEmployees()",
@@ -31,10 +34,12 @@ public class viewController {
 				"getVacantEmployees(weekNumber",
 				"getProjects()",
 				"getAssignedProjects()",
-				"openProject(title)"
+				"openProject(title)",
+				"logout()"
 		});
 		actions.put("Project", new String[] {
 				"createActivity(name)",
+				"getClient()",
 				"addEmployee(name)",
 				"setLeader(name)",
 				"getLeader()",
@@ -42,17 +47,22 @@ public class viewController {
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
 				"printStatus()",
-				"getAssignedActivities()",
+				"getActivities()",
 				"openActivity(name)",
 		});
 		actions.put("Activity", new String[] {
 				"addEmployee(name)",
 				"setEstimatedTime(estimatedWorkingHours)",
+				"getEstimatedTime()",
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
-				"setClient(name)",
 				"printStatus()"
 		});
+		actions.put("Log", new String[] {
+				"getOverview(yyyy-mm-dd)",
+				"addActivity(yyyy-mm-dd,project,activity,hours)"
+		});
+		
 		
 		while (true) {
 			//main loop
@@ -68,11 +78,85 @@ public class viewController {
 			System.out.println();
 			System.out.print(">>> ");
 			
-			
-			//user input goes here
-			String[] input = getInput();
+			//input goes here
+			String[] input;
+			if (autoCommand == -1) {
+				//user input
+				input = splitInput(console.nextLine());
+			} else {
+				input = splitInput(autoCommands());
+			}
 			executeCommand(input);	
 		}
+	}
+	
+	public static String autoCommands() {
+		
+		ArrayList<String[]> commands = new ArrayList<String[]>();
+		commands.add(new String[] {
+				"login(Admin)",
+				"createEmployee(Oliver)",
+				"createEmployee(Eric)",
+				"logout()",
+				"login(Oliver)",
+				
+				"createProject(Project1,DTU)",
+				"openProject(Project1)",
+				"addEmployee(Oliver)",
+				"addEmployee(Eric)",
+				"createActivity(Activity1.1)",
+				"createActivity(Activity1.2)",
+				"createActivity(Activity1.3)",
+				"back()",
+				
+				"createProject(Project2,DTU)",
+				"openProject(Project2)",
+				"addEmployee(Oliver)",
+				"createActivity(Activity2.1)",
+				"createActivity(Activity2.2)",
+				"createActivity(Activity2.3)",
+				"back()",
+				
+				"createProject(Project3,DTU)",
+				"openProject(Project3)",
+				"addEmployee(Oliver)",
+				"createActivity(Activity3.1)",
+				"createActivity(Activity3.2)",
+				"createActivity(Activity3.3)",
+				"back()",
+				
+				"openLog()",
+				"addActivity(2019-05-21,Project1,Activity1.1,11)",
+				"addActivity(2019-05-21,Project1,Activity1.2,12)",
+				"addActivity(2019-05-21,Project1,Activity1.3,13)",
+				"addActivity(2019-05-21,Project2,Activity2.1,21)",
+				"addActivity(2019-05-21,Project3,Activity3.1,31)",
+				"getOverview(2019-05-21)"
+		});
+		commands.add(new String[] {
+				"login(Admin)",
+				"createEmployee(Eric)",
+				"logout()",
+				"login(Eric)"
+		});
+		
+		if (autoCommand >= commands.size()) {
+			System.out.println("No such auto command");
+			return "back()";
+		}
+				
+		String command = commands.get(autoCommand)[autoIndex];
+		
+		autoIndex++;
+		if (autoIndex == commands.get(autoCommand).length) { //if output is the last command
+			System.out.println("Done executing the following commands");
+			for (String item: commands.get(autoCommand)) {
+				System.out.println(item);
+			}
+			autoCommand = -1;
+			autoIndex = 0;
+		}
+		return command;
 	}
 	
 	public static void printActions(String[] actions) {
@@ -87,9 +171,7 @@ public class viewController {
 		}
 	}
 	
-	public static String[] getInput() {
-		Scanner console = new Scanner(System.in);
-		String input = console.nextLine();
+	public static String[] splitInput(String input) {
 		String command, parameters;
 		
 		for (int i=0; i<input.length(); i++) {
@@ -155,10 +237,20 @@ public class viewController {
 					setScene("Main menu");
 				}
 				break;
+			
+			case "auto":
+				autoCommand = Integer.parseInt(parameter);
+				System.out.println("Executing action sequence");
+				break;
 			}
+			
 		} else if (currentScene.equals("Main menu")){
 			switch(command) {
 			//main menu
+			case "openLog":
+				setScene("Log");
+				break;
+				
 			case "createEmployee":
 				app.createEmployee(parameter);
 				System.out.println("Employee created succesfully");
@@ -166,6 +258,10 @@ public class viewController {
 		
 			case "createProject":
 				ArrayList<String> parameters = getParameters(parameter);
+				if (parameters.size() < 2) {
+					System.out.println("Not enough parameters");
+					break;
+				}
 				app.createProject(parameters.get(0),parameters.get(1));
 				System.out.println("Project created succesfully");
 				break;
@@ -176,6 +272,7 @@ public class viewController {
 					System.out.println(employee.name);
 				}
 				break;
+				
 			case "getOccupiedEmployees":
 				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(Integer.parseInt(parameter));
 				System.out.println("All occupied employees at "+parameter);
@@ -193,14 +290,14 @@ public class viewController {
 				break;
 			
 			case "getProjects":
-				System.out.println("All projects ");
+				System.out.println("All projects:");
 				for (Project project: app.projects) {
-					System.out.println(project.getTitle());
+					System.out.println(project.getTitle()+", "+project.getClient());
 				}
 				break;	
 				
 			case "getAssignedProjects":
-				System.out.println("All assigned projects ");
+				System.out.println("All assigned projects:");
 				for (Project project: app.user.assignedProjects) {
 					System.out.println(project.getTitle());
 				}
@@ -215,27 +312,46 @@ public class viewController {
 				}
 				break;
 			}
+			
 		} else if (currentScene.equals("Project")){
 			switch(command) {
+			
+			case "rename":
+				try {
+					currentProject.setTitle(parameter);
+				} catch (Exception e1) {
+					System.out.println("Title already in use");
+					e1.printStackTrace();
+				}
 			
 			case "createActivity":
 				currentProject.createActivity(parameter);
 				break;		
 			
+			case "getClient":
+				System.out.println("Client is "+currentProject.getClient());
+				break;
+				
 			case "addEmployee":
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.addEmployee(employee);
+						System.out.println("Employee succesfully added");
+						break;
 					}
 				}
+				System.out.println("Employee not found");
 				break;
 			
 			case "setLeader":
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.setLeader(employee);
+						System.out.println("Project leader succesfully set");
+						break;
 					}
 				}
+				System.out.println("Employee not found");
 				break;
 			
 			case "getLeader":
@@ -249,12 +365,18 @@ public class viewController {
 				break;
 			
 			case "getEstimatedTime":
-				System.out.println("Estimated time is "+currentProject.getEstimatedTime());
+				System.out.println("Estimated time is "+currentProject.getEstimatedTime()+" hours");
 				break;
 			
 			case "setStartWeek":
+				int startWeek = Integer.parseInt(parameter);
+				
+				if (startWeek < 1) {
+					System.out.println("Please enter a weeknumber greater than 1");
+					break;
+				}
 				try {
-					currentProject.setStartWeek(Integer.parseInt(parameter));
+					currentProject.setStartWeek(startWeek);
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
@@ -264,12 +386,19 @@ public class viewController {
 				break;
 			
 			case "setEndWeek":
+				int endWeek = Integer.parseInt(parameter);
+				
+				if (endWeek < 1) {
+					System.out.println("Please enter a weeknumber greater than 0");
+					break;
+				}
+				
 				try {
-					currentProject.setEndWeek(Integer.parseInt(parameter));
+					currentProject.setEndWeek(endWeek);
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
-				} catch (Exception e) {
+				} catch (Exception e) { //if activity is longer than project
 					e.printStackTrace();
 				}
 				break;
@@ -278,10 +407,10 @@ public class viewController {
 				currentProject.printStatus();
 				break;
 				
-			case "getAssignedActivities":
-				System.out.println("All assigned activities ");
+			case "getActivities":
+				System.out.println("Projects activities ");
 				for (Activity activity: currentProject.activities) {
-					System.out.println(activity);
+					System.out.println(activity.name);
 				}
 				break;
 			
@@ -290,40 +419,70 @@ public class viewController {
 					if (activity.name.equals(parameter)) {
 						currentActivity = activity;
 						setScene("Activity");
+						break;
 					}
 				}
+				System.out.println("Could not find the specified activity");
 				break;
 			}
 		} else if (currentScene.equals("Activity")){
-			switch(command) {
 			
+			switch(command) {
 			case "addEmployee":
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
+						System.out.println("Succesfully added the employee");
+						break;
 					}
 				}
+				System.out.println("Could not find the specified employee");
 				break;
 				
 			case "setEstimatedTime":
-				currentActivity.setEstimatedTime(Integer.parseInt(parameter));
+				int estimatedTime = Integer.parseInt(parameter);
+				
+				if (estimatedTime < 0) {
+					System.out.println("Please enter a non-negative number");
+					break;
+				}
+				
+				try {
+					currentActivity.setEstimatedTime(estimatedTime);
+				} catch (Exception e2) {
+					System.out.print("Please enter valid integer");
+					e2.printStackTrace();
+				}
 				break;
 			
 			case "setStartWeek":
+				int weekNumber = Integer.parseInt(parameter);
+				
+				if (weekNumber < 1) {
+					System.out.println("Please enter a weeknumber greater than 0");
+					break;
+				}
+				
 				try {
-					currentActivity.setStartWeek(Integer.parseInt(parameter));
+					currentActivity.setStartWeek(weekNumber);
 				} catch (NumberFormatException e1) {
 					System.out.println("Please enter a valid number");
 					e1.printStackTrace();
-				} catch (Exception e1) {
+				} catch (Exception e1) { //if project is shorter
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
 				
 			case "setEndWeek":
+				weekNumber = Integer.parseInt(parameter);
+				if (weekNumber < 1) {
+					System.out.println("Please enter a weeknumber over 0");
+					break;
+				}
+				
 				try {
-					currentActivity.setEndWeek(Integer.parseInt(parameter));
+					currentActivity.setEndWeek(weekNumber);
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
@@ -333,12 +492,68 @@ public class viewController {
 				}
 				break;
 			
-			case "setClient":
-				currentActivity.setClient(parameter);
-				break;
-				
 			case "printStatus":
 				currentActivity.printStatus();
+				break;
+			}
+		} else if (currentScene.equals("Log")){
+			switch(command) { 
+			case "addActivity":
+				ArrayList<String> parameters = getParameters(parameter);
+				if (parameter.length() < 3) {
+					System.out.println("Not enough parameters");
+					break;
+				}
+				Date date = app.getSpecificDate(parameters.get(0));
+				if (parameters.get(0).equals("today") || parameters.get(0).equals("Today")) {
+					date = app.getCurrentDate();
+				}
+				for (Project project: app.projects) {
+					if (project.getTitle().equals(parameters.get(1))) {
+						for (Activity activity: project.activities) {
+							if (activity.name.equals(parameters.get(2))) {
+								currentActivity = activity;
+								break;
+							}
+						}
+						break;
+					}
+				}
+				int hours = Integer.parseInt(parameters.get(3));
+				app.user.addActivityToLog(date,currentActivity,hours);
+				break;
+				
+			case "getOverview":
+				date = app.getSpecificDate(parameter);
+				ArrayList<LogElement> logs = app.user.getLogElementFromDate(date);
+				if (logs == null) {
+					System.out.println("No logs at the given date");
+					break;
+				}
+				int totalHours = 0;
+				System.out.println("Log for "+parameter);
+				System.out.println("...............");
+				
+				ArrayList<Project> projects = new ArrayList<Project>();
+				for (LogElement logElement: logs) {
+					if (!projects.contains(logElement.activity.project)) {
+						projects.add(logElement.activity.project);
+					}
+				}
+				
+				for (Project project: projects) {
+					System.out.println(project.getTitle()+":");
+					for (LogElement logElement: logs) {
+						if (logElement.activity.project.equals(project)) {
+							System.out.println(logElement.activity.name+", "+logElement.hours+" hours");
+							totalHours = totalHours +logElement.hours;
+						}
+					}
+					System.out.println();
+				}
+				
+				System.out.println("Total "+totalHours+" hours");
+				break;
 			}
 		}
 	}
