@@ -118,6 +118,63 @@ public class ProjectSteps {
 	@Then("the following message will be displayed to the user: {string}")
 	public void theFollowingMessageWillBeDisplayedToTheUser(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
+
+	@Given("there exist an employee")
+	public void thereExistAnEmployee() {
+	    app.createEmployee("Erik");
+	    employee = app.employees.get(0);
+	}
+	
+	@Given("the employee is logged in")
+	public void theEmployeeIsLoggedIn() {
+	   app.login(employee.name);
+	}
+
+	@When("the employee sets himself as leader")
+	public void theEmployeeSetsHimselfAsLeader() throws OperationNotAllowedException {
+	    app.createProject("project1", "client1");
+	    app.projects.get(0).setLeader(employee);
+	}
+
+	@Then("he is the leader of the project")
+	public void heIsTheLeaderOfTheProject() {
+	    assertTrue(app.projects.get(0).getLeader().equals(employee));
+	}
+	
+	@Given("there is a project with a leader")
+	public void thereIsAProjectWithALeader() {
+	    try {
+			project = app.createProject("Test", "Intern");
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	    employee = app.createEmployee("emp1");
+	    try {
+			project.setLeader(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Given("a user who isn't the leader is the user")
+	public void aUserWhoIsnTTheLeaderIsTheUser() {
+	    employee = app.createEmployee("emp2");
+	    app.login("emp2");
+	}
+
+	@When("the leader of is change")
+	public void theLeaderOfIsChange() {
+		try {
+			project.setLeader(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
+}
+
+	@Then("I get an error message: {string}")
+	public void iGetAnErrorMessage(String ErrorMessage) {
+	    assertTrue(errorMessage.getErrorMessage().equals(ErrorMessage));
+
 	}
 	
 }

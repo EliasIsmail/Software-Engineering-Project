@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class viewController {
 	
 	static App app = new App();
-	static String scene = "loginScreen";
+	static ArrayList<String> scenes = new ArrayList<String>();
 	static Project currentProject;
 	static Activity currentActivity;
 	
@@ -17,11 +17,13 @@ public class viewController {
 		Scanner console = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
+		scenes.add("Login menu"); //first scene
 		
-		actions.put("loginScreen", new String[] {
+		actions.put("Login menu", new String[] {
 				"login(name)"
 		});
-		actions.put("mainMenu", new String[] {
+		actions.put("Main menu", new String[] {
+				"logout()",
 				"createEmployee(name)",
 				"createProject(title,client)",
 				"getEmployees()",
@@ -31,7 +33,7 @@ public class viewController {
 				"getAssignedProjects()",
 				"openProject(title)"
 		});
-		actions.put("currentProject", new String[] {
+		actions.put("Project", new String[] {
 				"createActivity(name)",
 				"addEmployee(name)",
 				"setLeader(name)",
@@ -41,14 +43,27 @@ public class viewController {
 				"setEndWeek(weekNumber)",
 				"printStatus()",
 				"getAssignedActivities()",
-				"openActivity(name)"
+				"openActivity(name)",
+		});
+		actions.put("Activity", new String[] {
+				"addEmployee(name)",
+				"setEstimatedTime(estimatedWorkingHours)",
+				"setStartWeek(weekNumber)",
+				"setEndWeek(weekNumber)",
+				"setClient(name)",
+				"printStatus()"
 		});
 		
 		while (true) {
 			//main loop
-			String[] actionsCurrent = actions.get(scene);
+			String currentScene = getCurrentScene();
+			String[] actionsCurrent = actions.get(currentScene); //newest scene
 			System.out.println("---------------");
-			System.out.println("List of actions:");
+			System.out.println("List of actions for " + currentScene);
+			System.out.println();
+			if (!currentScene.equals("Login menu")) {
+				System.out.println("back()"); //always go back
+			}
 			printActions(actionsCurrent);
 			System.out.println();
 			System.out.print(">>> ");
@@ -95,23 +110,54 @@ public class viewController {
 		return items;
 	}
 	
+	public static void setScene(String newScene) {
+		scenes.add(newScene);
+	}
+	
+	public static String getCurrentScene() {
+		return scenes.get(scenes.size()-1);
+	}
+	
 	public static void executeCommand(String[] input) throws OperationNotAllowedException {
 		
 		String command = input[0];
 		String parameter = input[1];
+		String currentScene = getCurrentScene();
 		
-		switch(command) {
+		if (!currentScene.equals("Login menu")){
+			switch(command) {
+			case "back":
+				if (scenes.size() > 2){ //main menu
+					scenes.remove(scenes.size()-1);
+					System.out.println("Newest Scene "+scenes.get(scenes.size()-1));
+				} else {
+					System.out.println("Cannot go further back");
+				}
+				break;
+			
+			case "logout":
+				scenes.clear();
+				scenes.add("Login menu");
+				break;
+			}
+		} 
+		
+		if (currentScene.equals("Login menu")){
+			switch(command) {
 			//login menu
+		
 			case "login":
 				app.login(parameter);
 				if (!app.loggedIn) {
 					System.out.println("Login failed: No such name");
 				} else {
 					System.out.println("Logged in succesful");
-					scene = "mainMenu";
+					setScene("Main menu");
 				}
 				break;
-			
+			}
+		} else if (currentScene.equals("Main menu")){
+			switch(command) {
 			//main menu
 			case "createEmployee":
 				app.createEmployee(parameter);
@@ -164,12 +210,14 @@ public class viewController {
 				for (Project project: app.projects) {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
-						scene = "currentProject";
+						setScene("Project");
 					}
 				}
 				break;
+			}
+		} else if (currentScene.equals("Project")){
+			switch(command) {
 			
-			//current project
 			case "createActivity":
 				currentProject.createActivity(parameter);
 				break;		
@@ -191,7 +239,13 @@ public class viewController {
 				break;
 			
 			case "getLeader":
-				System.out.println("Current leader is "+currentProject.getLeader().name);
+				Employee leader = currentProject.getLeader();
+				
+				if (leader != null) {
+					System.out.println("Current leader is "+leader.name);
+				} else {
+					System.out.println("No leader set for project");
+				}
 				break;
 			
 			case "getEstimatedTime":
@@ -235,12 +289,57 @@ public class viewController {
 				for (Activity activity: currentProject.activities) {
 					if (activity.name.equals(parameter)) {
 						currentActivity = activity;
-						scene = "currentActivity";
+						setScene("Activity");
 					}
 				}
 				break;
+			}
+		} else if (currentScene.equals("Activity")){
+			switch(command) {
+			
+			case "addEmployee":
+				for (Employee employee: app.employees) {
+					if (employee.name.equals(parameter)) {
+						currentActivity.addEmployee(employee);
+					}
+				}
+				break;
+				
+			case "setEstimatedTime":
+				currentActivity.setEstimatedTime(Integer.parseInt(parameter));
+				break;
+			
+			case "setStartWeek":
+				try {
+					currentActivity.setStartWeek(Integer.parseInt(parameter));
+				} catch (NumberFormatException e1) {
+					System.out.println("Please enter a valid number");
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+				
+			case "setEndWeek":
+				try {
+					currentActivity.setEndWeek(Integer.parseInt(parameter));
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter a valid number");
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			
+			case "setClient":
+				currentActivity.setClient(parameter);
+				break;
+				
+			case "printStatus":
+				currentActivity.printStatus();
+			}
 		}
 	}
-	
-	
 }
