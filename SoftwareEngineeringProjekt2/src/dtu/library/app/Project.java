@@ -35,7 +35,7 @@ public class Project {
 		}
 	}
 	
-	public Activity createActivity(String name) throws OperationNotAllowedException, MissingAuthenticity {
+	public Activity createActivity(String name) throws OperationNotAllowedException {
 		checkAuthenticity();
 		Activity activity = new Activity(name,this);
 		activities.add(activity);
@@ -50,7 +50,7 @@ public class Project {
 		return title;
 	}
 	
-	public void setTitle(String newTitle) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setTitle(String newTitle) throws OperationNotAllowedException {
 		checkAuthenticity();
 		for (Project project: app.projects) {
 			if (newTitle.equals(project.getTitle())){
@@ -72,7 +72,7 @@ public class Project {
 		}
 	}
 	
-	public void setLeader(Employee employee) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setLeader(Employee employee) throws OperationNotAllowedException {
 		checkAuthenticity();
 		leader = employee;
 	}
@@ -90,16 +90,25 @@ public class Project {
 	}
 		
 	
-	public int getEstimatedTime() {
+	public float getEstimatedTime() {
 		//estimated time is the sum of activities
-		int estimatedTime= 0;
+		float estimatedTime= 0;
 		for (Activity activity: activities) {
 			estimatedTime = estimatedTime +activity.estimatedTime;
 		}
 		return estimatedTime;
 	}
 	
-	public void setStartWeek(int startWeek) throws OperationNotAllowedException, MissingAuthenticity {
+	public float getTime() {
+		//estimated time is the sum of activities
+		float time= 0;
+		for (Activity activity: activities) {
+			time = time +activity.time;
+		}
+		return time;
+	}
+	
+	public void setStartWeek(int startWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
 		if (startWeek < 0) {
 			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
@@ -113,7 +122,7 @@ public class Project {
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndWeek(int endWeek) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
 		if (endWeek < 0) {
 			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
@@ -138,9 +147,17 @@ public class Project {
 			System.out.println("\nProject leader: no leader");
 		}
 		System.out.println("Start week: " + startWeek);
-		System.out.println("Total estimated time: "+getEstimatedTime());
 		System.out.println("End week: " + endWeek);
+		System.out.println("Estimated total work: "+getEstimatedTime());
+		System.out.println("Work done: "+getTime());
+		System.out.println("Estimated work left: "+(getEstimatedTime()-getTime()));
 		System.out.println("-------------------------");
+		
+		for (Activity activity: activities) {
+			activity.printStatus();
+		}
+		System.out.println("-------------------------");
+		
 	}
 	
 

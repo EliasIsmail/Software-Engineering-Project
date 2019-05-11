@@ -7,10 +7,11 @@ public class Activity {
 	public String name;
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	public Project project;
-	public int estimatedTime = 0;
+	public float estimatedTime = 0;
+	public float time = 0;
 
-	public int startWeek;
-	public int endWeek;
+	public int startWeek = 0;
+	public int endWeek = 0;
 
 	public Employee employee;
 	
@@ -67,15 +68,16 @@ public class Activity {
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
-		if (name == null || startWeek == 0 || endWeek == 0) {
-			throw new OperationNotAllowedException("Missing information for status report");
-		}
 		System.out.println("Activity: "+name+" from project "+project.getTitle());
 		System.out.println("Members: ");
 		for (Employee employee: employees) {
-			System.out.print(employee.name+", ");
+			System.out.println(employee.name);
 		}
-		System.out.println("\nEstimated time: "+estimatedTime);
+		System.out.println("Start week: " + startWeek);
+		System.out.println("End week: " + endWeek);
+		System.out.println("Estimated total work: "+estimatedTime);
+		System.out.println("Work done: "+time);
+		System.out.println("Estimated work left: "+(estimatedTime-time));
 		System.out.println("-------------------------");
 	}
 }

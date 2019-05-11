@@ -35,6 +35,7 @@ public class viewController {
 				"getProjects()",
 				"getAssignedProjects()",
 				"openProject(title)",
+				"getSummary()",
 				"logout()"
 		});
 		actions.put("Project", new String[] {
@@ -51,7 +52,7 @@ public class viewController {
 				"printStatus()",
 				"getActivities()",
 				"openActivity(name)",
-				"getSummery()"
+				"getSummary()"
 		});
 		actions.put("Activity", new String[] {
 				"addEmployee(name)",
@@ -138,9 +139,9 @@ public class viewController {
 		});
 		commands.add(new String[] {
 				"login(Admin)",
-				"createEmployee(Eric)",
+				"createEmployee(Erik)",
 				"logout()",
-				"login(Eric)",
+				"login(Erik)",
 				"createProject(Project1, Intern)",
 				"createProject(Project2, Intern)",
 				"createProject(Project3, Intern)",
@@ -150,7 +151,7 @@ public class viewController {
 				"openLog()",
 				"back()",
 				"getEmployees()",
-				"getOccupiedEmployees(3)",
+//				"getOccupiedEmployees(3)",
 //				"getVacantEmployees(weekNumber)",
 				"getProjects()",
 				"getAssignedProjects()",
@@ -266,6 +267,12 @@ public class viewController {
 		} else if (currentScene.equals("Main menu")){
 			switch(command) {
 			//main menu
+			case "getSummary":
+				for (Project project: app.projects) {
+					project.printStatus();
+				}
+				break;
+				
 			case "openLog":
 				setScene("Log");
 				break;
@@ -461,9 +468,10 @@ public class viewController {
 				}
 				System.out.println("Could not find the specified activity");
 				break;
-			case "getSummery":
+			case "getSummary":
 				currentProject.printStatus();
 			}
+			
 		} else if (currentScene.equals("Activity")){
 			
 			switch(command) {
@@ -477,8 +485,9 @@ public class viewController {
 						break;
 					}
 				}
-
-
+				if (!succes) {
+					System.out.println("Employee not found");
+				}
 				break;
 				
 			case "setEstimatedTime":
