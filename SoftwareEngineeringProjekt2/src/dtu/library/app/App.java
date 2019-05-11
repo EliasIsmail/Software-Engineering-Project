@@ -53,11 +53,18 @@ public class App {
 
 
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
-			String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
-			projectCounter++;	
-			Project project = new Project(title, client, projectId,this);
-			projects.add(project);
-			return project;
+		if (title == null || client == null) {
+			throw new OperationNotAllowedException("Missing project information");
+		}
+		for (Project project:projects) {
+			if (title.equals(project.getTitle())) throw new OperationNotAllowedException("Duplicate title, please pick another title");
+
+		}
+		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
+		projectCounter++;	
+		Project project = new Project(title, client, projectId,this);
+		projects.add(project);
+		return project;
 	}
 	
 	public ArrayList<Employee> getOccupiedEmployees(int week){

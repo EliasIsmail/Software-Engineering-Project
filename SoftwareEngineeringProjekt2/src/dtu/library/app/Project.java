@@ -17,9 +17,6 @@ public class Project {
 	public ArrayList<Employee> employees = new ArrayList<Employee>();
 	
 	public Project(String title, String client, String projectId, App app) throws OperationNotAllowedException {
-		if (title == null || client == null) {
-			throw new OperationNotAllowedException("Missing project information");
-		}
 		this.title = title;
 		this.client = client;
 		this.projectId = projectId;
