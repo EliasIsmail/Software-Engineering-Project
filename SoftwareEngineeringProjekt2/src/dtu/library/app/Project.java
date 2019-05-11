@@ -26,7 +26,7 @@ public class Project {
 	public void checkAuthenticity() throws OperationNotAllowedException {
 		if (leader != null) { //1
 			if (leader != app.user) { //2
-				throw new OperationNotAllowedException("The user isn't leader of the project");
+				throw new OperationNotAllowedException("User must be leader to execute operation");
 			}
 		}
 	}

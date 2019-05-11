@@ -43,7 +43,10 @@ public class Activity {
 	}
 	
 
-	public void setStartWeek(int startWeek) throws Exception {
+	public void setStartWeek(int startWeek) throws OperationNotAllowedException  {
+		project.checkAuthenticity();
+		
+		/* TODO 
 		if (project.startWeek != 0 && startWeek < project.startWeek) { //before
 			throw new Exception("Activity start date before project start date");
 		}
@@ -52,15 +55,19 @@ public class Activity {
 		}
 //		if (this.startWeek != 0) {
 //			throw new Exception("Start week has already been set");
-//		}
+//		}*/
 			
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndWeek(int endWeek) throws Exception {
+	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
+		project.checkAuthenticity();
+		
+		/* TODO
 		if (project.endWeek != 0 && endWeek > project.endWeek) { //after
 			throw new Exception("Activity end date after project end date");
-		}
+		} */
+		
 		this.endWeek = endWeek;
 	}
 	

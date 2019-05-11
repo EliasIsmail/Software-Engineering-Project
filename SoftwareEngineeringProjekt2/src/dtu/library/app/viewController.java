@@ -32,29 +32,29 @@ public class viewController {
 				"getEmployees()",
 				"getOccupiedEmployees(startWeek,endWeek)",
 				"getVacantEmployees(startWeek,endWeek)",
-				"getProjects()",
-				"getAssignedProjects()",
+				"getProjects()", //maybe remove
+				"getAssignedProjects()", //rename
 				"openProject(title)",
 				"getSummary()",
 				"logout()"
 		});
 		actions.put("Project", new String[] {
 				"createActivity(name)",
-				"getClient()",
+				//"getClient()", //removed
 				"addEmployee(name)",
 				"setLeader(name)",
-				"getLeader()",
-				"getEstimatedTime()",
+				//"getLeader()", //removed
+				//"getEstimatedTime()", //removed
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
-				"getActivities()",
+				//"getActivities()", //removed
 				"openActivity(name)",
+				"rename(title)",
 				"getSummary()"
 		});
 		actions.put("Activity", new String[] {
 				"addEmployee(name)",
 				"setEstimatedTime(estimatedWorkingHours)",
-				"getEstimatedTime()",
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
 				"getSummary()"
@@ -234,7 +234,7 @@ public class viewController {
 			throw new OperationNotAllowedException("Please enter a command.");
 		}
 		if (input.charAt(input.length()-1) != ')') {
-			throw new OperationNotAllowedException("Missing parathesis. Please close command with ')'");
+			throw new OperationNotAllowedException("Wrong command format. Make sure to include parenthesis.");
 		}
 		
 		for (int i=0; i<input.length(); i++) {
@@ -283,6 +283,7 @@ public class viewController {
 				scenes.clear();
 				scenes.add("Login menu");
 				app.loggedIn = false;
+				System.out.println("successfully logged out");
 				break;
 			}
 		} 
@@ -322,7 +323,7 @@ public class viewController {
 				
 			case "createEmployee":
 				app.createEmployee(parameter);
-				System.out.println("Employee created succesfully");
+				System.out.println("Employee created successfully");
 				break;
 		
 			case "createProject":
@@ -332,7 +333,7 @@ public class viewController {
 					break;
 				}
 				app.createProject(parameters.get(0),parameters.get(1));
-				System.out.println("Project created succesfully");
+				System.out.println("Project created successfully");
 				break;
 				
 			case "getEmployees":
@@ -393,7 +394,7 @@ public class viewController {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
 						setScene("Project");
-						System.out.println("Project succesfully found");
+						System.out.println("Project successfully found");
 						succes = true;
 						break;
 					}
@@ -410,6 +411,7 @@ public class viewController {
 			case "rename":
 				try {
 					currentProject.setTitle(parameter);
+					System.out.println("Title successfully renamed");
 				} catch (Exception e1) {
 					System.out.println("Title already in use");
 					e1.printStackTrace();
@@ -417,17 +419,20 @@ public class viewController {
 			
 			case "createActivity":
 				currentProject.createActivity(parameter);
+				System.out.println("Activity successfully created");
 				break;		
 			
+			/*
 			case "getClient":
 				System.out.println("Client is "+currentProject.getClient());
 				break;
+			*/
 				
 			case "addEmployee":
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.addEmployee(employee);
-						System.out.println("Employee succesfully added");
+						System.out.println("Employee successfully added");
 						break;
 					}
 				}
@@ -435,15 +440,21 @@ public class viewController {
 				break;
 			
 			case "setLeader":
+				boolean succes = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.setLeader(employee);
-						System.out.println("Project leader succesfully set");
+						System.out.println("Project leader successfully set");
+						succes = true;
 						break;
 					} 
 				}
-				System.out.println("Employee not found");
+				if (!succes) {
+					System.out.println("Employee not found");
+				}
 				break;
+			
+			/* NOTE: USE getSummary() INSTEAD
 			
 			case "getLeader":
 				Employee leader = currentProject.getLeader();
@@ -455,9 +466,11 @@ public class viewController {
 				}
 				break;
 			
+			
 			case "getEstimatedTime":
 				System.out.println("Estimated time is "+currentProject.getEstimatedTime()+" hours");
 				break;
+			*/
 			
 			case "setStartWeek":
 				int startWeek = Integer.parseInt(parameter);
@@ -468,6 +481,7 @@ public class viewController {
 				}
 				try {
 					currentProject.setStartWeek(startWeek);
+					System.out.println("Start week successfully set");
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
@@ -486,6 +500,7 @@ public class viewController {
 				
 				try {
 					currentProject.setEndWeek(endWeek);
+					System.out.println("End week successfully set");
 				} catch (NumberFormatException e) {
 					System.out.println("Please enter a valid number");
 					e.printStackTrace();
@@ -494,9 +509,11 @@ public class viewController {
 				}
 				break;
 				
+			/* NOTE: use getSummary() instead
 			case "printStatus":
 				currentProject.printStatus();
 				break;
+			
 				
 			case "getActivities":
 				System.out.println("Projects activities ");
@@ -504,6 +521,7 @@ public class viewController {
 					System.out.println(activity.name);
 				}
 				break;
+			*/
 			
 			case "openActivity":
 				boolean found = false;
@@ -511,13 +529,14 @@ public class viewController {
 					if (activity.name.equals(parameter)) {
 						currentActivity = activity;
 						setScene("Activity");
-						System.out.println("Activity succesfully found");
+						System.out.println("Activity successfully found");
 						found = true;
 						break;
 					}
 				}
 				if (!found) System.out.println("Could not find the specified activity");
 				break;
+				
 			case "getSummary":
 				currentProject.printStatus();
 			}
@@ -530,7 +549,7 @@ public class viewController {
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
-						System.out.println("Succesfully added the employee");
+						System.out.println("successfully added the employee");
 						succes = true;
 						break;
 					}
@@ -551,8 +570,7 @@ public class viewController {
 				try {
 					currentActivity.setEstimatedTime(estimatedTime);
 				} catch (Exception e2) {
-					System.out.print("Please enter valid integer");
-					e2.printStackTrace();
+					System.out.print(e2.getMessage());
 				}
 				break;
 			
@@ -566,7 +584,7 @@ public class viewController {
 				
 				try {
 					currentActivity.setStartWeek(weekNumber);
-				} catch (Exception e) {
+				} catch (OperationNotAllowedException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -580,12 +598,8 @@ public class viewController {
 				
 				try {
 					currentActivity.setEndWeek(weekNumber);
-				} catch (NumberFormatException e) {
-					System.out.println("Please enter a valid number");
-					e.printStackTrace();
-				} catch (Exception e) {
-					System.out.println("Unexpected exception - try another parameter");
-					e.printStackTrace();
+				} catch (OperationNotAllowedException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 			
@@ -593,6 +607,7 @@ public class viewController {
 				currentActivity.printStatus();
 				break;
 			}
+		
 		} else if (currentScene.equals("Log")){
 			switch(command) { 
 			case "addActivity":
