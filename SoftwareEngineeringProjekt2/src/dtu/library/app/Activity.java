@@ -35,9 +35,7 @@ public class Activity {
 	}
 	
 	public void setEstimatedTime(int estimatedTime) throws Exception {
-		if (project.isLeader() == false) {
-			throw new Exception("Only project leaders can edit times");
-		}
+				project.checkAuthenticity();
 		if (estimatedTime < 0) {
 			throw new Exception("Impossible time frame for activity");
 		}

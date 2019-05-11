@@ -37,16 +37,15 @@ public class ActivitySteps {
 	@Given("there exists an activity in a project")
 	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
 		try {
-		project = app.createProject("Snake", "Ubisoft");
-		} catch (OperationNotAllowedException e) {
-		errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		try {
-		activity = project.createActivity("User Interface");
+			project = app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		System.out.println(app.projects.get(0).activities.get(0).name);
+		try {
+			activity = project.createActivity("User Interface");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		assertTrue(activity.name.equals("User Interface"));
 			
 	}
@@ -69,7 +68,7 @@ public class ActivitySteps {
 //		for(Project p:app.projects) {
 //			
 //		}
-		assertTrue(app.projects.get(0).isLeader());
+		assertTrue(app.projects.get(0).getLeader().equals(leader));
 	}
 
 	@When("the user adds the available employee to the activity")
@@ -94,7 +93,7 @@ public class ActivitySteps {
 	@When("the user creates an activity with title {string}")
 	public void theUserCreatesAnActivityWithTitle(String string) throws MissingAuthenticity {
 	    try {
-		app.projects.get(0).createActivity("Design GUI");
+	    	app.projects.get(0).createActivity("Design GUI");
 	    } catch (OperationNotAllowedException e) {
 	    	errorMessageHolder.setErrorMessage(e.getMessage());
 	    }
@@ -108,10 +107,10 @@ public class ActivitySteps {
 	@When("the user sets the start week to {int}")
 	public void theUserSetsTheStartWeekTo(Integer int1) {
 		try {
-		    app.projects.get(0).activities.get(0).setStartWeek(week);
-			} catch (Exception e) {
+		    	app.projects.get(0).activities.get(0).setStartWeek(week);
+		} catch (Exception e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
+		}
 	}
 
 	@Then("the start time is set")
@@ -123,10 +122,8 @@ public class ActivitySteps {
 	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
 		try {
 			 app.projects.get(1).setStartWeek(1);
-			 System.out.println(app.projects.get(0).startWeek);
 			 app.projects.get(1).setEndWeek(6);
 			 app.projects.get(1).activities.get(0).setStartWeek(100);
-			 System.out.println(app.projects.get(0).activities.get(0).startWeek);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -218,7 +215,6 @@ public class ActivitySteps {
 	}
 	@Then("the system returns a status of the activity")
 	public void theSystemReturnsAStatusOfTheActivity() {
-		System.out.println(activity.startWeek + " " + activity.endWeek);
 	    assertTrue(printed);
 	}
 }

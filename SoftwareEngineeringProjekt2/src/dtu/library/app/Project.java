@@ -24,7 +24,6 @@ public class Project {
 		this.client = client;
 		this.projectId = projectId;
 		this.app = app;
-		System.out.println(title + " " + client);
 	}
 	
 	public void checkAuthenticity() throws OperationNotAllowedException {
@@ -75,14 +74,6 @@ public class Project {
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
 		checkAuthenticity();
 		leader = employee;
-	}
-
-	public boolean isLeader() {
-		if(app.user.name.equals(leader.name)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	public Employee getLeader() {
@@ -137,7 +128,7 @@ public class Project {
 	
 	public void printStatus() throws OperationNotAllowedException {
 		System.out.println("Project: "+title+", #"+projectId + " for " + client);
-		System.out.println("Members: ");
+		System.out.println("Employees: ");
 		for (Employee employee: employees) {
 			System.out.println(employee.name);
 		}
