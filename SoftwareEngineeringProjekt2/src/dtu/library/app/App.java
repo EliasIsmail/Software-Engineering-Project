@@ -53,17 +53,18 @@ public class App {
 
 
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
-		if (title == null || client == null) {
+		if (title == null || client == null) { //1
 			throw new OperationNotAllowedException("Missing project information");
 		}
 		for (Project project:projects) {
-			if (title.equals(project.getTitle())) throw new OperationNotAllowedException("Duplicate title, please pick another title");
+			if (title.equals(project.getTitle())) //2
+		throw new OperationNotAllowedException("Duplicate title, please pick another title");
 
 		}
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
-		projectCounter++;	
+		projectCounter++;
 		Project project = new Project(title, client, projectId,this);
-		projects.add(project);
+		projects.add(project); //3
 		return project;
 	}
 	
@@ -109,12 +110,12 @@ public class App {
 	public ArrayList<Employee> getVacantEmployees(int weekStart, int weekEnd) throws Exception {
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
 		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(weekStart,weekEnd);
-		for (Employee employee: employees) {
-			if (!occupiedEmployees.contains(employee)) {
+		for (Employee employee: employees) { 
+			if (!occupiedEmployees.contains(employee)) { //1
 				vacantEmployees.add(employee);
 			}
 		}
-		if(vacantEmployees.isEmpty()) {
+		if(vacantEmployees.isEmpty()) { //2
 			throw new Exception("Currently no available employees");
 		}
 		
