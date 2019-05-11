@@ -17,7 +17,7 @@ public class viewController {
 	static int autoIndex = 0;
 	
 	public static void main(String args[]) throws OperationNotAllowedException, MissingAuthenticity {
-		Scanner console = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
 		scenes.add("Login menu"); //first scene
@@ -86,7 +86,7 @@ public class viewController {
 			String[] input;
 			if (autoCommand == -1) {
 				//user input
-				input = splitInput(console.nextLine());
+				input = splitInput(scanner.nextLine());
 			} else {
 				input = splitInput(autoCommands());
 			}
@@ -148,8 +148,19 @@ public class viewController {
 				"createEmployee(Elias)",
 				"createEmployee(Oliver)",
 				"createEmployee(Jonas)",
+				"createEmployee(Liv)",
+				"createEmployee(Frederik)",
+				"createEmployee(Rasmus)",
+				"openProject(Project1)",
+				"setLeader(Erik)",
+				"addEmployee(Oliver)",
+				"addEmployee(Jonas)",
+				"createActivity(Step1)",
+				"createActivity(Step2)",
+				"createActivity(Step3)",
 				"openLog()",
-				"addActivity(2019-05-21,Project1,Activity1.1,11)",
+				"addActivity(2019-05-09,Project1,Activity1.1,11)",
+				"back()"
 				
 				
 
