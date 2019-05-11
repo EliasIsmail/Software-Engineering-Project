@@ -34,10 +34,10 @@ public class Activity {
 		employee.addProject(project); //adding project to employee
 	}
 	
-	public void setEstimatedTime(int estimatedTime) throws Exception {
+	public void setEstimatedTime(float estimatedTime) throws Exception {
 		project.checkAuthenticity();
 		if (estimatedTime < 0) {
-			throw new Exception("Impossible time frame for activity");
+			throw new Exception("Please enter valid integer");
 		}
 		this.estimatedTime = estimatedTime;
 	}
@@ -48,15 +48,12 @@ public class Activity {
 		
 		/* TODO 
 		if (project.startWeek != 0 && startWeek < project.startWeek) { //before
-			throw new Exception("Activity start date before project start date");
-		}
-		if (startWeek > 53 || startWeek < 1) {
+			throw new Exception("Activity startweek before project startweek");
+		}else if (startWeek > 53 || startWeek < 1) {
 			throw new Exception("Undefined week number");
 		}
-//		if (this.startWeek != 0) {
-//			throw new Exception("Start week has already been set");
-//		}*/
-			
+		*/
+
 		this.startWeek = startWeek;
 	}
 	
@@ -65,7 +62,9 @@ public class Activity {
 		
 		/* TODO
 		if (project.endWeek != 0 && endWeek > project.endWeek) { //after
-			throw new Exception("Activity end date after project end date");
+			throw new Exception("Activity endweek after project endweek");
+		} else if (endWeek > 53 || endWeek < 1) {
+			throw new Exception("Undefined week number");
 		} */
 		
 		this.endWeek = endWeek;
@@ -73,7 +72,7 @@ public class Activity {
 	
 	public void printStatus() throws OperationNotAllowedException {
 		System.out.println("Activity: "+name+" from project "+project.getTitle());
-		System.out.println("Members: ");
+		System.out.println("Employees: ");
 		for (Employee employee: employees) {
 			System.out.println(employee.name);
 		}

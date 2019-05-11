@@ -1,8 +1,8 @@
 Feature: Create project
 
 Scenario: Create project
-When the employee creates a project with title "Brew coffee" and the client "DTU: Compute"
-Then the project is created with the title "Brew coffee" and client "DTU: Compute"
+When the employee creates a project with title "Design GUI" and the client "Microsoft"
+Then the project is created with the title "Design GUI" and client "Microsoft"
 
 Scenario: Create project with missing attributes
 When the employee creates a project without a title or a client

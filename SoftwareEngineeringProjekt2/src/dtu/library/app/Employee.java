@@ -41,7 +41,9 @@ public class Employee {
 		return activity;
 	}
 	
-	public void addActivityToLog(Date date, Activity activity, float hours) {
+	public void addActivityToLog(Date date, Activity activity, float hours) throws OperationNotAllowedException {
+		if(hours < 0.0) throw new OperationNotAllowedException("Hours worked can't be negative");
+		activity.time = activity.time + hours;
 		
 		//preconditions
 		assert date != null: "Precondition violated";
