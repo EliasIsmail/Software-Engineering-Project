@@ -24,7 +24,6 @@ public class Project {
 		this.client = client;
 		this.projectId = projectId;
 		this.app = app;
-		System.out.println(title + " " + client);
 	}
 	
 	public void checkAuthenticity() throws OperationNotAllowedException {
