@@ -56,11 +56,14 @@ public class Employee {
 			logSizeAtPre = 0;
 		}
 		
-		
-		activity.time = activity.time + hours;
 		LogElement logElement = new LogElement(activity, hours);
 		
 		if(log.containsKey(date)) {
+			for (LogElement check: log.get(date)) {
+				if (check.activity.equals(activity)) {
+					throw new OperationNotAllowedException("Activity already added to log");
+				}
+			}
 			//already had elements in specific date
 			log.get(date).add(logElement);
 		} else {
@@ -68,6 +71,7 @@ public class Employee {
 			log.put(date, new ArrayList<LogElement>());
 			log.get(date).add(logElement);
 		}
+		activity.time = activity.time + hours;
 		
 		//postconditions
 		assert log.get(date).size() == logSizeAtPre +1: "Postcondition violated";

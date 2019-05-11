@@ -61,7 +61,8 @@ public class viewController {
 		});
 		actions.put("Log", new String[] {
 				"getOverview(yyyy-mm-dd)",
-				"addActivity(yyyy-mm-dd,project,activity,hours)"
+				"addActivity(yyyy-mm-dd,project,activity,hours)",
+				"removeActivity(yyyy-mm-dd,project,activity)"
 		});
 		
 		
@@ -97,9 +98,11 @@ public class viewController {
 				if (input != null) {
 					executeCommand(input);
 				}
+			} catch (NumberFormatException e) {
+				System.out.println("The input for the specific command must be a number");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-			}	
+			}
 		}
 	}
 	
@@ -164,6 +167,7 @@ public class viewController {
 				"getLeader()",
 				"setStartWeek(7)",
 				"setEndWeek(18)",
+				"addEmployee(Erik)",
 				"addEmployee(Oliver)",
 				"addEmployee(Jonas)",
 				"createActivity(Step1)",
@@ -178,6 +182,7 @@ public class viewController {
 				
 				"createProject(Project2, Intern)",
 				"openProject(Project2)",
+				"addEmployee(Erik)",
 				"setStartWeek(7)",
 				"setEndWeek(18)",
 				"setLeader(Oliver)",
@@ -185,6 +190,7 @@ public class viewController {
 				
 				"createProject(Project3, Intern)",
 				"openProject(Project3)",
+				"addEmployee(Erik)",
 				"createActivity(Step1)",
 				"openActivity(Step1)",
 				"setStartWeek(5)",
@@ -202,6 +208,7 @@ public class viewController {
 				
 				"createProject(bund, Intern)",
 				"openProject(bund)",
+				"addEmployee(Erik)",
 				"createActivity(Step1)",
 				"openActivity(Step1)"
 				
@@ -296,7 +303,7 @@ public class viewController {
 				scenes.clear();
 				scenes.add("Login menu");
 				app.loggedIn = false;
-				System.out.println("successfully logged out");
+				System.out.println("Successfully logged out");
 				backOrLogout = true;
 				break;
 			}
@@ -425,6 +432,7 @@ public class viewController {
 			
 			case "rename":
 				currentProject.setTitle(parameter);
+				System.out.println("Title renamed to: " + parameter);
 				break;
 	
 			case "createActivity":
@@ -443,7 +451,6 @@ public class viewController {
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.addEmployee(employee);
-						System.out.println("Employee successfully added");
 						success = true;
 						break;
 					}
@@ -525,7 +532,7 @@ public class viewController {
 				
 			case "getSummary":
 				currentProject.printStatus();
-			
+				break;
 			default:
 				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
@@ -534,17 +541,16 @@ public class viewController {
 			
 			switch(command) {
 			case "addEmployee":
-				boolean succes = false;
+				boolean success = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
-						System.out.println("successfully added the employee");
+						System.out.println("Employee successfully added");
+						success = true;
 						break;
 					}
 				}
-				if (!succes) {
-					System.out.println("Employee not found");
-				}
+				if (!success) System.out.println("Employee not found");
 				break;
 				
 			case "setEstimatedTime":
@@ -602,6 +608,7 @@ public class viewController {
 				}
 				float hours = Float.parseFloat(parameters.get(3));
 				app.user.addActivityToLog(date,currentActivity,hours);
+				System.out.println("Successfully added log");
 				break;
 				
 			case "getOverview":
@@ -635,6 +642,9 @@ public class viewController {
 				
 				System.out.println("Total "+totalHours+" hours");
 				break;
+			
+			case "removeActivity":
+				
 				
 			default:
 				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
