@@ -25,15 +25,37 @@ public class Employee {
 	}
 	
 	public Activity addActivity(Activity activity) {
+		
+		//preconditions
+		assert activity != null: "Precondition violated";
+		assert !assignedActivities.contains(activity): "Precondition violated";
+		int assignedActivitiesSizeAtPre = assignedActivities.size();
+		
 		if (!assignedActivities.contains(activity)) {
 			assignedActivities.add(activity);
 		}
+		
+		// postconditions
+		assert assignedActivities.size() == assignedActivitiesSizeAtPre +1: "Postcondition violated";
+		
 		return activity;
 	}
 	
 	public void addActivityToLog(Date date, Activity activity, float hours) {
-		activity.time = activity.time + hours;
 		
+		//preconditions
+		assert date != null: "Precondition violated";
+		assert activity != null: "Precondition violated";
+		
+		int logSizeAtPre;
+		if(log.containsKey(date)) {
+			logSizeAtPre = log.get(date).size();
+		} else {
+			logSizeAtPre = 0;
+		}
+		
+		
+		activity.time = activity.time + hours;
 		LogElement logElement = new LogElement(activity, hours);
 		
 		if(log.containsKey(date)) {
@@ -44,6 +66,10 @@ public class Employee {
 			log.put(date, new ArrayList<LogElement>());
 			log.get(date).add(logElement);
 		}
+		
+		//postconditions
+		assert log.get(date).size() == logSizeAtPre +1: "Postcondition violated";
+		
 	}
 	
 	public void removeLogElement(Date date, Activity activity, float hours) {

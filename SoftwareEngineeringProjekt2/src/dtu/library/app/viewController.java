@@ -550,7 +550,6 @@ public class viewController {
 					if (employee.name.equals(parameter)) {
 						currentActivity.addEmployee(employee);
 						System.out.println("successfully added the employee");
-						succes = true;
 						break;
 					}
 				}

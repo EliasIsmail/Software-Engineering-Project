@@ -56,14 +56,29 @@ public class App {
 		if (title == null || client == null) {
 			throw new OperationNotAllowedException("Missing project information");
 		}
+		
+		//preconditions
+		assert title != null: "Precondition violated";
+		int projectsSizeAtPre = projects.size();
+		
 		for (Project project:projects) {
-			if (title.equals(project.getTitle())) throw new OperationNotAllowedException("Duplicate title, please pick another title");
-
+			if (title.equals(project.getTitle())) {
+				throw new OperationNotAllowedException("Duplicate title, please pick another title");
+			}
 		}
+		
+		if (title.equals("") || client.equals("")) {
+			throw new OperationNotAllowedException("Title and client must not be empty");
+		}
+		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
 		projectCounter++;	
 		Project project = new Project(title, client, projectId,this);
 		projects.add(project);
+		
+		// postconditions
+		assert projects.size() == projectsSizeAtPre +1: "Postcondition violated";
+		
 		return project;
 	}
 	

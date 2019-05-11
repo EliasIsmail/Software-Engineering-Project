@@ -24,11 +24,19 @@ public class Project {
 	}
 	
 	public void checkAuthenticity() throws OperationNotAllowedException {
+		//preconditions
+		//TODO save this contract
+		
+		assert true;
+		
 		if (leader != null) { //1
 			if (leader != app.user) { //2
 				throw new OperationNotAllowedException("User must be leader to execute operation");
 			}
 		}
+		
+		//postconditions
+		assert true;
 	}
 	
 	public Activity createActivity(String name) throws OperationNotAllowedException {
