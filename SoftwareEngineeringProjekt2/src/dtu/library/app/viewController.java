@@ -90,7 +90,14 @@ public class viewController {
 			} else {
 				input = splitInput(autoCommands());
 			}
-			executeCommand(input);	
+			
+			try {
+				if (input != null) {
+					executeCommand(input);
+				}
+			} catch (OperationNotAllowedException | MissingAuthenticity e) {
+				System.out.println(e.getMessage());
+			}	
 		}
 	}
 	
@@ -197,8 +204,14 @@ public class viewController {
 		}
 	}
 	
-	public static String[] splitInput(String input) {
+	public static String[] splitInput(String input) throws OperationNotAllowedException {
 		String command, parameters;
+		if (input.length() < 1) {
+			throw new OperationNotAllowedException("Please enter a command.");
+		}
+		if (input.charAt(input.length()-1) != ')') {
+			throw new OperationNotAllowedException("Missing parathesis. Please close command with ')'");
+		}
 		
 		for (int i=0; i<input.length(); i++) {
 			char c = input.charAt(i);
@@ -210,7 +223,7 @@ public class viewController {
 			}
 		}
 		
-		return new String[] {"noInput","noInput"};
+		return null;
 	}
 	
 	public static ArrayList<String> getParameters(String parameter) {
@@ -351,17 +364,19 @@ public class viewController {
 				break;
 			
 			case "openProject":
-				boolean found = false;
+				boolean succes = false;
 				for (Project project: app.projects) {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
 						setScene("Project");
 						System.out.println("Project succesfully found");
-						found = true;
+						succes = true;
 						break;
 					}
 				}
-				if (!found) System.out.println("Project not found");
+				if (!succes) {
+					System.out.println("Project not found");
+				}
 				break;
 			}
 			
@@ -527,12 +542,8 @@ public class viewController {
 				
 				try {
 					currentActivity.setStartWeek(weekNumber);
-				} catch (NumberFormatException e1) {
-					System.out.println("Please enter a valid number");
-					e1.printStackTrace();
-				} catch (Exception e1) { //if project is shorter
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 				

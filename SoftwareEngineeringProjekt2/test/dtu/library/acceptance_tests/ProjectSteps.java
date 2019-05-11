@@ -84,11 +84,10 @@ public class ProjectSteps {
 	public void theUserSearchesForAvailableEmployeesInWeek(int week) {
 		try {
 			app.getVacantEmployees(week,week+1);
+			employee = app.createEmployee("Elias");
 		} catch (Exception e) {
-		errorMessageHolder.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		employee = app.createEmployee("Elias");
-		
 	}
 
 	@Then("a list of available employees in week {int} is returned to the user")
@@ -119,7 +118,11 @@ public class ProjectSteps {
 
 	@Given("there exist an employee")
 	public void thereExistAnEmployee() {
-	    app.createEmployee("Erik");
+	    try {
+			app.createEmployee("Erik");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	    employee = app.employees.get(1);
 	}
 	
@@ -148,10 +151,11 @@ public class ProjectSteps {
 	public void thereExistsAProjectWithAProjectLeader() {
 	    try {
 			project = app.createProject("Test", "Intern");
+			employee = app.createEmployee("emp1");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	    employee = app.createEmployee("emp1");
+
 	    app.login("emp1");
 	    try {
 			project.setLeader(employee);
@@ -162,7 +166,11 @@ public class ProjectSteps {
 
 	@Given("the user is not the leader of the project")
 	public void theUserIsNotTheLeaderOfTheProject() {
-	    employee = app.createEmployee("emp2");
+	    try {
+			employee = app.createEmployee("emp2");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	    app.login("emp2");
 	}
 

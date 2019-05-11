@@ -15,7 +15,11 @@ public class App {
 
 	
 	public App() {
-		user = createEmployee("Admin");	
+		try {
+			user = createEmployee("Admin");
+		} catch (OperationNotAllowedException e1) {
+			//this will never happen
+		}	
 		Project misc;
 		try {
 			misc = createProject("Misc","Administration");
@@ -35,8 +39,13 @@ public class App {
 	 * Employees are assigned in Activity
 	 */
 
-	public Employee createEmployee(String name) {
+	public Employee createEmployee(String name) throws OperationNotAllowedException {
 		//creates new employee
+		for (Employee employee: employees) {
+			if (employee.name.equals(name)) {
+				throw new OperationNotAllowedException("Name already in use");
+			}
+		}
 		Employee employee = new Employee(name);
 		employees.add(employee);
 		return employee;
