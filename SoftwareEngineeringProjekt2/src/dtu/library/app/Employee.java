@@ -58,7 +58,7 @@ public class Employee {
 	
 	public ArrayList<LogElement> getLogElementFromDate(Date date){
 		if (log.containsKey(date)) {
-			return log.get(date);
+			return log.get(date); 
 		}
 		
 		return null;

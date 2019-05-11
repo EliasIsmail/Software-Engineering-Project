@@ -17,7 +17,7 @@ public class viewController {
 	static int autoIndex = 0;
 	
 	public static void main(String args[]) throws OperationNotAllowedException, MissingAuthenticity {
-		Scanner scanner = new Scanner(System.in);
+		Scanner console = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
 		scenes.add("Login menu"); //first scene
@@ -567,7 +567,7 @@ public class viewController {
 				}
 				break;
 			
-			case "printStatus":
+			case "getSummary":
 				currentActivity.printStatus();
 				break;
 			}

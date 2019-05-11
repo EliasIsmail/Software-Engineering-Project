@@ -35,11 +35,10 @@ public class Activity {
 	}
 	
 	public void setEstimatedTime(int estimatedTime) throws Exception {
-				project.checkAuthenticity();
+		project.checkAuthenticity();
 		if (estimatedTime < 0) {
 			throw new Exception("Impossible time frame for activity");
 		}
-		
 		this.estimatedTime = estimatedTime;
 	}
 	

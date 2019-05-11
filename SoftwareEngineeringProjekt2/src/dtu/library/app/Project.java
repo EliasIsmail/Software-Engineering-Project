@@ -72,7 +72,9 @@ public class Project {
 	}
 	
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
-		checkAuthenticity();
+		if (leader != null) {
+			checkAuthenticity();
+		}
 		leader = employee;
 	}
 	
