@@ -25,9 +25,6 @@ public class App {
 		} catch (OperationNotAllowedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (MissingAuthenticity e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	

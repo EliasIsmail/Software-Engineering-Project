@@ -35,7 +35,7 @@ public class Project {
 		}
 	}
 	
-	public Activity createActivity(String name) throws OperationNotAllowedException, MissingAuthenticity {
+	public Activity createActivity(String name) throws OperationNotAllowedException {
 		checkAuthenticity();
 		Activity activity = new Activity(name,this);
 		activities.add(activity);
@@ -50,7 +50,7 @@ public class Project {
 		return title;
 	}
 	
-	public void setTitle(String newTitle) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setTitle(String newTitle) throws OperationNotAllowedException {
 		checkAuthenticity();
 		for (Project project: app.projects) {
 			if (newTitle.equals(project.getTitle())){
@@ -72,7 +72,7 @@ public class Project {
 		}
 	}
 	
-	public void setLeader(Employee employee) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setLeader(Employee employee) throws OperationNotAllowedException {
 		checkAuthenticity();
 		leader = employee;
 	}
@@ -108,7 +108,7 @@ public class Project {
 		return time;
 	}
 	
-	public void setStartWeek(int startWeek) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setStartWeek(int startWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
 		if (startWeek < 0) {
 			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
@@ -122,7 +122,7 @@ public class Project {
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndWeek(int endWeek) throws OperationNotAllowedException, MissingAuthenticity {
+	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
 		if (endWeek < 0) {
 			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
