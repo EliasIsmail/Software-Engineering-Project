@@ -100,13 +100,16 @@ public class Project {
 	
 	public void setStartWeek(int startWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (startWeek < 0) {
-			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
+		if (startWeek < 1 || 53 < startWeek) {
+			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
 
 			if (startWeek > activity.startWeek) {
 				activity.startWeek = startWeek;
+				if (startWeek > activity.endWeek) {
+					activity.endWeek = startWeek + 1;
+				}
 			}
 		}
 		this.startWeek = startWeek;
@@ -114,12 +117,15 @@ public class Project {
 	
 	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (endWeek < 0) {
-			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
+		if (endWeek < 1 || 53 < endWeek) {
+			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
 			if (endWeek < activity.endWeek) {
 				activity.endWeek = endWeek;
+				if (startWeek < activity.startWeek) {
+					activity.startWeek = startWeek - 1;
+				}
 			}
 		}
 		this.endWeek = endWeek;

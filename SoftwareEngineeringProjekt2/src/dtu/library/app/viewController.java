@@ -17,7 +17,7 @@ public class viewController {
 	static int autoIndex = 0;
 	
 	public static void main(String args[]) throws OperationNotAllowedException, MissingAuthenticity {
-		Scanner console = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
 		scenes.add("Login menu"); //first scene
@@ -72,7 +72,7 @@ public class viewController {
 			System.out.println("---------------");
 			System.out.println("List of actions for " + currentScene);
 			System.out.println();
-			if (!currentScene.equals("Login menu")) {
+			if (!currentScene.equals("Login menu") && !currentScene.equals("Main menu")) {
 				System.out.println("back()"); //always go back
 			}
 			printActions(actionsCurrent);
@@ -97,7 +97,7 @@ public class viewController {
 				if (input != null) {
 					executeCommand(input);
 				}
-			} catch (OperationNotAllowedException | MissingAuthenticity e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}	
 		}
@@ -151,17 +151,17 @@ public class viewController {
 				"createEmployee(Erik)",
 				"logout()",
 				"login(Erik)",
-				"createProject(Project1, Intern)",
-				"createProject(Project2, Intern)",
-				"createProject(Project3, Intern)",
 				"createEmployee(Elias)",
 				"createEmployee(Oliver)",
 				"createEmployee(Jonas)",
 				"createEmployee(Liv)",
 				"createEmployee(Frederik)",
 				"createEmployee(Rasmus)",
+				
+				"createProject(Project1, Intern)",
 				"openProject(Project1)",
 				"setLeader(Erik)",
+				"getLeader()",
 				"setStartWeek(7)",
 				"setEndWeek(18)",
 				"addEmployee(Oliver)",
@@ -170,15 +170,20 @@ public class viewController {
 				"createActivity(Step2)",
 				"createActivity(Step3)",
 				"openActivity(Step1)",
-				"setEstimatedtime(30)",
+				"setEstimatedTime(30)",
 				"setStartWeek(3)",
 				"setEndWeek(5)",
 				"back()",
+				"back()",
+				
+				"createProject(Project2, Intern)",
 				"openProject(Project2)",
 				"setStartWeek(7)",
 				"setEndWeek(18)",
 				"setLeader(Oliver)",
 				"back()",
+				
+				"createProject(Project3, Intern)",
 				"openProject(Project3)",
 				"createActivity(Step1)",
 				"openActivity(Step1)",
@@ -187,12 +192,18 @@ public class viewController {
 				"setLeader(Liv)",
 				"back()",
 				"back()",
+
 				"openLog()",
-				"addActivity(2019-05-09,Project1,Step1,3)",
-				"addActivity(2019-05-09,Project1,Step2,4)",
-				"addActivity(2019-05-09,Project1,Step3,5)",
-				"back()"
+				"addActivity(2019-05-09,Project1,Step1,-3.5)",
+				"addActivity(2019-05-09,Project1,Step2,-4.5)",
+				"addActivity(2019-05-09,Project1,Step3,-5.5)",
+				"addActivity(2019-05-09,Project3,Step1,10.5)",
+				"back()",
 				
+				"createProject(bund, Intern)",
+				"openProject(bund)",
+				"createActivity(Step1)",
+				"openActivity(Step1)"
 				
 
 		});
@@ -263,17 +274,19 @@ public class viewController {
 		return scenes.get(scenes.size()-1);
 	}
 	
-	public static void executeCommand(String[] input) throws OperationNotAllowedException, MissingAuthenticity {
+	public static void executeCommand(String[] input) throws Exception {
 		
 		String command = input[0];
 		String parameter = input[1];
 		String currentScene = getCurrentScene();
-		
+		boolean backOrLogout = false;
+
 		if (!currentScene.equals("Login menu")){
 			switch(command) {
 			case "back":
 				if (scenes.size() > 2){ //main menu
 					scenes.remove(scenes.size()-1);
+					backOrLogout = true;
 				} else {
 					System.out.println("Cannot go further back");
 				}
@@ -283,6 +296,7 @@ public class viewController {
 				scenes.clear();
 				scenes.add("Login menu");
 				app.loggedIn = false;
+				backOrLogout = true;
 				break;
 			}
 		} 
@@ -305,6 +319,9 @@ public class viewController {
 				autoCommand = Integer.parseInt(parameter);
 				System.out.println("Executing action sequence");
 				break;
+			
+			default:
+				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
 			
 		} else if (currentScene.equals("Main menu")){
@@ -357,16 +374,11 @@ public class viewController {
 			case "getVacantEmployees":
 				ArrayList<Employee> vacantEmployees = null;
 				parameters = getParameters(parameter);
+				
 				startWeek = Integer.parseInt(parameters.get(0));
 				endWeek = Integer.parseInt(parameters.get(1));
-				try {
-					vacantEmployees = app.getVacantEmployees(startWeek,endWeek);
-				} catch (NumberFormatException e) {
-					System.out.println("Please enter a valid number");
-					e.printStackTrace();
-				} catch (Exception e) {
-					System.out.println("Something went wrong. Try a different parameter");
-				}
+				vacantEmployees = app.getVacantEmployees(startWeek,endWeek);
+					
 				System.out.println("All vacant employees at "+parameter);
 				for (Employee employee: vacantEmployees) {
 					System.out.println(employee.name);
@@ -393,7 +405,7 @@ public class viewController {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
 						setScene("Project");
-						System.out.println("Project succesfully found");
+						System.out.println("Project succesfully opened");
 						succes = true;
 						break;
 					}
@@ -402,19 +414,17 @@ public class viewController {
 					System.out.println("Project not found");
 				}
 				break;
+			
+			default:
+				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
 			
 		} else if (currentScene.equals("Project")){
 			switch(command) {
 			
 			case "rename":
-				try {
-					currentProject.setTitle(parameter);
-				} catch (Exception e1) {
-					System.out.println("Title already in use");
-					e1.printStackTrace();
-				}
-			
+				currentProject.setTitle(parameter);
+	
 			case "createActivity":
 				currentProject.createActivity(parameter);
 				break;		
@@ -424,25 +434,29 @@ public class viewController {
 				break;
 				
 			case "addEmployee":
+				boolean success = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.addEmployee(employee);
 						System.out.println("Employee succesfully added");
+						success = true;
 						break;
 					}
 				}
-				System.out.println("Employee not found");
+				if (!success) System.out.println("Employee not found");
 				break;
 			
 			case "setLeader":
+				success = false;
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter)) {
 						currentProject.setLeader(employee);
 						System.out.println("Project leader succesfully set");
+						success = true;
 						break;
 					} 
 				}
-				System.out.println("Employee not found");
+				if(!success) System.out.println("Employee not found");
 				break;
 			
 			case "getLeader":
@@ -462,36 +476,15 @@ public class viewController {
 			case "setStartWeek":
 				int startWeek = Integer.parseInt(parameter);
 				
-				if (startWeek < 1) {
-					System.out.println("Please enter a weeknumber greater than 1");
-					break;
-				}
-				try {
-					currentProject.setStartWeek(startWeek);
-				} catch (NumberFormatException e) {
-					System.out.println("Please enter a valid number");
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				currentProject.setStartWeek(startWeek);
+				System.out.println("Startweek set to " + startWeek);
 				break;
 			
 			case "setEndWeek":
 				int endWeek = Integer.parseInt(parameter);
+				currentProject.setStartWeek(endWeek);
 				
-				if (endWeek < 1) {
-					System.out.println("Please enter a weeknumber greater than 0");
-					break;
-				}
-				
-				try {
-					currentProject.setEndWeek(endWeek);
-				} catch (NumberFormatException e) {
-					System.out.println("Please enter a valid number");
-					e.printStackTrace();
-				} catch (Exception e) { //if activity is longer than project
-					e.printStackTrace();
-				}
+				System.out.println("Endweek set to " + endWeek);
 				break;
 				
 			case "printStatus":
@@ -520,6 +513,9 @@ public class viewController {
 				break;
 			case "getSummary":
 				currentProject.printStatus();
+			
+			default:
+				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
 			
 		} else if (currentScene.equals("Activity")){
@@ -541,58 +537,36 @@ public class viewController {
 				break;
 				
 			case "setEstimatedTime":
-				int estimatedTime = Integer.parseInt(parameter);
+				float estimatedTime = Float.parseFloat(parameter);
 				
-				if (estimatedTime < 0) {
-					System.out.println("Please enter a non-negative number");
-					break;
-				}
-				
-				try {
-					currentActivity.setEstimatedTime(estimatedTime);
-				} catch (Exception e2) {
-					System.out.print("Please enter valid integer");
-					e2.printStackTrace();
-				}
+				currentActivity.setEstimatedTime(estimatedTime);
+				System.out.println("Estimated time set to " + estimatedTime + " hours");
 				break;
 			
 			case "setStartWeek":
 				int weekNumber = Integer.parseInt(parameter);
 				
-				if (weekNumber < 1) {
-					System.out.println("Please enter a weeknumber greater than 0");
-					break;
-				}
-				
-				try {
-					currentActivity.setStartWeek(weekNumber);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+				currentActivity.setStartWeek(weekNumber);
+
+				System.out.println("Startweek set to " + weekNumber);
 				break;
 				
 			case "setEndWeek":
 				weekNumber = Integer.parseInt(parameter);
-				if (weekNumber < 1) {
-					System.out.println("Please enter a weeknumber over 0");
-					break;
-				}
 				
-				try {
-					currentActivity.setEndWeek(weekNumber);
-				} catch (NumberFormatException e) {
-					System.out.println("Please enter a valid number");
-					e.printStackTrace();
-				} catch (Exception e) {
-					System.out.println("Unexpected exception - try another parameter");
-					e.printStackTrace();
-				}
+				currentActivity.setEndWeek(weekNumber);
+
+				System.out.println("Endweek set to " + weekNumber);
 				break;
 			
 			case "getSummary":
 				currentActivity.printStatus();
 				break;
+				
+			default:
+				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
+			
 		} else if (currentScene.equals("Log")){
 			switch(command) { 
 			case "addActivity":
@@ -616,7 +590,7 @@ public class viewController {
 						break;
 					}
 				}
-				int hours = Integer.parseInt(parameters.get(3));
+				float hours = Float.parseFloat(parameters.get(3));
 				app.user.addActivityToLog(date,currentActivity,hours);
 				break;
 				
@@ -651,6 +625,9 @@ public class viewController {
 				
 				System.out.println("Total "+totalHours+" hours");
 				break;
+				
+			default:
+				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
 			}
 		}
 	}

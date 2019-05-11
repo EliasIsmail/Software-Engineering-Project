@@ -75,7 +75,7 @@ public class App {
 			boolean isOccupied = false;
 			innerLoop:
 			for (Project project: employee.assignedProjects) {
-				if (project.endWeek > week && project.startWeek < week) {
+				if (project.endWeek >= week && project.startWeek <= week) {
 					isOccupied = true;
 					break innerLoop;
 				}
@@ -89,7 +89,10 @@ public class App {
 		return occupiedEmployees;
 	}
 	
-	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek){
+	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek) throws OperationNotAllowedException{
+		if (startWeek > endWeek || startWeek < 1 || startWeek > 53 ||  endWeek < 1 || endWeek > 53) {
+			throw new OperationNotAllowedException("Undefined week number");
+		}
 		ArrayList<ArrayList<Employee>> runs = new ArrayList<ArrayList<Employee>>();
 		for (int week=startWeek; week<endWeek; week++) {
 			runs.add(getOccupiedEmployees(week));
