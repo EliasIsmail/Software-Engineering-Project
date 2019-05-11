@@ -16,7 +16,7 @@ public class viewController {
 	static int autoCommand = -1;
 	static int autoIndex = 0;
 	
-	public static void main(String args[]) throws OperationNotAllowedException, MissingAuthenticity {
+	public static void main(String args[]) {
 		Scanner console = new Scanner(System.in);
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
 		
