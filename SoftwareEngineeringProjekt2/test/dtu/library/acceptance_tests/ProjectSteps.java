@@ -150,14 +150,9 @@ public class ProjectSteps {
 	@Given("there exists a project with a project leader")
 	public void thereExistsAProjectWithAProjectLeader() {
 	    try {
-			project = app.createProject("Test", "Intern");
-			employee = app.createEmployee("emp1");
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-
-	    app.login("emp1");
-	    try {
+			project = app.createProject("TestUnique", "Intern");
+			employee = app.createEmployee("employeeUnique1");
+			app.login(employee.name);
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -165,13 +160,18 @@ public class ProjectSteps {
 	}
 
 	@Given("the user is not the leader of the project")
-	public void theUserIsNotTheLeaderOfTheProject() {
+	public void theUserIsNotTheLeaderOfTheProject() { 
 	    try {
-			employee = app.createEmployee("emp2");
+			employee = app.createEmployee("employeeUnique9");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	    app.login("emp2");
+	    for (Employee employee: app.employees) {
+	    	if (!employee.equals(project.getLeader())) {
+	    		app.login(employee.name);
+	    		break;
+	    	}
+	    }
 	}
 
 	@When("the user attempts to change the leader of the project")
@@ -185,8 +185,8 @@ public class ProjectSteps {
 
 	@Then("the user gets an error message saying: {string}")
 	public void TheUserGetAnErrorMessageSaying(String ErrorMessage) {
-	    assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
-
+		System.out.println("The error msg is: "+errorMessageHolder.getErrorMessage());
+		assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 	}
 	
 	@Given("the necessary info for a status is filled out")
@@ -229,7 +229,7 @@ public class ProjectSteps {
 	@When("the user sets the start week of the project to {int}")
 	public void theUserSetsTheStartWeekOfTheProjectTo(Integer week) {
 	    try {
-			project.setStartWeek(week);
+	    	project.setStartWeek(week);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}

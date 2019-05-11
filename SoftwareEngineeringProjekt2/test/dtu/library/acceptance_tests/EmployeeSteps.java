@@ -10,6 +10,7 @@ import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.OperationNotAllowedException;
 
 public class EmployeeSteps {
 	private App app;
@@ -25,17 +26,26 @@ public class EmployeeSteps {
 	public void theUserIsAnEmployee() {
 		employee = new Employee("Oliver");
 		if(!app.employees.contains(employee)) {
-			employee = app.createEmployee("Oliver");
-		}
-			app.login(employee.name);
-		}
+			try {
+				employee = app.createEmployee("Oliver");
+				app.login(employee.name);
+			} catch (OperationNotAllowedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
 
 	@When("the user registers {int} work hours on a given date")
 	public void theUserRegisters7WorkHoursOnAGivenDate(int workhours) {
-		employee.addProject(app.projects.get(0));
-		employee.addActivity(app.projects.get(0).activities.get(0));
-		employee.addActivityToLog(date,app.projects.get(0).activities.get(0),workhours);
-		System.out.println(employee.assignedActivities.get(0).name);
+		try {
+			employee.addProject(app.projects.get(0));
+			employee.addActivity(app.projects.get(0).activities.get(0));
+			employee.addActivityToLog(date,app.projects.get(0).activities.get(0),workhours);
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Then("the employees work hours are registered in the system")

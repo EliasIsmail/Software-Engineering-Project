@@ -50,7 +50,7 @@ public class App {
 		return employee;
 	}
 	
-
+ 
 
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
 		if (title == null || client == null) {
@@ -168,6 +168,7 @@ public class App {
 				//if name is found, user is set to that person
 				loggedIn = true;
 				user = employee;
+				return;
 			}
 		}
 	}
