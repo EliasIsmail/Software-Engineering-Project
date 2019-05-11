@@ -139,9 +139,9 @@ public class viewController {
 		});
 		commands.add(new String[] {
 				"login(Admin)",
-				"createEmployee(Eric)",
+				"createEmployee(Erik)",
 				"logout()",
-				"login(Eric)",
+				"login(Erik)",
 				"createProject(Project1, Intern)",
 				"createProject(Project2, Intern)",
 				"createProject(Project3, Intern)",
@@ -151,7 +151,7 @@ public class viewController {
 				"openLog()",
 				"back()",
 				"getEmployees()",
-				"getOccupiedEmployees(3)",
+//				"getOccupiedEmployees(3)",
 //				"getVacantEmployees(weekNumber)",
 				"getProjects()",
 				"getAssignedProjects()",
