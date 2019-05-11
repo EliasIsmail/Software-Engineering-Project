@@ -58,7 +58,11 @@ public class ActivitySteps {
 
 	@Given("the user is the leader of the project")
 	public void theUserIsTheLeaderOfTheProject() throws MissingAuthenticity {
+		try {
 		leader = app.createEmployee("leader");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		app.login("leader");
 		try {
 			app.projects.get(0).setLeader(leader);
@@ -171,7 +175,11 @@ public class ActivitySteps {
 			} catch (OperationNotAllowedException e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
 			}
+		  try {
 		    employee = app.createEmployee("emp1");
+		  } catch (OperationNotAllowedException e) {
+			  errorMessageHolder.setErrorMessage(e.getMessage());
+		  }
 		    app.login("emp1");
 		    try {
 				project.setLeader(employee);

@@ -84,7 +84,7 @@ public class viewController {
 			try {
 				if (autoCommand == -1) {
 					//user input
-					input = splitInput(console.nextLine());
+					input = splitInput(scanner.nextLine());
 				} else {
 					input = splitInput(autoCommands());
 				}
