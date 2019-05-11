@@ -149,13 +149,9 @@ public class viewController {
 				"createEmployee(Oliver)",
 				"createEmployee(Jonas)",
 				"openLog()",
-				"back()",
-				"getEmployees()",
-//				"getOccupiedEmployees(3)",
-//				"getVacantEmployees(weekNumber)",
-				"getProjects()",
-				"getAssignedProjects()",
-				"openProject(title)",
+				"addActivity(2019-05-21,Project1,Activity1.1,11)",
+				
+				
 
 		});
 		
@@ -230,7 +226,6 @@ public class viewController {
 			case "back":
 				if (scenes.size() > 2){ //main menu
 					scenes.remove(scenes.size()-1);
-					System.out.println("Newest Scene "+scenes.get(scenes.size()-1));
 				} else {
 					System.out.println("Cannot go further back");
 				}
@@ -345,15 +340,17 @@ public class viewController {
 				break;
 			
 			case "openProject":
+				boolean found = false;
 				for (Project project: app.projects) {
 					if (project.getTitle().equals(parameter)) {
 						currentProject = project;
 						setScene("Project");
 						System.out.println("Project succesfully found");
+						found = true;
 						break;
 					}
 				}
-				System.out.println("Project not found");
+				if (!found) System.out.println("Project not found");
 				break;
 			}
 			
@@ -459,14 +456,17 @@ public class viewController {
 				break;
 			
 			case "openActivity":
+				boolean found = false;
 				for (Activity activity: currentProject.activities) {
 					if (activity.name.equals(parameter)) {
 						currentActivity = activity;
 						setScene("Activity");
+						System.out.println("Activity succesfully found");
+						found = true;
 						break;
 					}
 				}
-				System.out.println("Could not find the specified activity");
+				if (!found) System.out.println("Could not find the specified activity");
 				break;
 			case "getSummary":
 				currentProject.printStatus();

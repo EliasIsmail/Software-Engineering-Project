@@ -68,7 +68,7 @@ public class ActivitySteps {
 //		for(Project p:app.projects) {
 //			
 //		}
-		assertTrue(app.projects.get(0).isLeader());
+		assertTrue(app.projects.get(0).getLeader().equals(leader));
 	}
 
 	@When("the user adds the available employee to the activity")
