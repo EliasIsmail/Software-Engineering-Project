@@ -27,7 +27,7 @@ public class Activity {
 		//assigns employee to an activity
 		if (!employees.contains(employee)){
 			employees.add(employee);
-		}
+		} 
 		
 		project.addEmployee(employee); //adding employee to project
 		employee.addActivity(this); //adding activity to employee

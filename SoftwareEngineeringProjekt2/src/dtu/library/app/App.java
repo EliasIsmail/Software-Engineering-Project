@@ -13,12 +13,12 @@ public class App {
 	static boolean loggedIn = false;
 	public static Employee user = null;
 
-	
 	public App() {
 		try {
 			user = createEmployee("Admin");
-		} catch (OperationNotAllowedException e1) {
+		} catch (OperationNotAllowedException e) {
 			//this will never happen
+			System.out.println(e.getMessage());
 		}	
 		Project misc;
 		try {
@@ -27,8 +27,7 @@ public class App {
 			misc.createActivity("SickDay");
 			misc.createActivity("Course");
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 	

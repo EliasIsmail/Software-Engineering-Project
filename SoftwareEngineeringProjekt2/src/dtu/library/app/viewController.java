@@ -47,9 +47,6 @@ public class viewController {
 				"getEstimatedTime()",
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
-				"getStartWeek()",
-				"getEndWeek()",
-				"printStatus()",
 				"getActivities()",
 				"openActivity(name)",
 				"getSummary()"
@@ -60,7 +57,7 @@ public class viewController {
 				"getEstimatedTime()",
 				"setStartWeek(weekNumber)",
 				"setEndWeek(weekNumber)",
-				"printStatus()"
+				"getSummary()"
 		});
 		actions.put("Log", new String[] {
 				"getOverview(yyyy-mm-dd)",
@@ -91,7 +88,7 @@ public class viewController {
 				} else {
 					input = splitInput(autoCommands());
 				}
-			} catch (OperationNotAllowedException e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 			
