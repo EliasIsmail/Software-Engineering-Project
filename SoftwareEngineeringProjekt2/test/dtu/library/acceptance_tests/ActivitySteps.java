@@ -122,10 +122,10 @@ public class ActivitySteps {
 	@When("the user sets the start week of the activity to {int}")
 	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
 		try {
-			 app.projects.get(1).setStartWeek(1);
+			 app.projects.get(0).setStartWeek(1);
 			 System.out.println(app.projects.get(0).startWeek);
-			 app.projects.get(1).setEndWeek(6);
-			 app.projects.get(1).activities.get(0).setStartWeek(100);
+			 app.projects.get(0).setEndWeek(6);
+			 app.projects.get(0).activities.get(0).setStartWeek(100);
 			 System.out.println(app.projects.get(0).activities.get(0).startWeek);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
