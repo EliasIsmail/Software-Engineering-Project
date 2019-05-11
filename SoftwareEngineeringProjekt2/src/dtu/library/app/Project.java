@@ -73,7 +73,8 @@ public class Project {
 		//adds employee to project
 		if (!employees.contains(employee)){
 			employees.add(employee);
-		}
+			employee.addProject(this);
+		} 
 	}
 	
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
@@ -138,6 +139,7 @@ public class Project {
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
+		System.out.println();
 		System.out.println("Project: "+title+", #"+projectId + " for " + client);
 		System.out.println("Employees: ");
 		for (Employee employee: employees) {
@@ -157,9 +159,9 @@ public class Project {
 		
 		for (Activity activity: activities) {
 			activity.printStatus();
-		}
-		System.out.println("-------------------------");
-		
+		}	
+		System.out.println();
+		System.out.println();
 	}
 	
 

@@ -25,10 +25,9 @@ public class Activity {
 	
 	public void addEmployee(Employee employee) throws OperationNotAllowedException {
 		//assigns employee to an activity
-		if (!employees.contains(employee)){
-			employees.add(employee);
-		} 
+		if (employees.contains(employee)) throw new OperationNotAllowedException("Activity is already assigned to employee"); 
 		
+		employees.add(employee);
 		project.addEmployee(employee); //adding employee to project
 		employee.addActivity(this); //adding activity to employee
 		employee.addProject(project); //adding project to employee
@@ -76,6 +75,7 @@ public class Activity {
 		for (Employee employee: employees) {
 			System.out.println(employee.name);
 		}
+		System.out.println();
 		System.out.println("Start week: " + startWeek);
 		System.out.println("End week: " + endWeek);
 		System.out.println("Estimated total work: "+estimatedTime);

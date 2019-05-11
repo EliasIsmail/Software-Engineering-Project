@@ -65,6 +65,7 @@ public class ActivitySteps {
 			project.setLeader(leader);
 			assertTrue(project.getLeader().equals(leader));
 		} catch (OperationNotAllowedException e) {
+			System.out.println("Jeg laver nada");
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
