@@ -25,51 +25,57 @@ public class Activity {
 	
 	public void addEmployee(Employee employee) throws OperationNotAllowedException {
 		//assigns employee to an activity
-		if (!employees.contains(employee)){
-			employees.add(employee);
-		} 
+		if (employees.contains(employee)) throw new OperationNotAllowedException("Activity is already assigned to employee"); 
 		
+		employees.add(employee);
 		project.addEmployee(employee); //adding employee to project
 		employee.addActivity(this); //adding activity to employee
 		employee.addProject(project); //adding project to employee
 	}
 	
-	public void setEstimatedTime(int estimatedTime) throws Exception {
+	public void setEstimatedTime(float estimatedTime) throws Exception {
 		project.checkAuthenticity();
 		if (estimatedTime < 0) {
-			throw new Exception("Impossible time frame for activity");
+			throw new Exception("Please enter valid integer");
 		}
 		this.estimatedTime = estimatedTime;
 	}
 	
 
-	public void setStartWeek(int startWeek) throws Exception {
+	public void setStartWeek(int startWeek) throws OperationNotAllowedException  {
+		project.checkAuthenticity();
+		
+		/* TODO 
 		if (project.startWeek != 0 && startWeek < project.startWeek) { //before
-			throw new Exception("Activity start date before project start date");
-		}
-		if (startWeek > 53 || startWeek < 1) {
+			throw new Exception("Activity startweek before project startweek");
+		}else if (startWeek > 53 || startWeek < 1) {
 			throw new Exception("Undefined week number");
 		}
-//		if (this.startWeek != 0) {
-//			throw new Exception("Start week has already been set");
-//		}
-			
+		*/
+
 		this.startWeek = startWeek;
 	}
 	
-	public void setEndWeek(int endWeek) throws Exception {
+	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
+		project.checkAuthenticity();
+		
+		/* TODO
 		if (project.endWeek != 0 && endWeek > project.endWeek) { //after
-			throw new Exception("Activity end date after project end date");
-		}
+			throw new Exception("Activity endweek after project endweek");
+		} else if (endWeek > 53 || endWeek < 1) {
+			throw new Exception("Undefined week number");
+		} */
+		
 		this.endWeek = endWeek;
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
 		System.out.println("Activity: "+name+" from project "+project.getTitle());
-		System.out.println("Members: ");
+		System.out.println("Employees: ");
 		for (Employee employee: employees) {
 			System.out.println(employee.name);
 		}
+		System.out.println();
 		System.out.println("Start week: " + startWeek);
 		System.out.println("End week: " + endWeek);
 		System.out.println("Estimated total work: "+estimatedTime);

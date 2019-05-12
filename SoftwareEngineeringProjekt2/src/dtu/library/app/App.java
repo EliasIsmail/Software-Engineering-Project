@@ -14,12 +14,14 @@ public class App {
 	public static Employee user = null;
 
 	public App() {
+		//create first user
 		try {
 			user = createEmployee("Admin");
 		} catch (OperationNotAllowedException e) {
-			//this will never happen
 			System.out.println(e.getMessage());
-		}	
+		}
+		
+		//Setup project for misc registration
 		Project misc;
 		try {
 			misc = createProject("Misc","Administration");
@@ -39,49 +41,76 @@ public class App {
 	 */
 
 	public Employee createEmployee(String name) throws OperationNotAllowedException {
+		if (name == null || name.equals("")) {
+			throw new OperationNotAllowedException("Missing parameters");
+			//throw new OperationNotAllowedException("Missing parameters");
+
+		}
+		
 		//creates new employee
 		for (Employee employee: employees) {
 			if (employee.name.equals(name)) {
-				throw new OperationNotAllowedException("Name already in use");
+				return employee;
+				//throw new OperationNotAllowedException("Name already in use");
 			}
 		}
+		//Employee added to list
 		Employee employee = new Employee(name);
 		employees.add(employee);
-		return employee;
+		return employee;			//return employee for easy use
 	}
 	
-
-
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
 		if (title == null || client == null) { //1
 			throw new OperationNotAllowedException("Missing project information");
+			//throw new OperationNotAllowedException("Missing project information");
 		}
+		
+		//preconditions
+		assert title != null: "Precondition violated";
+		assert client != null: "Precondition violated";
+		assert title != "": "Precondition violated";
+		assert client != "": "Precondition violated";
+		
+		int projectsSizeAtPre = projects.size();
+		
+		
 		for (Project project:projects) {
-			if (title.equals(project.getTitle())) //2
-		throw new OperationNotAllowedException("Duplicate title, please pick another title");
-
+			if (title.equals(project.getTitle())) {
+				return project; //TODO THIS HAS BEEN CHANGED
+			}
 		}
+		
+		if (title.equals("") || client.equals("")) {
+			throw new OperationNotAllowedException("Title and client must not be empty");
+			//throw exception
+		}
+		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
 		projectCounter++;
 		Project project = new Project(title, client, projectId,this);
-		projects.add(project); //3
+		projects.add(project);
+		
+		// postconditions
+		//TODO there exists a project with the given parameters
+		
 		return project;
 	}
 	
 	public ArrayList<Employee> getOccupiedEmployees(int week){
 		//employees are occupied if they are assigned to at least one project
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
-		
 		for (Employee employee: employees) {
 			boolean isOccupied = false;
 			innerLoop:
 			for (Project project: employee.assignedProjects) {
-				if (project.endWeek > week && project.startWeek < week) {
+				if (project.endWeek >= week && project.startWeek <= week) {
 					isOccupied = true;
 					break innerLoop;
 				}
 			}
 			
+			//employee is added to the return list
 			if (isOccupied) {
 				occupiedEmployees.add(employee);
 			}
@@ -90,20 +119,28 @@ public class App {
 		return occupiedEmployees;
 	}
 	
-	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek){
+	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek) throws OperationNotAllowedException{
+		if (startWeek > endWeek || startWeek < 1 || startWeek > 53 ||  endWeek < 1 || endWeek > 53) {
+			throw new OperationNotAllowedException("Undefined week number");
+			//throw exception
+		}
+		//create a list of lists for the specified weeks with occupied employees
 		ArrayList<ArrayList<Employee>> runs = new ArrayList<ArrayList<Employee>>();
 		for (int week=startWeek; week<endWeek; week++) {
 			runs.add(getOccupiedEmployees(week));
 		}
 		
+		//gather all employees that are present in all the list
 		if (runs.size() > 0) {
 			ArrayList<Employee> occupiedTrue = runs.get(0);
 			for (ArrayList<Employee> occupied: runs) {
 				occupiedTrue.retainAll(occupied);
 			}
+			//return the list
 			return occupiedTrue;
 		}
 		
+		//return empty list
 		return new ArrayList<Employee>();
 	}
 	
@@ -133,15 +170,10 @@ public class App {
 		return null;
 	}
 	
-	public Date getSpecificDate(String date) {
+	public Date getSpecificDate(String date) throws ParseException {
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		try {
-			return simpleDateFormat.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return simpleDateFormat.parse(date);
 	}
 	
 	public void login(String loginName) {
@@ -151,7 +183,27 @@ public class App {
 				//if name is found, user is set to that person
 				loggedIn = true;
 				user = employee;
+				return;
 			}
 		}
+	}	
+	
+	public Project getProject(String title, String client) throws Exception {
+		for (Project project: projects) {
+			if (project.getTitle().equals(title) && project.getClient().equals(client)) {
+				return project;
+			}
+		}
+		throw new Exception("Desired object does not exists");
 	}
+	
+	public Employee getEmployee(String name) throws Exception {
+		for (Employee employee: employees) {
+			if (employee.name.equals(name)) {
+				return employee;
+			}
+		}
+		throw new Exception("Desired object does not exists");
+	}
+	
 }

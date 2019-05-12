@@ -51,28 +51,21 @@ public class ActivitySteps {
 	}
 
 	@Given("an employee is available")
-	public void anEmployeeIsAvailable() throws Exception {
+	public void anEmployeeIsAvailable() throws Exception { 
 		app.createEmployee("Erik");
 		assertTrue(app.getVacantEmployees(week,week+1).contains(app.employees.get(0)));
 	}
 
 	@Given("the user is the leader of the project")
-	public void theUserIsTheLeaderOfTheProject() throws MissingAuthenticity {
+	public void theUserIsTheLeaderOfTheProject() {
 		try {
-		leader = app.createEmployee("leader");
+			leader = app.createEmployee("Mao Zedong");
+			app.login(leader.name);
+			project.setLeader(leader);
+			assertTrue(project.getLeader().equals(leader));
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		app.login("leader");
-		try {
-			app.projects.get(0).setLeader(leader);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-//		for(Project p:app.projects) {
-//			
-//		}
-		assertTrue(app.projects.get(0).getLeader().equals(leader));
 	}
 
 	@When("the user adds the available employee to the activity")
@@ -84,14 +77,15 @@ public class ActivitySteps {
 	public void theEmployeeIsAddedToTheActivityInTheSystem() {
 		assertTrue(app.projects.get(0).activities.get(0).employees.contains(app.employees.get(0)));
 	}
+	
 	@Given("there exists a project")
 	public void thereExistsAProject() {
 		try {
-		app.createProject("Snake", "Ubisoft");
+			project = app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
-		errorMessageHolder.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		assertTrue(app.projects!=null);
+		assertTrue(app.projects.get(app.projects.size()-1) == project); //last added project
 	}
 
 	@When("the user creates an activity with title {string}")
@@ -137,7 +131,7 @@ public class ActivitySteps {
 	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
 		assertThat(errorMessageHolder.getErrorMessage(), is(equalTo(errorMessage)));
 	}
-
+ 
 	@When("the user sets the estimated time for an activity to {int} weeks")
 		public void theUserSetsTheEstimatedTimeForAnActivity(int number) {
 			try{
@@ -170,27 +164,15 @@ public class ActivitySteps {
 	}
 	@Given("there exists an activity in a project with a project leader")
 	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
-		  try {
+			try {
 				project = app.createProject("Test", "Intern");
+				employee = app.createEmployee("emp1");
+			    app.login("emp1");
+			    project.setLeader(employee);
+			    activity = project.createActivity("Game Mechanics");
 			} catch (OperationNotAllowedException e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
 			}
-		  try {
-		    employee = app.createEmployee("emp1");
-		  } catch (OperationNotAllowedException e) {
-			  errorMessageHolder.setErrorMessage(e.getMessage());
-		  }
-		    app.login("emp1");
-		    try {
-				project.setLeader(employee);
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
-		    try {
-		    	activity = project.createActivity("Game Mechanics");
-		    } catch (OperationNotAllowedException e) {
-		    	errorMessageHolder.setErrorMessage(e.getMessage());
-		    }
 		}
 	
 	@Given("the necessary info for an activity status is filled out")

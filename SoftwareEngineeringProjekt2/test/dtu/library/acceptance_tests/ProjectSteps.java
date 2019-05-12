@@ -10,6 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import dtu.library.app.Activity;
@@ -31,6 +32,11 @@ public class ProjectSteps {
 	public ProjectSteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
 		this.errorMessageHolder = errorMessageHolder;
+		try {
+			project = app.createProject("TestUnique", "Intern1");
+		} catch (OperationNotAllowedException e) {
+			System.out.println("ERROR1");
+		}
 	}
 
 	@When("the employee creates a project with title {string} and the client {string}")
@@ -44,8 +50,8 @@ public class ProjectSteps {
 	
 	@Then("the project is created with the title {string} and client {string}")
 	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
-		assertTrue(app.projects.get(1).getTitle().equals(title));
-		assertTrue(app.projects.get(1).getClient().equals(client));
+		assertTrue(app.projects.get(2).getTitle().equals(title));
+		assertTrue(app.projects.get(2).getClient().equals(client));
 	}
 	
 	@When("the employee creates a project without a title or a client")
@@ -118,7 +124,7 @@ public class ProjectSteps {
 
 	@Given("there exist an employee")
 	public void thereExistAnEmployee() {
-	    try {
+		try {
 			app.createEmployee("Erik");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -149,29 +155,39 @@ public class ProjectSteps {
 	
 	@Given("there exists a project with a project leader")
 	public void thereExistsAProjectWithAProjectLeader() {
-	    try {
-			project = app.createProject("Test", "Intern");
-			employee = app.createEmployee("emp1");
+		try {
+			project = app.createProject("TestUnique", "Intern1");
 		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
+			System.out.println("ERROR");
 		}
-
-	    app.login("emp1");
-	    try {
+		try {
+			employee = app.createEmployee("justSomeLeader");
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		app.login(employee.name);
+		try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	@Given("the user is not the leader of the project")
-	public void theUserIsNotTheLeaderOfTheProject() {
-	    try {
-			employee = app.createEmployee("emp2");
+	public void theUserIsNotTheLeaderOfTheProject() { 
+		try {
+			employee = app.createEmployee("employeeUnique9");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	    app.login("emp2");
+	    for (Employee employee: app.employees) {
+	    	if (!employee.equals(project.getLeader())) {
+	    		app.login(employee.name);
+	    		break;
+	    	}
+	    }
 	}
 
 	@When("the user attempts to change the leader of the project")
@@ -185,8 +201,7 @@ public class ProjectSteps {
 
 	@Then("the user gets an error message saying: {string}")
 	public void TheUserGetAnErrorMessageSaying(String ErrorMessage) {
-	    assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
-
+		assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 	}
 	
 	@Given("the necessary info for a status is filled out")
@@ -229,7 +244,7 @@ public class ProjectSteps {
 	@When("the user sets the start week of the project to {int}")
 	public void theUserSetsTheStartWeekOfTheProjectTo(Integer week) {
 	    try {
-			project.setStartWeek(week);
+	    	project.setStartWeek(week);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -286,12 +301,141 @@ public class ProjectSteps {
 
 	@When("the user sets the project end week to {int}")
 	public void theUserSetsTheProjectEndWeekTo(Integer week) {
-		 try {
-				project.setEndWeek(week);
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
+	 	try {
+			project.setEndWeek(week);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
+	
+	@When("the user renames the title to {string}")
+	public void theUserRenamesTheTitle(String title) {
+	    try {
+			project.setTitle(title);
+		} catch (OperationNotAllowedException e) { //authenticity exception
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	} 
+
+	@Then("then the title is renamed to {string}")
+	public void thenTheTitleIsRenamd(String title) {
+	    assertTrue(project.getTitle().equals(title));
+	}
+	
+	@Given("there exists a project with title {string} and client {string}")
+	public void thereExistsAProjectWithTitle(String title, String client) {
+		try {
+			project = app.createProject(title,client);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("the project has an activity with estimated time set to {float}")
+	public void theProjectHasAnActivityWithEstimatedTimeSetTo(Float flo1) throws Exception {
+	    project.createActivity("someActivity"+flo1).setEstimatedTime(flo1);
+	}
+
+	@Then("the projects estimated time is set to {float}")
+	public void theProjectsEstimatedTimeIsSetTo(Float flo1) {
+		assertTrue(project.getEstimatedTime() == flo1);
+	}
+	
+	@Given("an employee has logged {float} hours of work to the activity")
+	public void anEmployeeHasLoggedHoursOfWorkToTheActivity(Float flo1) throws OperationNotAllowedException, ParseException {
+	    project.getLeader().addActivityToLog(app.getSpecificDate("2019-05-21"), project.activities.get(0), flo1);
+	}
+
+	@Then("the projects time is set to {float}")
+	public void theProjectsTimeIsSetTo(Float flo1) {
+	    assertTrue(project.getTime() == flo1);
+	}
+	
+	@Given("endweek is set to {int}")
+	public void endweekIsSetTo(Integer int1) {
+	    try {
+			project.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("startweek is set to {int}")
+	public void startweekIsSetTo(Integer int1) {
+		try {
+			project.setStartWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("the project has an activity with endweek set to {int}")
+	public void theProjectHasAnActivityWithEndweekSetTo(Integer int1) {
+	    try {
+			activity = project.createActivity("activityWithEndweek"+int1);
+			activity.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I set the projects endweek to {int}")
+	public void iSetTheProjectsEndweekTo(Integer int1) {
+	    try {
+			project.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the activitys endweek is set to {int}")
+	public void theActivitysEndweekIsSetTo(Integer int1) {
+		assertTrue(activity.endWeek == int1);
+	}
+	
+	@Then("we can find the project using title and client")
+	public void weCanFindTheProjectUsingTitleAndClient() {
+		try {
+			app.getProject("Design GUI", "Microsoft").getTitle().equals("Design GUI");
+			app.getProject("Design GUI", "Microsoft").getClient().equals("Microsoft");
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I create a project with title {string} and client {string}")
+	public void iCreateAProjectWithTitleAndClient(String title, String client) {
+	    try {
+			project = app.createProject(title, client);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I search for the project")
+	public void iSearchForTheProject() {
+	    try {
+			project = app.getProject(project.getTitle(), project.getClient());
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("I find it")
+	public void iFindIt() {
+		assertTrue(project.getTitle().equals("Brew tea"));
+		assertTrue(project.getClient().equals("Myself"));
+	}
+
+	@When("I search for a nonexisting project")
+	public void iSearchForANonexistingProject() {
+		try {
+			app.getProject("ExceedSpeedOfLight", "MadScientist");
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
 }
 	
 

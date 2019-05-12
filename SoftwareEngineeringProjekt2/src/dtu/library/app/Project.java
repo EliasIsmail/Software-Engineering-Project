@@ -24,11 +24,19 @@ public class Project {
 	}
 	
 	public void checkAuthenticity() throws OperationNotAllowedException {
+		//preconditions
+		//TODO save this contract
+		
+		assert true;
+		
 		if (leader != null) { //1
 			if (leader != app.user) { //2
-				throw new OperationNotAllowedException("The user isn't leader of the project");
+				throw new OperationNotAllowedException("User must be leader to execute operation");
 			}
 		}
+		
+		//postconditions 
+		assert true;
 	}
 	
 	public Activity createActivity(String name) throws OperationNotAllowedException {
@@ -65,7 +73,8 @@ public class Project {
 		//adds employee to project
 		if (!employees.contains(employee)){
 			employees.add(employee);
-		}
+			employee.addProject(this);
+		} 
 	}
 	
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
@@ -98,13 +107,16 @@ public class Project {
 	
 	public void setStartWeek(int startWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (startWeek < 0) {
-			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
+		if (startWeek < 1 || 53 < startWeek) {
+			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
 
 			if (startWeek > activity.startWeek) {
 				activity.startWeek = startWeek;
+				if (startWeek > activity.endWeek) {
+					activity.endWeek = startWeek + 1;
+				}
 			}
 		}
 		this.startWeek = startWeek;
@@ -112,18 +124,22 @@ public class Project {
 	
 	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (endWeek < 0) {
-			throw new OperationNotAllowedException("Weeknumbers must be non-negative integers");
+		if (endWeek < 1 || 53 < endWeek) {
+			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
 			if (endWeek < activity.endWeek) {
 				activity.endWeek = endWeek;
+				if (startWeek < activity.startWeek) {
+					activity.startWeek = startWeek - 1;
+				}
 			}
 		}
 		this.endWeek = endWeek;
 	}
 	
 	public void printStatus() throws OperationNotAllowedException {
+		System.out.println();
 		System.out.println("Project: "+title+", #"+projectId + " for " + client);
 		System.out.println("Employees: ");
 		for (Employee employee: employees) {
@@ -143,9 +159,8 @@ public class Project {
 		
 		for (Activity activity: activities) {
 			activity.printStatus();
-		}
-		System.out.println("-------------------------");
-		
+		}	
+		System.out.println();
 	}
 	
 

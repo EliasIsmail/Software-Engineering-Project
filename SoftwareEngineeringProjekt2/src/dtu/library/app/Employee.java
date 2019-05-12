@@ -25,18 +25,45 @@ public class Employee {
 	}
 	
 	public Activity addActivity(Activity activity) {
+		
+		//preconditions
+		assert activity != null: "Precondition violated";
+		assert !assignedActivities.contains(activity): "Precondition violated";
+		int assignedActivitiesSizeAtPre = assignedActivities.size();
+		
 		if (!assignedActivities.contains(activity)) {
 			assignedActivities.add(activity);
 		}
+		
+		// postconditions
+		assert assignedActivities.size() == assignedActivitiesSizeAtPre +1: "Postcondition violated";
+		
 		return activity;
 	}
 	
-	public void addActivityToLog(Date date, Activity activity, float hours) {
+	public void addActivityToLog(Date date, Activity activity, float hours) throws OperationNotAllowedException {
+		if(hours < 0.0) throw new OperationNotAllowedException("Hours worked can't be negative");
 		activity.time = activity.time + hours;
+		
+		//preconditions 
+		assert date != null: "Precondition violated";
+		assert activity != null: "Precondition violated";
+		
+		int logSizeAtPre;
+		if(log.containsKey(date)) {
+			logSizeAtPre = log.get(date).size();
+		} else {
+			logSizeAtPre = 0;
+		}
 		
 		LogElement logElement = new LogElement(activity, hours);
 		
 		if(log.containsKey(date)) {
+			for (LogElement check: log.get(date)) {
+				if (check.activity.equals(activity)) {
+					throw new OperationNotAllowedException("Activity already added to log");
+				}
+			}
 			//already had elements in specific date
 			log.get(date).add(logElement);
 		} else {
@@ -44,17 +71,34 @@ public class Employee {
 			log.put(date, new ArrayList<LogElement>());
 			log.get(date).add(logElement);
 		}
+		
+		//postconditions
+		assert log.get(date).size() == logSizeAtPre +1: "Postcondition violated";
+		
 	}
 	
-	public void removeLogElement(Date date, Activity activity, float hours) {
-		LogElement logElement = new LogElement(activity, hours);
+	public boolean removeLogElement(Date date, Activity activity) {
 		
+		boolean removed = false;
 		if(log.containsKey(date)) {
-			//already had elements in specific date
-			log.get(date).remove(logElement);
-			activity.time = activity.time - hours;
+			LogElement logElement;
+			for (LogElement check: log.get(date)) {
+				if(check.activity.equals(activity)) {
+					logElement = check;
+					activity.time = activity.time - logElement.hours;
+					if (log.get(date).size() < 2) {
+						log.remove(date);
+					} else {
+						log.get(date).remove(logElement);
+					}
+					removed = true;
+					break;
+				}
+			}	
 		}
+		return removed;
 	}
+	
 	
 	public ArrayList<LogElement> getLogElementFromDate(Date date){
 		if (log.containsKey(date)) {
