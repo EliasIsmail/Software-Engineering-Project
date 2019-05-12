@@ -34,6 +34,11 @@ And the project has an activity with estimated time set to 120.0
 And the project has an activity with estimated time set to 20.0
 Then the projects estimated time is set to 140.0
 
+Scenario: Get projects estimated time
+Given there exists a project with a project leader
+When the user sets estimated time to -3
+Then the following message will be displayed: "Please enter valid integer"
+
 Scenario: Get projects current time
 Given there exists a project with a project leader
 And the project has an activity with estimated time set to 120.0

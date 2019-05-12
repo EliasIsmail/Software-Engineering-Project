@@ -126,8 +126,8 @@ public class Project {
 		for (Activity activity: activities) {
 			if (endWeek < activity.endWeek) {
 				activity.endWeek = endWeek;
-				if (startWeek > endWeek) {
-					startWeek = endWeek-1;
+				if (endWeek < activity.startWeek) {
+					activity.startWeek = endWeek - 1;
 				}
 			}
 		}

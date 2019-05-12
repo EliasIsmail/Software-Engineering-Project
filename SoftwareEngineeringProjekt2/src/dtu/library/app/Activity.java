@@ -16,7 +16,7 @@ public class Activity {
 	public Employee employee;
 	
 	public Activity(String name, Project project) throws OperationNotAllowedException {
-		if(name == null || project == null) {
+		if(name == null || project == null || name.equals("")) {
 			throw new OperationNotAllowedException("Missing activity information");
 	}
 		this.name = name;

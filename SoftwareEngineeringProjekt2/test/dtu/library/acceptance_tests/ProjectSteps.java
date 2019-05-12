@@ -424,11 +424,12 @@ public class ProjectSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
-	
-	@When("the user searches in week {int}")
-	public void theUserSearchesInWeek(Integer int1) {
-	    try {
-			app.getVacantEmployees(3, 87);
+		
+	@When("the user sets estimated time to {int}")
+	public void theUserSetsEstimatedTimeTo(Integer estimatedTime) {
+		try {
+			activity = project.createActivity("EstimatedTimeTest");
+			activity.setEstimatedTime(estimatedTime);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}

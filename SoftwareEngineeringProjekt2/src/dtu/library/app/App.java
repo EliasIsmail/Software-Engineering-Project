@@ -62,7 +62,6 @@ public class App {
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
 		if (title == null || client == null || title.equals("") || client.equals("")) { //1
 			throw new OperationNotAllowedException("Missing project information");
-			//throw new OperationNotAllowedException("Missing project information");
 		}
 		
 		//preconditions
@@ -128,17 +127,12 @@ public class App {
 		}
 		
 		//gather all employees that are present in all the list
-		if (runs.size() > 0) {
-			ArrayList<Employee> occupiedTrue = runs.get(0);
-			for (ArrayList<Employee> occupied: runs) {
-				occupiedTrue.retainAll(occupied);
-			}
-			//return the list
-			return occupiedTrue;
+		ArrayList<Employee> occupiedTrue = runs.get(0);
+		for (ArrayList<Employee> occupied: runs) {
+			occupiedTrue.retainAll(occupied);
 		}
-		
-		//return empty list
-		return new ArrayList<Employee>();
+		//return the list
+		return occupiedTrue;
 	}
 	
 	public ArrayList<Employee> getVacantEmployees(int weekStart, int weekEnd) throws Exception {
