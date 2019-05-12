@@ -150,15 +150,10 @@ public class App {
 		return null;
 	}
 	
-	public Date getSpecificDate(String date) {
+	public Date getSpecificDate(String date) throws ParseException {
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		try {
-			return simpleDateFormat.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return simpleDateFormat.parse(date);
 	}
 	
 	public void login(String loginName) {

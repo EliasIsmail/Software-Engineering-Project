@@ -1,6 +1,6 @@
 package dtu.library.app;
 
-import java.awt.List;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,7 +91,6 @@ public class viewController {
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-
 			}
 			
 			try {
@@ -100,8 +99,13 @@ public class viewController {
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("The input for the specific command must be a number");
+			} catch (ParseException e) {
+				System.out.println("Input must be a date in format 'yyyy-mm-dd'");
 			} catch (Exception e) {
+				System.out.println("Herder?");
 				System.out.println(e.getMessage());
+				System.out.println("Herder?");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -210,8 +214,23 @@ public class viewController {
 				"openProject(bund)",
 				"addEmployee(Erik)",
 				"createActivity(Step1)",
-				"openActivity(Step1)"
+				"createActivity(Step2)",
+				"openActivity(Step1)",
 				
+				"back()",
+				"back()",
+				"openLog()",
+				"addActivity(2019-09-05,bund,Step1,5)",
+				"addActivity(2019-09-05,bund,Step2,5)",
+				"addActivity(2019-09-05,Project1,Step1,5)",
+				"addActivity(2019-09-05,Project1,Step2,5)",
+				"addActivity(2019-09-05,Project1,Step3,5)",
+				"addActivity(2019-09-05,Project2,Step1,5)",
+				"addActivity(2019-09-05,Project3,Step1,5)",
+
+
+
+
 
 		});
 		
@@ -587,28 +606,34 @@ public class viewController {
 			switch(command) { 
 			case "addActivity":
 				ArrayList<String> parameters = getParameters(parameter);
-				if (parameter.length() < 3) {
+				boolean success = false;
+				
+				if (parameter.length() < 4) {
 					System.out.println("Not enough parameters");
 					break;
 				}
-				Date date = app.getSpecificDate(parameters.get(0));
+				Date date;
 				if (parameters.get(0).equals("today") || parameters.get(0).equals("Today")) {
 					date = app.getCurrentDate();
-				}
+				} else date = app.getSpecificDate(parameters.get(0));
+				
 				for (Project project: app.projects) {
 					if (project.getTitle().equals(parameters.get(1))) {
 						for (Activity activity: project.activities) {
 							if (activity.name.equals(parameters.get(2))) {
 								currentActivity = activity;
+								success = true;
 								break;
 							}
 						}
 						break;
 					}
 				}
-				float hours = Float.parseFloat(parameters.get(3));
-				app.user.addActivityToLog(date,currentActivity,hours);
-				System.out.println("Successfully added log");
+				if (success) {
+					float hours = Float.parseFloat(parameters.get(3));
+					app.user.addActivityToLog(date,currentActivity,hours);
+					System.out.println("Successfully added log");
+				} else System.out.println("Project or activity not found");
 				break;
 				
 			case "getOverview":
@@ -644,7 +669,34 @@ public class viewController {
 				break;
 			
 			case "removeActivity":
+				parameters = getParameters(parameter);
+				success = false;
+				if (parameter.length() < 3) {
+					System.out.println("Not enough parameters");
+					break;
+				}
+				date = app.getSpecificDate(parameters.get(0));
+				if (parameters.get(0).equals("today") || parameters.get(0).equals("Today")) {
+					date = app.getCurrentDate();
+				}
+				for (Project project: app.projects) {
+					if (project.getTitle().equals(parameters.get(1))) {
+						for (Activity activity: project.activities) {
+							if (activity.name.equals(parameters.get(2))) {
+								currentActivity = activity;
+								success = true;
+								break;
+							}
+						}
+						break;
+					}
+				}
 				
+				if (success) {
+					app.user.removeLogElement(date, currentActivity);
+					System.out.println("Log successfully removed");
+				} else System.out.println("Project or activity not found");
+				break;
 				
 			default:
 				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");

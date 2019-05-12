@@ -78,15 +78,23 @@ public class Employee {
 		
 	}
 	
-	public void removeLogElement(Date date, Activity activity, float hours) {
-		LogElement logElement = new LogElement(activity, hours);
+	public void removeLogElement(Date date, Activity activity) {
 		
 		if(log.containsKey(date)) {
-			//already had elements in specific date
-			log.get(date).remove(logElement);
-			activity.time = activity.time - hours;
+			LogElement logElement;
+			for (LogElement check: log.get(date)) {
+				if(check.activity.equals(activity)) {
+					logElement = check;
+					activity.time = activity.time - logElement.hours;
+					if (log.get(date).size() == 1) {
+						log.remove(date);
+					} else log.get(date).remove(logElement);
+					break;
+				}
+			}	
 		}
 	}
+	
 	
 	public ArrayList<LogElement> getLogElementFromDate(Date date){
 		if (log.containsKey(date)) {
