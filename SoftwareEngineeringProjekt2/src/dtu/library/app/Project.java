@@ -9,7 +9,6 @@ public class Project {
 	public int startWeek = 0;
 	public int endWeek = 0;
 	private App app;
-	
 	//	When a project leader is not yet chosen, any person can change the project
 	
 	
@@ -137,31 +136,4 @@ public class Project {
 		}
 		this.endWeek = endWeek;
 	}
-	
-	public void printStatus() throws OperationNotAllowedException {
-		System.out.println();
-		System.out.println("Project: "+title+", #"+projectId + " for " + client);
-		System.out.println("Employees: ");
-		for (Employee employee: employees) {
-			System.out.println(employee.name);
-		}
-		if (leader != null) {
-			System.out.println("\nProject leader: "+leader.name);
-		} else {
-			System.out.println("\nProject leader: no leader");
-		}
-		System.out.println("Start week: " + startWeek);
-		System.out.println("End week: " + endWeek);
-		System.out.println("Estimated total work: "+getEstimatedTime());
-		System.out.println("Work done: "+getTime());
-		System.out.println("Estimated work left: "+(getEstimatedTime()-getTime()));
-		System.out.println("-------------------------");
-		
-		for (Activity activity: activities) {
-			activity.printStatus();
-		}	
-		System.out.println();
-	}
-	
-
 }

@@ -68,20 +68,5 @@ public class Activity {
 		
 		this.endWeek = endWeek;
 	}
-	
-	public void printStatus() throws OperationNotAllowedException {
-		System.out.println("Activity: "+name+" from project "+project.getTitle());
-		System.out.println("Employees: ");
-		for (Employee employee: employees) {
-			System.out.println(employee.name);
-		}
-		System.out.println();
-		System.out.println("Start week: " + startWeek);
-		System.out.println("End week: " + endWeek);
-		System.out.println("Estimated total work: "+estimatedTime);
-		System.out.println("Work done: "+time);
-		System.out.println("Estimated work left: "+(estimatedTime-time));
-		System.out.println("-------------------------");
-	}
 }
 

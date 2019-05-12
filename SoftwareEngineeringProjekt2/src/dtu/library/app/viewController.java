@@ -302,6 +302,46 @@ public class viewController {
 		return scenes.get(scenes.size()-1);
 	}
 	
+	public static void printStatusProject(Project project) throws OperationNotAllowedException {
+		System.out.println();
+		System.out.println("Project: "+project.getTitle()+", #"+project.getProjectId() + " for " + project.getClient());
+		System.out.println("Employees: ");
+		for (Employee employee: project.employees) {
+			System.out.println(employee.name);
+		}
+		if (project.getLeader() != null) {
+			System.out.println("\nProject leader: "+project.getLeader().name);
+		} else {
+			System.out.println("\nProject leader: no leader");
+		}
+		System.out.println("Start week: " + project.startWeek);
+		System.out.println("End week: " + project.endWeek);
+		System.out.println("Estimated total work: "+project.getEstimatedTime());
+		System.out.println("Work done: "+project.getTime());
+		System.out.println("Estimated work left: "+(project.getEstimatedTime()-project.getTime()));
+		System.out.println("-------------------------");
+		
+		for (Activity activity: project.activities) {
+			printStatusActivity(activity);
+		}	
+		System.out.println();
+	}
+	
+	public static void printStatusActivity(Activity activity) {
+		System.out.println("Activity: "+activity.name+" from project "+activity.project.getTitle());
+		System.out.println("Employees: ");
+		for (Employee employee: activity.employees) {
+			System.out.println(employee.name);
+		}
+		System.out.println();
+		System.out.println("Start week: " + activity.startWeek);
+		System.out.println("End week: " + activity.endWeek);
+		System.out.println("Estimated total work: "+activity.estimatedTime);
+		System.out.println("Work done: "+activity.time);
+		System.out.println("Estimated work left: "+(activity.estimatedTime-activity.time));
+		System.out.println("-------------------------");
+	}
+	
 	public static void executeCommand(String[] input) throws Exception {
 		
 		String command = input[0];
@@ -358,7 +398,7 @@ public class viewController {
 			//main menu
 			case "getSummary":
 				for (Project project: app.projects) {
-					project.printStatus();
+					printStatusProject(project);
 				}
 				break;
 				
@@ -552,7 +592,7 @@ public class viewController {
 				break;
 				
 			case "getSummary":
-				currentProject.printStatus();
+				printStatusProject(currentProject);
 				break;
 			default:
 				if (!backOrLogout) System.out.println("The command doesn't match any on the list, try again");
@@ -597,7 +637,7 @@ public class viewController {
 				break;
 			
 			case "getSummary":
-				currentActivity.printStatus();
+				printStatusActivity(currentActivity);
 				break;
 				
 			default:

@@ -216,23 +216,6 @@ public class ProjectSteps {
 		} catch (Exception e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	    
-	}
-
-	@When("the user checks the status of a project")
-	public void theUserChecksTheStatusOfAProject() {
-	    try {
-			project.printStatus();
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-			return;
-		}
-	    printed = true;
-	}
-
-	@Then("the system returns a status of the project")
-	public void theSystemReturnsAStatusOfTheProject() {
-	    assertTrue(printed);
 	}
 	
 	@Then("I get an error message saying: {string}")
