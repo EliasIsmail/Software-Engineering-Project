@@ -33,11 +33,6 @@ public class EmployeeSteps {
 			employee = app.createEmployee("Oliver");
 			app.login(employee.name);
 		} catch (OperationNotAllowedException e) {
-			try {
-				employee = app.getEmployee("Oliver");
-			} catch (Exception e1) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -153,6 +148,53 @@ public class EmployeeSteps {
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+	}
+	
+	@Given("there are two activies in the project")
+	public void thereAreTwoActiviesInTheProject() {
+	    try {
+			project.createActivity("act1");
+		    project.createActivity("act2");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+
+	}
+
+	@When("the user registers {int} hours on both activities on the same day")
+	public void theUserRegistersHoursOnBothActivitiesOnTheSameDay(Integer hours) {
+	    try {
+			app.user.addActivityToLog(app.getCurrentDate(), project.activities.get(0), hours);
+		    app.user.addActivityToLog(app.getCurrentDate(), project.activities.get(1), hours);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("The this is registered in the log for the day")
+	public void theThisIsRegisteredInTheLogForTheDay() {
+		assertTrue(app.user.log.get(app.getCurrentDate()).get(0).hours==4);
+		assertTrue(app.user.log.get(app.getCurrentDate()).get(1).hours==4);
+
+	}
+	
+	@Given("there is a project")
+	public void thereIsAProject() {
+	    try {
+			project = app.createProject("TestRegisterHours", "Intern");
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("the user deletes on of them")
+	public void theUserDeletesOnOfThem() {
+	    app.user.removeLogElement(app.getCurrentDate(), project.activities.get(0));
+	}
+
+	@Then("there is only one left")
+	public void thereIsOnlyOneLeft() {
+	    assertFalse(app.user.log.get(app.getCurrentDate()).contains(project.activities.get(0)));
 	}
 	
 }

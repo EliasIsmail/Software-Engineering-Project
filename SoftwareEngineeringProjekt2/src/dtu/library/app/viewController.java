@@ -460,7 +460,7 @@ public class viewController {
 				int endWeek = Integer.parseInt(parameters.get(1));
 				
 				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(startWeek,endWeek);
-				System.out.println("All occupied employees at "+parameter);
+				System.out.println("All occupied employees from week: " +parameters.get(0) + " to week: " + parameters.get(1));
 				for (Employee employee: occupiedEmployees) {
 					System.out.println(employee.name);
 				}
@@ -474,7 +474,7 @@ public class viewController {
 				endWeek = Integer.parseInt(parameters.get(1));
 				vacantEmployees = app.getVacantEmployees(startWeek,endWeek);
 					
-				System.out.println("All vacant employees at "+parameter);
+				System.out.println("All vacant employees from week: "+parameters.get(0) + " to week: " + parameters.get(1));
 				for (Employee employee: vacantEmployees) {
 					System.out.println(employee.name);
 				}
@@ -548,14 +548,14 @@ public class viewController {
 			case "setLeader":
 				success = false;
 				for (Employee employee: app.employees) {
-					if (employee.name.equals(parameter)) {
+					if (employee.name.equals(parameter) && !currentProject.getLeader().name.equals(parameter)) {
 						currentProject.setLeader(employee);
 						System.out.println("Project leader succesfully set");
 						success = true;
 						break;
 					} 
 				}
-				if(!success) System.out.println("Employee not found");
+				if(!success) System.out.println("Employee not found, else you are already the leader");
 				break;
 			
 			/* NOTE: USE getSummary() INSTEAD

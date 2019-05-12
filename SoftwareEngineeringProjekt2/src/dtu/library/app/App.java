@@ -88,6 +88,7 @@ public class App {
 		try {
 			assert getProject(title, client) != null;
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return project;

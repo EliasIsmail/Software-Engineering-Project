@@ -11,12 +11,6 @@ And the user is not the leader of the project
 When the user sets the start week of the project to 3
 Then the user gets an error message saying: "User must be leader to execute operation"
 
-#Scenario: The activity start time is before earlier than project start week
-#Given there exists a project with a project leader
-#And an activity in the project starts in week 2
-#When the user sets the project start week to 3
-#Then the following message will be displayed: "Activity start date before project start week"
-
 Scenario: Set project end time
 Given there exists a project with a project leader
 When the user sets the end week of the project to 3
@@ -55,14 +49,14 @@ Given there exists a project with a project leader
 And startweek is set to 100
 Then the following message will be displayed: "Undefined week number"
 
-Scenario: Set endweek before an activity's startweek 
+Scenario: Set endweek before activity start- and endweek
 Given there exists a project with a project leader
-And the project has an activity with endweek set to 12
-When I set the projects endweek to 10
-Then the activitys endweek is set to 10
+And an activity lasts from week 15 through 18
+When the user set the projects endweek to 10
+Then the activity lasts from week 9 through 10
 
-#Scenario: The activity end time is after the project endweek
-#Given there exists a project with a project leader
-#And an activity in the project ends in week 4
-#When the user sets the project end week to 3
-#Then the following message will be displayed to the user: "Activity end date after project end date"
+Scenario: Set startweek after activity start- and endweek
+Given a project has been created
+And an activity lasts from week 5 through 8
+When the user set the projects startweek to 10
+Then the activity lasts from week 10 through 11
