@@ -95,4 +95,46 @@ public class EmployeeSteps {
 		boolean containsActivity = false;
 		assertTrue(employee.getLogElementFromDate(date) == null);
 	}
+	
+	@When("I create an employee with name {string}")
+	public void iCreateAnEmployeeWithName(String name) {
+	    try {
+			employee = app.createEmployee(name);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the emplyee with name {string} is created")
+	public void theEmplyeeIsCreated(String name) {
+	    try {
+			assertTrue(app.getEmployee(name) != null);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("I get the error message {string}")
+	public void iGetTheErrorMessage(String string) {
+	    assertTrue(errorMessageHolder.getErrorMessage().equals(string));
+	}
+
+	@When("I create an employee without a name")
+	public void iCreateAnEmployeeWithoutAName() {
+	    try {
+			app.createEmployee(null);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I get an nonexisting employee named {string}")
+	public void iGetAnNonexistingEmployeeNamed(String name) {
+	    try {
+			app.getEmployee(name);
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
 }

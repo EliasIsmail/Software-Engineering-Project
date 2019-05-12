@@ -1,17 +1,10 @@
-Feature: Create project
+Feature: Create employee
 
 Scenario: Create project
-When the employee creates a project with title "Design GUI" and the client "Microsoft"
-Then the project is created with the title "Design GUI" and client "Microsoft"
+When I create a project with title "Brew tea" and client "Myself"
+And I search for the project
+Then I find it
 
-Scenario: Create project with missing attributes
-When the employee creates a project without a title or a client
-Then I get the errorMessage: "Missing project information"
-
-Scenario: Project gets correct project id when created
-When I create two projects
-Then they have the correct project id's
-
-Scenario: Get existing project
-Given the employee creates a project with title "Design GUI" and the client "Microsoft"
-Then we can find the project using title and client
+Scenario: Create project
+When I search for a nonexisting project
+Then I get the error message "Desired object does not exists"

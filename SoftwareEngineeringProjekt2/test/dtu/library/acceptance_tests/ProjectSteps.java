@@ -403,6 +403,38 @@ public class ProjectSteps {
 		}
 	}
 	
+	@When("I create a project with title {string} and client {string}")
+	public void iCreateAProjectWithTitleAndClient(String title, String client) {
+	    try {
+			project = app.createProject(title, client);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I search for the project")
+	public void iSearchForTheProject() {
+	    try {
+			project = app.getProject(project.getTitle(), project.getClient());
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("I find it")
+	public void iFindIt() {
+		assertTrue(project.getTitle().equals("Brew tea"));
+		assertTrue(project.getClient().equals("Myself"));
+	}
+
+	@When("I search for a nonexisting project")
+	public void iSearchForANonexistingProject() {
+		try {
+			app.getProject("ExceedSpeedOfLight", "MadScientist");
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
 	
 }
 	
