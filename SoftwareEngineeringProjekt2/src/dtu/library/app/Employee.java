@@ -42,7 +42,7 @@ public class Employee {
 	}
 	
 	public void addActivityToLog(Date date, Activity activity, float hours) throws OperationNotAllowedException {
-		if(hours < 0.0) throw new OperationNotAllowedException("Hours worked can't be negative");
+		if(hours <= 0.0) throw new OperationNotAllowedException("Hours worked must be greater than zero");
 		activity.time = activity.time + hours;
 		
 		//preconditions 
@@ -78,7 +78,6 @@ public class Employee {
 	}
 	
 	public boolean removeLogElement(Date date, Activity activity) {
-		
 		boolean removed = false;
 		if(log.containsKey(date)) {
 			LogElement logElement;
@@ -89,7 +88,7 @@ public class Employee {
 					if (log.get(date).size() < 2) {
 						log.remove(date);
 					} else {
-						log.get(date).remove(logElement);
+						log.get(date).remove(logElement); 
 					}
 					removed = true;
 					break;

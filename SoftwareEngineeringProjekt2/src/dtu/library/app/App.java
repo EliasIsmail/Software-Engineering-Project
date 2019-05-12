@@ -51,7 +51,6 @@ public class App {
 		for (Employee employee: employees) {
 			if (employee.name.equals(name)) {
 				return employee;
-				//throw new OperationNotAllowedException("Name already in use");
 			}
 		}
 		//Employee added to list
@@ -77,7 +76,7 @@ public class App {
 		
 		for (Project project:projects) {
 			if (title.equals(project.getTitle())) {
-				return project; //TODO THIS HAS BEEN CHANGED
+				return project; 
 			}
 		}
 		
@@ -91,9 +90,7 @@ public class App {
 		Project project = new Project(title, client, projectId,this);
 		projects.add(project);
 		
-		// postconditions
-		//TODO there exists a project with the given parameters
-		
+		// postconditions		
 		return project;
 	}
 	
@@ -115,7 +112,7 @@ public class App {
 				occupiedEmployees.add(employee);
 			}
 		}
-			
+		//return list
 		return occupiedEmployees;
 	}
 	
@@ -184,13 +181,13 @@ public class App {
 				loggedIn = true;
 				user = employee;
 				return;
-			}
+			} 
 		}
 	}	
 	
 	public Project getProject(String title, String client) throws Exception {
 		for (Project project: projects) {
-			if (project.getTitle().equals(title) && project.getClient().equals(client)) {
+			if (project.getTitle().equals(title)) {
 				return project;
 			}
 		}

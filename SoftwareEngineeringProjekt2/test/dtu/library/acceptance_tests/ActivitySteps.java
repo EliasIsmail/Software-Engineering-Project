@@ -192,21 +192,6 @@ public class ActivitySteps {
 	    	employee.addActivityToLog(date, activity, workhours);
 	    }
 	}
-
-	@When("the user checks the status of an activity")
-	public void theUserChecksTheStatusOfAnActivity() {
-	    try {
-			activity.printStatus();
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-			return;
-		}
-	    printed = true;
-	}
-	@Then("the system returns a status of the activity")
-	public void theSystemReturnsAStatusOfTheActivity() {
-	    assertTrue(printed);
-	}
 }
 
 
