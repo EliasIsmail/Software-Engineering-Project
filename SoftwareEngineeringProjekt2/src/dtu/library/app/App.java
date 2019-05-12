@@ -13,7 +13,7 @@ public class App {
 	static boolean loggedIn = false;
 	public static Employee user = null;
 
-	public App() {
+	public App() { 
 		//create first user
 		try {
 			user = createEmployee("Admin");
@@ -69,7 +69,7 @@ public class App {
 		assert client != null: "Precondition violated";
 		assert title != "": "Precondition violated";
 		assert client != "": "Precondition violated";
-		
+	 
 		int projectsSizeAtPre = projects.size();
 		
 		
@@ -85,6 +85,11 @@ public class App {
 		projects.add(project); //3
 		
 		// postconditions		
+		try {
+			assert getProject(title, client) != null;
+		} catch (Exception e) {
+		}
+		
 		return project;
 	}
 	

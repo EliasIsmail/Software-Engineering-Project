@@ -25,18 +25,13 @@ public class Employee {
 	}
 	
 	public Activity addActivity(Activity activity) {
-		
 		//preconditions
 		assert activity != null: "Precondition violated";
-		assert !assignedActivities.contains(activity): "Precondition violated";
-		int assignedActivitiesSizeAtPre = assignedActivities.size();
 		
-		if (!assignedActivities.contains(activity)) {
-			assignedActivities.add(activity);
-		}
+		assignedActivities.add(activity);
 		
 		// postconditions
-		assert assignedActivities.size() == assignedActivitiesSizeAtPre +1: "Postcondition violated";
+		assert assignedActivities.contains(activity);
 		
 		return activity;
 	}
@@ -48,6 +43,9 @@ public class Employee {
 		//preconditions 
 		assert date != null: "Precondition violated";
 		assert activity != null: "Precondition violated";
+		if (log.containsKey(date)) {
+			assert !log.get(date).contains(activity);
+		}
 		
 		int logSizeAtPre;
 		if(log.containsKey(date)) {
