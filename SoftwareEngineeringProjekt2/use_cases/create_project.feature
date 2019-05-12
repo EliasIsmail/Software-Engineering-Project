@@ -1,9 +1,10 @@
 Feature: Create employee
 
 Scenario: Create project
-When I create a project with title "Brew tea" and client "Myself"
+When I create a project with title "Design GUI" and client "Microsoft"
 And I search for the project
-Then I find it
+Then I find a project with title "Design GUI" and client "Microsoft"
+
 
 Scenario: Create project
 When I search for a nonexisting project
