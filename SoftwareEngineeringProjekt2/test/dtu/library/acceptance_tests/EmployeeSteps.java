@@ -43,6 +43,7 @@ public class EmployeeSteps {
 	}
 
 	@When("the user registers {int} work hours on a given date")
+
 	public void theUserRegisters7WorkHoursOnAGivenDate(int workhours) {
 		try {
 			employee.addProject(app.projects.get(0));

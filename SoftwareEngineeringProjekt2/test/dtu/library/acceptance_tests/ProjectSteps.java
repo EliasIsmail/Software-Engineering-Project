@@ -39,29 +39,29 @@ public class ProjectSteps {
 		}
 	}
 
-	@When("the employee creates a project with title {string} and the client {string}")
-	public void theEmployeeCreatesAProjectWithTitleAndTheClient(String title, String client) {
-	    try {
-			project = app.createProject(title, client);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@When("the employee creates a project with title {string} and the client {string}")
+//	public void theEmployeeCreatesAProjectWithTitleAndTheClient(String title, String client) {
+//	    try {
+//			project = app.createProject(title, client);
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
-	@Then("the project is created with the title {string} and client {string}")
-	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
-		assertTrue(app.projects.get(2).getTitle().equals(title));
-		assertTrue(app.projects.get(2).getClient().equals(client));
-	}
+//	@Then("the project is created with the title {string} and client {string}")
+//	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
+//		assertTrue(app.projects.get(2).getTitle().equals(title));
+//		assertTrue(app.projects.get(2).getClient().equals(client));
+//	}
 	
-	@When("the employee creates a project without a title or a client")
-	public void theEmployeeCreatesAProjectWithoutATitleOrAClient() {
-		try {
-			    app.createProject(null, null);
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
-		}
+//	@When("the employee creates a project without a title or a client")
+//	public void theEmployeeCreatesAProjectWithoutATitleOrAClient() {
+//		try {
+//			    app.createProject(null, null);
+//			} catch (OperationNotAllowedException e) {
+//				errorMessageHolder.setErrorMessage(e.getMessage());
+//			}
+//		}
 
 	
 	@Then("I get the errorMessage: {string}")
@@ -70,21 +70,21 @@ public class ProjectSteps {
 	}
 	
 
-	@When("I create two projects")
-	public void iCreateTwoProjects()  {
-	    try {
-			app.createProject("project1", "client1");
-			app.createProject("project2", "client2");
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@When("I create two projects")
+//	public void iCreateTwoProjects()  {
+//	    try {
+//			app.createProject("project1", "client1");
+//			app.createProject("project2", "client2");
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
-	@Then("they have the correct project id's")
-	public void theyHaveTheCorrectProjectIdS() {
-	    assertTrue(app.projects.get(0).getProjectId().equals("191001"));
-	    assertTrue(app.projects.get(1).getProjectId().equals("191002"));
-	}
+//	@Then("they have the correct project id's")
+//	public void theyHaveTheCorrectProjectIdS() {
+//	    assertTrue(app.projects.get(0).getProjectId().equals("191001"));
+//	    assertTrue(app.projects.get(1).getProjectId().equals("191002"));
+//	}
 	
 	@When("the user searches for available employees in week {int}")
 	public void theUserSearchesForAvailableEmployeesInWeek(int week) {
@@ -204,25 +204,25 @@ public class ProjectSteps {
 		assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 	}
 	
-	@Given("the necessary info for a status is filled out")
-	public void theNecessaryInfoForAStatusIsFilledOut() {
-		try {
-				project.setStartWeek(3);
-				project.setEndWeek(6);
-				for (int i = 0; i < 3; ++i) {
-			    	employee = app.createEmployee("emp" + i);
-			    	project.addEmployee(employee);
-				}
-		} catch (Exception e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@Given("the necessary info for a status is filled out")
+//	public void theNecessaryInfoForAStatusIsFilledOut() {
+//		try {
+//				project.setStartWeek(3);
+//				project.setEndWeek(6);
+//				for (int i = 0; i < 3; ++i) {
+//			    	employee = app.createEmployee("emp" + i);
+//			    	project.addEmployee(employee);
+//				}
+//		} catch (Exception e) {
+//				errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
-	@Then("I get an error message saying: {string}")
-	public void iGetAnErrorMessageSaying(String errormessage) {
-	    assertFalse(printed);
-	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
-	}
+//	@Then("I get an error message saying: {string}")
+//	public void iGetAnErrorMessageSaying(String errormessage) {
+//	    assertFalse(printed);
+//	    assertTrue(errorMessageHolder.getErrorMessage().equals(errormessage));
+//	}
 	
 	@When("the user sets the start week of the project to {int}")
 	public void theUserSetsTheStartWeekOfTheProjectTo(Integer week) {
@@ -238,24 +238,24 @@ public class ProjectSteps {
 	    assertTrue(project.startWeek == week);
 	}
 	
-	@Given("an activity in the project starts in week {int}")
-	public void anActivityInTheProjectStartsInWeek(Integer week) {
-	    try {
-			activity = project.createActivity("Interface");
-		    activity.setStartWeek(week);
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@Given("an activity in the project starts in week {int}")
+//	public void anActivityInTheProjectStartsInWeek(Integer week) {
+//	    try {
+//			activity = project.createActivity("Interface");
+//		    activity.setStartWeek(week);
+//		} catch (Exception e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 
-	@When("the user sets the project start week to {int}")
-	public void theUserSetsTheProjectStartWeekTo(Integer week) {
-	    try {
-			project.setStartWeek(week);
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@When("the user sets the project start week to {int}")
+//	public void theUserSetsTheProjectStartWeekTo(Integer week) {
+//	    try {
+//			project.setStartWeek(week);
+//		} catch (Exception e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@When("the user sets the end week of the project to {int}")
 	public void theUserSetsTheEndWeekOfTheProjectTo(Integer week) {
@@ -271,25 +271,25 @@ public class ProjectSteps {
 	    assertTrue(project.endWeek == week);
 	}
 
-	@Given("an activity in the project ends in week {int}")
-	public void anActivityInTheProjectEndsInWeek(Integer week) {
-		try {
-			activity = project.createActivity("Interface");
-		    activity.setEndWeek(week);
+//	@Given("an activity in the project ends in week {int}")
+//	public void anActivityInTheProjectEndsInWeek(Integer week) {
+//		try {
+//			activity = project.createActivity("Interface");
+//		    activity.setEndWeek(week);
+//
+//		} catch (Exception e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
-
-	@When("the user sets the project end week to {int}")
-	public void theUserSetsTheProjectEndWeekTo(Integer week) {
-	 	try {
-			project.setEndWeek(week);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@When("the user sets the project end week to {int}")
+//	public void theUserSetsTheProjectEndWeekTo(Integer week) {
+//	 	try {
+//			project.setEndWeek(week);
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@When("the user renames the title to {string}")
 	public void theUserRenamesTheTitle(String title) {
@@ -305,14 +305,14 @@ public class ProjectSteps {
 	    assertTrue(project.getTitle().equals(title));
 	}
 	
-	@Given("there exists a project with title {string} and client {string}")
-	public void thereExistsAProjectWithTitle(String title, String client) {
-		try {
-			project = app.createProject(title,client);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@Given("there exists a project with title {string} and client {string}")
+//	public void thereExistsAProjectWithTitle(String title, String client) {
+//		try {
+//			project = app.createProject(title,client);
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@Given("the project has an activity with estimated time set to {float}")
 	public void theProjectHasAnActivityWithEstimatedTimeSetTo(Float flo1) throws Exception {
@@ -376,15 +376,15 @@ public class ProjectSteps {
 		assertTrue(activity.endWeek == int1);
 	}
 	
-	@Then("we can find the project using title and client")
-	public void weCanFindTheProjectUsingTitleAndClient() {
-		try {
-			app.getProject("Design GUI", "Microsoft").getTitle().equals("Design GUI");
-			app.getProject("Design GUI", "Microsoft").getClient().equals("Microsoft");
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@Then("we can find the project using title and client")
+//	public void weCanFindTheProjectUsingTitleAndClient() {
+//		try {
+//			app.getProject("Design GUI", "Microsoft").getTitle().equals("Design GUI");
+//			app.getProject("Design GUI", "Microsoft").getClient().equals("Microsoft");
+//		} catch (Exception e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@When("I create a project with title {string} and client {string}")
 	public void iCreateAProjectWithTitleAndClient(String title, String client) {

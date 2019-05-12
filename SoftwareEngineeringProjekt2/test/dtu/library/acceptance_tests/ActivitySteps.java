@@ -116,16 +116,16 @@ public class ActivitySteps {
 		assertTrue(app.projects.get(0).activities.get(0).startWeek == week);
 	}
 
-	@When("the user sets the start week of the activity to {int}")
-	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
-		try {
-			 app.projects.get(1).setStartWeek(1);
-			 app.projects.get(1).setEndWeek(6);
-			 app.projects.get(1).activities.get(0).setStartWeek(100);
-		} catch (Exception e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
+//	@When("the user sets the start week of the activity to {int}")
+//	public void theUserSetsTheStartTimeOfTheActivityTo(int number) throws Exception {
+//		try {
+//			 app.projects.get(1).setStartWeek(1);
+//			 app.projects.get(1).setEndWeek(6);
+//			 app.projects.get(1).activities.get(0).setStartWeek(100);
+//		} catch (Exception e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@Then("the following message will be displayed: {string}")
 	public void theFollowingMessageWillBeDisplayed(String errorMessage) {
@@ -149,49 +149,49 @@ public class ActivitySteps {
 			}
 	}
 
-	@When("the user sets the estimated time for an activity to a negative number of weeks")
-		public void theUserSetsTheEstimatedTimeForAnActivityToANegativeNumberOfWeeks() {
-			try{
-				app.projects.get(0).activities.get(0).setEstimatedTime(-4);
-			} catch (Exception e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
-		}
+//	@When("the user sets the estimated time for an activity to a negative number of weeks")
+//		public void theUserSetsTheEstimatedTimeForAnActivityToANegativeNumberOfWeeks() {
+//			try{
+//				app.projects.get(0).activities.get(0).setEstimatedTime(-4);
+//			} catch (Exception e) {
+//				errorMessageHolder.setErrorMessage(e.getMessage());
+//			}
+//		}
 	
 	@Then("the estimated time is updated to {int} weeks for the activity in the system")
 	public void theEstimatedTimeIsUpdatedToWeeksForTheActivityInTheSystem(int number) {
 	    assertTrue(app.projects.get(0).activities.get(0).estimatedTime == number);
 	}
-	@Given("there exists an activity in a project with a project leader")
-	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
-			try {
-				project = app.createProject("Test", "Intern");
-				employee = app.createEmployee("emp1");
-			    app.login("emp1");
-			    project.setLeader(employee);
-			    activity = project.createActivity("Game Mechanics");
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
-		}
+//	@Given("there exists an activity in a project with a project leader")
+//	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
+//			try {
+//				project = app.createProject("Test", "Intern");
+//				employee = app.createEmployee("emp1");
+//			    app.login("emp1");
+//			    project.setLeader(employee);
+//			    activity = project.createActivity("Game Mechanics");
+//			} catch (OperationNotAllowedException e) {
+//				errorMessageHolder.setErrorMessage(e.getMessage());
+//			}
+//		}
 	
-	@Given("the necessary info for an activity status is filled out")
-	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity, OperationNotAllowedException {
-		try {
-				project.setStartWeek(1);
-				project.setEndWeek(6);
-				activity.setStartWeek(2);
-				activity.setEndWeek(3);
-		} catch (Exception e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	    for (int i = 0; i < 3; ++i) {
-	    	employee = app.createEmployee("emp" + i);
-	    	project.addEmployee(employee);
-	    	employee.addActivity(activity);
-	    	employee.addActivityToLog(date, activity, workhours);
-	    }
-	}
+//	@Given("the necessary info for an activity status is filled out")
+//	public void theNecessaryInfoForAnActivityStatusIsFilledOut() throws MissingAuthenticity, OperationNotAllowedException {
+//		try {
+//				project.setStartWeek(1);
+//				project.setEndWeek(6);
+//				activity.setStartWeek(2);
+//				activity.setEndWeek(3);
+//		} catch (Exception e) {
+//				errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	    for (int i = 0; i < 3; ++i) {
+//	    	employee = app.createEmployee("emp" + i);
+//	    	project.addEmployee(employee);
+//	    	employee.addActivity(activity);
+//	    	employee.addActivityToLog(date, activity, workhours);
+//	    }
+//	}
 }
 
 

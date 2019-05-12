@@ -60,7 +60,7 @@ public class App {
 	}
 	
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
-		if (title == null || client == null) {
+		if (title == null || client == null) { //1
 			throw new OperationNotAllowedException("Missing project information");
 			//throw new OperationNotAllowedException("Missing project information");
 		}
@@ -86,7 +86,7 @@ public class App {
 		}
 		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
-		projectCounter++;	
+		projectCounter++;
 		Project project = new Project(title, client, projectId,this);
 		projects.add(project);
 		
@@ -144,30 +144,31 @@ public class App {
 	public ArrayList<Employee> getVacantEmployees(int weekStart, int weekEnd) throws Exception {
 		ArrayList<Employee> vacantEmployees = new ArrayList<Employee>();
 		ArrayList<Employee> occupiedEmployees = getOccupiedEmployees(weekStart,weekEnd);
+		//add all employees who aren't part of the occupied employees
 		for (Employee employee: employees) {
 			if (!occupiedEmployees.contains(employee)) {
 				vacantEmployees.add(employee);
 			}
 		}
-		if(vacantEmployees.isEmpty()) {
-			throw new Exception("Currently no available employees");
-		}
-		
+		//throw exception if there are no vacant employees else returns list
+		if(vacantEmployees.isEmpty()) throw new Exception("Currently no available employees");
 		return vacantEmployees;
 	}
 	
 	public Date getCurrentDate() {
+		//returns todays date
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = format.format(new Date());
 		try {
 			return format.parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {			//Should never fail
+			System.out.println(e.getMessage());
 		}
 		return null;
 	}
 	
 	public Date getSpecificDate(String date) throws ParseException {
+		//converts from string to date
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		return simpleDateFormat.parse(date);
@@ -186,20 +187,24 @@ public class App {
 	}	
 	
 	public Project getProject(String title, String client) throws Exception {
+		//find specific project by name
 		for (Project project: projects) {
 			if (project.getTitle().equals(title)) {
 				return project;
 			}
 		}
+		//else throw exception
 		throw new Exception("Desired object does not exists");
 	}
 	
 	public Employee getEmployee(String name) throws Exception {
+		//find specific employee
 		for (Employee employee: employees) {
 			if (employee.name.equals(name)) {
 				return employee;
 			}
 		}
+		//throw exception
 		throw new Exception("Desired object does not exists");
 	}
 	
