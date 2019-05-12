@@ -31,7 +31,7 @@ public class EmployeeSteps {
 		}
 
 	@When("the user registers {int} work hours on a given date")
-	public void theUserRegisters7WorkHoursOnAGivenDate(int workhours) {
+	public void theUserRegistersWorkHoursOnAGivenDate(int workhours) {
 		employee.addProject(app.projects.get(0));
 		employee.addActivity(app.projects.get(0).activities.get(0));
 		employee.addActivityToLog(date,app.projects.get(0).activities.get(0),workhours);
