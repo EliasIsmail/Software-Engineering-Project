@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class viewController {
 	
+	//init
 	static App app = new App();
 	static ArrayList<String> scenes = new ArrayList<String>();
 	static Project currentProject;
@@ -17,11 +18,13 @@ public class viewController {
 	static int autoIndex = 0;
 	
 	public static void main(String args[]) {
+		//init scanner
 		Scanner scanner = new Scanner(System.in);
+		//saves scenes in list so to remember the history. Current scene is the newest added
+		scenes.add("Login menu");
+		
+		//list of the menus UI
 		HashMap<String, String[]> actions = new HashMap<String, String[]>();
-		
-		scenes.add("Login menu"); //first scene
-		
 		actions.put("Login menu", new String[] {
 				"login(name)"
 		});
@@ -66,21 +69,23 @@ public class viewController {
 		});
 		
 		
+		//main loop
 		while (true) {
-			//main loop
+			//set scene and list of commands for scene
 			String currentScene = getCurrentScene();
-			String[] actionsCurrent = actions.get(currentScene); //newest scene
+			String[] actionsCurrent = actions.get(currentScene);
+			
 			System.out.println("---------------");
 			System.out.println("List of actions for " + currentScene);
 			System.out.println();
 			if (!currentScene.equals("Login menu") && !currentScene.equals("Main menu")) {
-				System.out.println("back()"); //always go back
+				System.out.println("back()"); //draw back command
 			}
 			printActions(actionsCurrent);
 			System.out.println();
 			System.out.print(">>> ");
 			
-			//input goes here
+			//managing input
 			String[] input = null;
 			try {
 				if (autoCommand == -1) {
@@ -109,6 +114,7 @@ public class viewController {
 	
 	public static String autoCommands() {
 		
+		//sequence of commands to be executed automatically
 		ArrayList<String[]> commands = new ArrayList<String[]>();
 		commands.add(new String[] {
 				"login(Admin)",
@@ -255,18 +261,21 @@ public class viewController {
 		return command;
 	}
 	
+	//print actions for a given scene
 	public static void printActions(String[] actions) {
 		for (String action: actions) {
 			System.out.println(action);
 		}
 	}
 	
+	//prints arraylists
 	public static void printArrayList(ArrayList<Object> list) {
 		for (Object object: list) {
 			System.out.println(object);
 		}
 	}
 	
+	//parses the raw input
 	public static String[] splitInput(String input) throws OperationNotAllowedException {
 		String command, parameters;
 		if (input.length() < 1) {
@@ -289,19 +298,23 @@ public class viewController {
 		return null;
 	}
 	
+	//split input to multiple parameters
 	public static ArrayList<String> getParameters(String parameter) {
 		ArrayList<String> items = new ArrayList<String>(Arrays.asList(parameter.split("\\s*,\\s*")));
 		return items;
 	}
 	
+	//set the current scene
 	public static void setScene(String newScene) {
 		scenes.add(newScene);
 	}
 	
+	//get the current scene
 	public static String getCurrentScene() {
 		return scenes.get(scenes.size()-1);
 	}
 	
+	//print status for project
 	public static void printStatusProject(Project project) throws OperationNotAllowedException {
 		System.out.println();
 		System.out.println("Project: "+project.getTitle()+", #"+project.getProjectId() + " for " + project.getClient());
@@ -327,6 +340,7 @@ public class viewController {
 		System.out.println();
 	}
 	
+	//print status activity
 	public static void printStatusActivity(Activity activity) {
 		System.out.println("Activity: "+activity.name+" from project "+activity.project.getTitle());
 		System.out.println("Employees: ");
@@ -342,13 +356,15 @@ public class viewController {
 		System.out.println("-------------------------");
 	}
 	
+	//executes a given command using methoids from the other classes. This method is the glue that binds together the whole app.
 	public static void executeCommand(String[] input) throws Exception {
 		
 		String command = input[0];
 		String parameter = input[1];
 		String currentScene = getCurrentScene();
 		boolean backOrLogout = false;
-
+		
+		//each case represents the actions from a scene
 		if (!currentScene.equals("Login menu")){
 			switch(command) {
 			case "back":
