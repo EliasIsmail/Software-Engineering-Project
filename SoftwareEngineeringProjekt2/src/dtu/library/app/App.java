@@ -14,12 +14,14 @@ public class App {
 	public static Employee user = null;
 
 	public App() {
+		//create first user
 		try {
 			user = createEmployee("Admin");
-		} catch (OperationNotAllowedException e1) {
-			e1.printStackTrace();
+		} catch (OperationNotAllowedException e) {
+			System.out.println(e.getMessage());
 		}
 		
+		//Setup project for misc registration
 		Project misc;
 		try {
 			misc = createProject("Misc","Administration");
@@ -41,6 +43,8 @@ public class App {
 	public Employee createEmployee(String name) throws OperationNotAllowedException {
 		if (name == null || name.equals("")) {
 			throw new OperationNotAllowedException("Missing parameters");
+			//throw new OperationNotAllowedException("Missing parameters");
+
 		}
 		
 		//creates new employee
@@ -50,16 +54,16 @@ public class App {
 				//throw new OperationNotAllowedException("Name already in use");
 			}
 		}
+		//Employee added to list
 		Employee employee = new Employee(name);
 		employees.add(employee);
-		return employee;
+		return employee;			//return employee for easy use
 	}
 	
- 
-
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
 		if (title == null || client == null) {
 			throw new OperationNotAllowedException("Missing project information");
+			//throw new OperationNotAllowedException("Missing project information");
 		}
 		
 		//preconditions
@@ -70,6 +74,7 @@ public class App {
 		
 		int projectsSizeAtPre = projects.size();
 		
+		
 		for (Project project:projects) {
 			if (title.equals(project.getTitle())) {
 				return project; //TODO THIS HAS BEEN CHANGED
@@ -78,6 +83,7 @@ public class App {
 		
 		if (title.equals("") || client.equals("")) {
 			throw new OperationNotAllowedException("Title and client must not be empty");
+			//throw exception
 		}
 		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
@@ -94,7 +100,6 @@ public class App {
 	public ArrayList<Employee> getOccupiedEmployees(int week){
 		//employees are occupied if they are assigned to at least one project
 		ArrayList<Employee> occupiedEmployees = new ArrayList<Employee>();
-		
 		for (Employee employee: employees) {
 			boolean isOccupied = false;
 			innerLoop:
@@ -105,6 +110,7 @@ public class App {
 				}
 			}
 			
+			//employee is added to the return list
 			if (isOccupied) {
 				occupiedEmployees.add(employee);
 			}
@@ -116,20 +122,25 @@ public class App {
 	public ArrayList<Employee> getOccupiedEmployees(int startWeek, int endWeek) throws OperationNotAllowedException{
 		if (startWeek > endWeek || startWeek < 1 || startWeek > 53 ||  endWeek < 1 || endWeek > 53) {
 			throw new OperationNotAllowedException("Undefined week number");
+			//throw exception
 		}
+		//create a list of lists for the specified weeks with occupied employees
 		ArrayList<ArrayList<Employee>> runs = new ArrayList<ArrayList<Employee>>();
 		for (int week=startWeek; week<endWeek; week++) {
 			runs.add(getOccupiedEmployees(week));
 		}
 		
+		//gather all employees that are present in all the list
 		if (runs.size() > 0) {
 			ArrayList<Employee> occupiedTrue = runs.get(0);
 			for (ArrayList<Employee> occupied: runs) {
 				occupiedTrue.retainAll(occupied);
 			}
+			//return the list
 			return occupiedTrue;
 		}
 		
+		//return empty list
 		return new ArrayList<Employee>();
 	}
 	

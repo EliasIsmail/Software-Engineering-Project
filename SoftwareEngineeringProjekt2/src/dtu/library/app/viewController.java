@@ -102,10 +102,7 @@ public class viewController {
 			} catch (ParseException e) {
 				System.out.println("Input must be a date in format 'yyyy-mm-dd'");
 			} catch (Exception e) {
-				System.out.println("Herder?");
 				System.out.println(e.getMessage());
-				System.out.println("Herder?");
-				e.printStackTrace();
 			}
 		}
 	}
@@ -167,65 +164,71 @@ public class viewController {
 				
 				"createProject(Project1, Intern)",
 				"openProject(Project1)",
-				"setLeader(Erik)",
-				"getLeader()",
-				"setStartWeek(7)",
-				"setEndWeek(18)",
-				"addEmployee(Erik)",
-				"addEmployee(Oliver)",
-				"addEmployee(Jonas)",
+				"setStartWeek(2)",
+				"setEndWeek(4)",
 				"createActivity(Step1)",
-				"createActivity(Step2)",
-				"createActivity(Step3)",
 				"openActivity(Step1)",
-				"setEstimatedTime(30)",
-				"setStartWeek(3)",
-				"setEndWeek(5)",
+				"addEmployee(Erik)",
+				"setStartWeek(13)",
+				"setEndWeek(15)",
+				"back()",
+				"createActivity(Step2)",
+				"openActivity(Step2)",
+				"addEmployee(Elias)",
+				"setStartWeek(17)",
+				"setEndWeek(19)",
+				"back()",
+				"createActivity(Step3)",
+				"openActivity(Step3)",
+				"addEmployee(Oliver)",
+				"setStartWeek(21)",
+				"setEndWeek(23)",
 				"back()",
 				"back()",
 				
+				
 				"createProject(Project2, Intern)",
 				"openProject(Project2)",
-				"addEmployee(Erik)",
-				"setStartWeek(7)",
-				"setEndWeek(18)",
-				"setLeader(Oliver)",
+				"setStartWeek(25)",
+				"setEndWeek(27)",
+				"createActivity(Step1)",
+				"openActivity(Step1)",
+				"addEmployee(Liv)",
+				"setStartWeek(5)",
+				"setEndWeek(7)",
+				"back()",
 				"back()",
 				
 				"createProject(Project3, Intern)",
 				"openProject(Project3)",
-				"addEmployee(Erik)",
+				"setStartWeek(34)",
+				"setEndWeek(36)",
 				"createActivity(Step1)",
 				"openActivity(Step1)",
+				"addEmployee(Erik)",
 				"setStartWeek(5)",
 				"setEndWeek(10)",
-				"setLeader(Liv)",
 				"back()",
-				"back()",
-
-				"openLog()",
-				"addActivity(2019-05-09,Project1,Step1,-3.5)",
-				"addActivity(2019-05-09,Project1,Step2,-4.5)",
-				"addActivity(2019-05-09,Project1,Step3,-5.5)",
-				"addActivity(2019-05-09,Project3,Step1,10.5)",
 				"back()",
 				
 				"createProject(bund, Intern)",
 				"openProject(bund)",
+				"setStartWeek(37)",
+				"setEndWeek(39)",
 				"addEmployee(Erik)",
 				"createActivity(Step1)",
-				"createActivity(Step2)",
 				"openActivity(Step1)",
-				
+				"addEmployee(Frederik)",
+				"setStartWeek(5)",
+				"setEndWeek(7)",
+				"back()",
+				"createActivity(Step2)",
+				"openActivity(Step2)",
+				"addEmployee(Rasmus)",
+				"setStartWeek(2)",
+				"setEndWeek(4)",
 				"back()",
 				"back()",
-				"openLog()",
-				"addActivity(2019-09-05,bund,Step1,5)",
-				"addActivity(2019-09-05,bund,Step2,5)",
-				"addActivity(2019-09-05,Project1,Step1,5)",
-				"addActivity(2019-09-05,Project1,Step2,5)",
-				"addActivity(2019-09-05,Project1,Step3,5)",
-				"addActivity(2019-09-05,Project2,Step1,5)"
 
 
 
@@ -636,7 +639,9 @@ public class viewController {
 				break;
 				
 			case "getOverview":
-				date = app.getSpecificDate(parameter);
+				if (parameter.equals("today") || parameter.equals("Today")) {
+					date = app.getCurrentDate();
+				} else date = app.getSpecificDate(parameter);
 				ArrayList<LogElement> logs = app.user.getLogElementFromDate(date);
 				if (logs == null) {
 					System.out.println("No logs at the given date");
