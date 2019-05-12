@@ -225,8 +225,7 @@ public class viewController {
 				"addActivity(2019-09-05,Project1,Step1,5)",
 				"addActivity(2019-09-05,Project1,Step2,5)",
 				"addActivity(2019-09-05,Project1,Step3,5)",
-				"addActivity(2019-09-05,Project2,Step1,5)",
-				"addActivity(2019-09-05,Project3,Step1,5)",
+				"addActivity(2019-09-05,Project2,Step1,5)"
 
 
 
@@ -691,10 +690,13 @@ public class viewController {
 						break;
 					}
 				}
-				
 				if (success) {
-					app.user.removeLogElement(date, currentActivity);
-					System.out.println("Log successfully removed");
+					if(app.user.removeLogElement(date, currentActivity)) {
+						System.out.println("Log succssfully removed");
+					} else {
+						System.out.println("No matching log");
+
+					}
 				} else System.out.println("Project or activity not found");
 				break;
 				

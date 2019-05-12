@@ -78,21 +78,26 @@ public class Employee {
 		
 	}
 	
-	public void removeLogElement(Date date, Activity activity) {
+	public boolean removeLogElement(Date date, Activity activity) {
 		
+		boolean removed = false;
 		if(log.containsKey(date)) {
 			LogElement logElement;
 			for (LogElement check: log.get(date)) {
 				if(check.activity.equals(activity)) {
 					logElement = check;
 					activity.time = activity.time - logElement.hours;
-					if (log.get(date).size() == 1) {
+					if (log.get(date).size() < 2) {
 						log.remove(date);
-					} else log.get(date).remove(logElement);
+					} else {
+						log.get(date).remove(logElement);
+					}
+					removed = true;
 					break;
 				}
 			}	
 		}
+		return removed;
 	}
 	
 	
