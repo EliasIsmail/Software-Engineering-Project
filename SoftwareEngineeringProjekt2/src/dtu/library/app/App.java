@@ -60,7 +60,7 @@ public class App {
 	}
 	
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
-		if (title == null || client == null) {
+		if (title == null || client == null) { //1
 			throw new OperationNotAllowedException("Missing project information");
 			//throw new OperationNotAllowedException("Missing project information");
 		}
@@ -86,7 +86,7 @@ public class App {
 		}
 		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
-		projectCounter++;	
+		projectCounter++;
 		Project project = new Project(title, client, projectId,this);
 		projects.add(project);
 		
