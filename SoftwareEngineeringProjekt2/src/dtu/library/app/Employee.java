@@ -45,7 +45,7 @@ public class Employee {
 		if(hours < 0.0) throw new OperationNotAllowedException("Hours worked can't be negative");
 		activity.time = activity.time + hours;
 		
-		//preconditions
+		//preconditions 
 		assert date != null: "Precondition violated";
 		assert activity != null: "Precondition violated";
 		
@@ -71,7 +71,6 @@ public class Employee {
 			log.put(date, new ArrayList<LogElement>());
 			log.get(date).add(logElement);
 		}
-		activity.time = activity.time + hours;
 		
 		//postconditions
 		assert log.get(date).size() == logSizeAtPre +1: "Postcondition violated";

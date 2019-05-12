@@ -10,6 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import dtu.library.app.Activity;
@@ -330,15 +331,76 @@ public class ProjectSteps {
 		}
 	}
 	
-	@Given("the project has an activity with estimated time set to {int}")
-	public void theProjectHasAnActivityWithEstimatedTimeSetTo(Integer int1) throws Exception {
-	    project.createActivity("someActivity"+int1).setEstimatedTime(int1);
+	@Given("the project has an activity with estimated time set to {float}")
+	public void theProjectHasAnActivityWithEstimatedTimeSetTo(Float flo1) throws Exception {
+	    project.createActivity("someActivity"+flo1).setEstimatedTime(flo1);
 	}
 
-	@Then("the projects estimated time is set to {int}")
-	public void theProjectsEstimatedTimeIsSetTo(Integer int1) {
-		System.out.println("Estimated time set to "+project.getEstimatedTime());
-	    assertTrue(project.getEstimatedTime() == int1);
+	@Then("the projects estimated time is set to {float}")
+	public void theProjectsEstimatedTimeIsSetTo(Float flo1) {
+		assertTrue(project.getEstimatedTime() == flo1);
+	}
+	
+	@Given("an employee has logged {float} hours of work to the activity")
+	public void anEmployeeHasLoggedHoursOfWorkToTheActivity(Float flo1) throws OperationNotAllowedException, ParseException {
+	    project.getLeader().addActivityToLog(app.getSpecificDate("2019-05-21"), project.activities.get(0), flo1);
+	}
+
+	@Then("the projects time is set to {float}")
+	public void theProjectsTimeIsSetTo(Float flo1) {
+	    assertTrue(project.getTime() == flo1);
+	}
+	
+	@Given("endweek is set to {int}")
+	public void endweekIsSetTo(Integer int1) {
+	    try {
+			project.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("startweek is set to {int}")
+	public void startweekIsSetTo(Integer int1) {
+		try {
+			project.setStartWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("the project has an activity with endweek set to {int}")
+	public void theProjectHasAnActivityWithEndweekSetTo(Integer int1) {
+	    try {
+			activity = project.createActivity("activityWithEndweek"+int1);
+			activity.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I set the projects endweek to {int}")
+	public void iSetTheProjectsEndweekTo(Integer int1) {
+	    try {
+			project.setEndWeek(int1);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the activitys endweek is set to {int}")
+	public void theActivitysEndweekIsSetTo(Integer int1) {
+		assertTrue(activity.endWeek == int1);
+	}
+	
+	@Then("we can find the project using title and client")
+	public void weCanFindTheProjectUsingTitleAndClient() {
+		try {
+			app.getProject("Design GUI", "Microsoft").getTitle().equals("Design GUI");
+			app.getProject("Design GUI", "Microsoft").getClient().equals("Microsoft");
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 	
 	

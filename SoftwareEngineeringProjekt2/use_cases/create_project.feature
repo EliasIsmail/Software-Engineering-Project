@@ -12,3 +12,6 @@ Scenario: Project gets correct project id when created
 When I create two projects
 Then they have the correct project id's
 
+Scenario: Get existing project
+Given the employee creates a project with title "Design GUI" and the client "Microsoft"
+Then we can find the project using title and client

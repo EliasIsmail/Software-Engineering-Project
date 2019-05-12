@@ -1,5 +1,6 @@
 package dtu.library.acceptance_tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
+import dtu.library.app.LogElement;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -81,5 +83,16 @@ public class EmployeeSteps {
 	@Then("the employee is added to the project")
 	public void theEmployeeIsAddedToTheProject() {
 	    assertTrue(project.employees.contains(employee));
+	}
+	
+	@When("the user removes that log element")
+	public void theUserRemovesThatLogElement() {
+	    employee.removeLogElement(date, app.projects.get(0).activities.get(0));
+	}
+
+	@Then("the log element is removed")
+	public void theLogElementIsRemoved() {
+		boolean containsActivity = false;
+		assertTrue(employee.getLogElementFromDate(date) == null);
 	}
 }

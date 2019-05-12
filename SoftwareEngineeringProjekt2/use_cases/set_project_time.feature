@@ -30,11 +30,31 @@ Then the following message will be displayed: "User must be leader to execute op
 
 Scenario: Get projects estimated time
 Given there exists a project with a project leader
-And the project has an activity with estimated time set to 120
-And the project has an activity with estimated time set to 20
-Then the projects estimated time is set to 140
+And the project has an activity with estimated time set to 120.0
+And the project has an activity with estimated time set to 20.0
+Then the projects estimated time is set to 140.0
 
+Scenario: Get projects current time
+Given there exists a project with a project leader
+And the project has an activity with estimated time set to 120.0
+And an employee has logged 6.0 hours of work to the activity
+Then the projects time is set to 6.0
 
+Scenario: Set endweek to illegal number 
+Given there exists a project with a project leader
+And endweek is set to 100
+Then the following message will be displayed: "Undefined week number"
+
+Scenario: Set startweek to illegal number 
+Given there exists a project with a project leader
+And startweek is set to 100
+Then the following message will be displayed: "Undefined week number"
+
+Scenario: Set endweek before an activity's startweek 
+Given there exists a project with a project leader
+And the project has an activity with endweek set to 12
+When I set the projects endweek to 10
+Then the activitys endweek is set to 10
 
 #Scenario: The activity end time is after the project endweek
 #Given there exists a project with a project leader
