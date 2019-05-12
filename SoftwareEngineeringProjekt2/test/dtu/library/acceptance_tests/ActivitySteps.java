@@ -90,7 +90,7 @@ public class ActivitySteps {
 	@When("the user creates an activity with title {string}")
 	public void theUserCreatesAnActivityWithTitle(String string) {
 	    try {
-	    	app.projects.get(0).createActivity("Design GUI");
+	    	app.projects.get(0).createActivity(string);
 	    } catch (OperationNotAllowedException e) {
 	    	errorMessageHolder.setErrorMessage(e.getMessage());
 	    }
