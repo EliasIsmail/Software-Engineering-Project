@@ -60,7 +60,7 @@ public class App {
 	}
 	
 	public Project createProject(String title, String client) throws OperationNotAllowedException {
-		if (title == null || client == null) { //1
+		if (title == null || client == null || title.equals("") || client.equals("")) { //1
 			throw new OperationNotAllowedException("Missing project information");
 			//throw new OperationNotAllowedException("Missing project information");
 		}
@@ -75,20 +75,15 @@ public class App {
 		
 		
 		for (Project project:projects) {
-			if (title.equals(project.getTitle())) {
+			if (title.equals(project.getTitle())) { //2
 				return project; 
 			}
 		}
 		
-		if (title.equals("") || client.equals("")) {
-			throw new OperationNotAllowedException("Title and client must not be empty");
-			//throw exception
-		}
-		
 		String projectId = Integer.toString(getCurrentDate().getYear()+1900).substring(2,4)+Integer.toString(projectCounter);
 		projectCounter++;
-		Project project = new Project(title, client, projectId,this);
-		projects.add(project);
+		Project project = new Project(title, client, projectId,this); 
+		projects.add(project); //3
 		
 		// postconditions		
 		return project;
