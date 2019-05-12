@@ -12,7 +12,6 @@ import cucumber.api.java.en.When;
 import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
-import dtu.library.app.MissingAuthenticity;
 import dtu.library.app.OperationNotAllowedException;
 import dtu.library.app.Project;
 
@@ -35,7 +34,7 @@ public class ActivitySteps {
 	
 	
 	@Given("there exists an activity in a project")
-	public void thereExistsAnActivityInAProject() throws MissingAuthenticity {
+	public void thereExistsAnActivityInAProject() {
 		try {
 			project = app.createProject("Snake", "Ubisoft");
 		} catch (OperationNotAllowedException e) {
@@ -69,7 +68,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user adds the available employee to the activity")
-	public void theUserAddsTheAvailableEmployeeToTheActivity() throws MissingAuthenticity, OperationNotAllowedException {
+	public void theUserAddsTheAvailableEmployeeToTheActivity() throws OperationNotAllowedException {
 		app.projects.get(0).activities.get(0).addEmployee(app.employees.get(0));
 	}
 
@@ -89,7 +88,7 @@ public class ActivitySteps {
 	}
 
 	@When("the user creates an activity with title {string}")
-	public void theUserCreatesAnActivityWithTitle(String string) throws MissingAuthenticity {
+	public void theUserCreatesAnActivityWithTitle(String string) {
 	    try {
 	    	app.projects.get(0).createActivity("Design GUI");
 	    } catch (OperationNotAllowedException e) {

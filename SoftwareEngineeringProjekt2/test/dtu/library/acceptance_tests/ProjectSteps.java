@@ -409,11 +409,26 @@ public class ProjectSteps {
 		assertTrue(project.getTitle().equals("Brew tea"));
 		assertTrue(project.getClient().equals("Myself"));
 	}
+	
+	@Then("I find a project with title {string} and client {string}")
+	public void iFindAProjectWithTitleAndClient(String title, String client) {
+		assertTrue(project.getTitle().equals(title));
+		assertTrue(project.getClient().equals(client));
+	}
 
 	@When("I search for a nonexisting project")
 	public void iSearchForANonexistingProject() {
 		try {
 			app.getProject("ExceedSpeedOfLight", "MadScientist");
+		} catch (Exception e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("the user searches in week {int}")
+	public void theUserSearchesInWeek(Integer int1) {
+	    try {
+			app.getVacantEmployees(3, 87);
 		} catch (Exception e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
