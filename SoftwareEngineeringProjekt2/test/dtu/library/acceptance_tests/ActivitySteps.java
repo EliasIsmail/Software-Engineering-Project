@@ -60,12 +60,10 @@ public class ActivitySteps {
 	public void theUserIsTheLeaderOfTheProject() {
 		try {
 			leader = app.createEmployee("Mao Zedong");
-			System.out.println("Our leader: "+leader.name); 
 			app.login(leader.name);
 			project.setLeader(leader);
 			assertTrue(project.getLeader().equals(leader));
 		} catch (OperationNotAllowedException e) {
-			System.out.println("Jeg laver nada");
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -166,27 +164,15 @@ public class ActivitySteps {
 	}
 	@Given("there exists an activity in a project with a project leader")
 	public void thereExistsAnActivityInAProjectWithAProjectLeader() throws MissingAuthenticity {
-		  try {
+			try {
 				project = app.createProject("Test", "Intern");
+				employee = app.createEmployee("emp1");
+			    app.login("emp1");
+			    project.setLeader(employee);
+			    activity = project.createActivity("Game Mechanics");
 			} catch (OperationNotAllowedException e) {
 				errorMessageHolder.setErrorMessage(e.getMessage());
 			}
-		  try {
-		    employee = app.createEmployee("emp1");
-		  } catch (OperationNotAllowedException e) {
-			  errorMessageHolder.setErrorMessage(e.getMessage());
-		  }
-		    app.login("emp1");
-		    try {
-				project.setLeader(employee);
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
-		    try {
-		    	activity = project.createActivity("Game Mechanics");
-		    } catch (OperationNotAllowedException e) {
-		    	errorMessageHolder.setErrorMessage(e.getMessage());
-		    }
 		}
 	
 	@Given("the necessary info for an activity status is filled out")

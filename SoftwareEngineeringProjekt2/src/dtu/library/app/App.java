@@ -16,10 +16,10 @@ public class App {
 	public App() {
 		try {
 			user = createEmployee("Admin");
-		} catch (OperationNotAllowedException e) {
-			//this will never happen
-			System.out.println(e.getMessage());
-		}	
+		} catch (OperationNotAllowedException e1) {
+			e1.printStackTrace();
+		}
+		
 		Project misc;
 		try {
 			misc = createProject("Misc","Administration");
@@ -39,10 +39,15 @@ public class App {
 	 */
 
 	public Employee createEmployee(String name) throws OperationNotAllowedException {
+		if (name == null || name.equals("")) {
+			throw new OperationNotAllowedException("Missing parameters");
+		}
+		
 		//creates new employee
 		for (Employee employee: employees) {
 			if (employee.name.equals(name)) {
-				throw new OperationNotAllowedException("Name already in use");
+				return employee;
+				//throw new OperationNotAllowedException("Name already in use");
 			}
 		}
 		Employee employee = new Employee(name);
@@ -59,11 +64,15 @@ public class App {
 		
 		//preconditions
 		assert title != null: "Precondition violated";
+		assert client != null: "Precondition violated";
+		assert title != "": "Precondition violated";
+		assert client != "": "Precondition violated";
+		
 		int projectsSizeAtPre = projects.size();
 		
 		for (Project project:projects) {
 			if (title.equals(project.getTitle())) {
-				throw new OperationNotAllowedException("Duplicate title, please pick another title");
+				return project; //TODO THIS HAS BEEN CHANGED
 			}
 		}
 		
@@ -77,7 +86,7 @@ public class App {
 		projects.add(project);
 		
 		// postconditions
-		assert projects.size() == projectsSizeAtPre +1: "Postcondition violated";
+		//TODO there exists a project with the given parameters
 		
 		return project;
 	}
@@ -166,5 +175,24 @@ public class App {
 				return;
 			}
 		}
+	}	
+	
+	public Project getProject(String title, String client) throws Exception {
+		for (Project project: projects) {
+			if (project.getTitle().equals(title) && project.getClient().equals(client)) {
+				return project;
+			}
+		}
+		throw new Exception("Desired object does not exists");
 	}
+	
+	public Employee getEmployee(String name) throws Exception {
+		for (Employee employee: employees) {
+			if (employee.name.equals(name)) {
+				return employee;
+			}
+		}
+		throw new Exception("Desired object does not exists");
+	}
+	
 }

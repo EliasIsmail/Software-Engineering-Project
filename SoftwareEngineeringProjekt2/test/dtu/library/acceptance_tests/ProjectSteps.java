@@ -31,6 +31,11 @@ public class ProjectSteps {
 	public ProjectSteps(App app, ErrorMessageHolder errorMessageHolder) {
 		this.app = app;
 		this.errorMessageHolder = errorMessageHolder;
+		try {
+			project = app.createProject("TestUnique", "Intern1");
+		} catch (OperationNotAllowedException e) {
+			System.out.println("ERROR1");
+		}
 	}
 
 	@When("the employee creates a project with title {string} and the client {string}")
@@ -44,8 +49,8 @@ public class ProjectSteps {
 	
 	@Then("the project is created with the title {string} and client {string}")
 	public void theProjectIsCreatedWithTheTitleAndClient(String title, String client) {
-		assertTrue(app.projects.get(1).getTitle().equals(title));
-		assertTrue(app.projects.get(1).getClient().equals(client));
+		assertTrue(app.projects.get(2).getTitle().equals(title));
+		assertTrue(app.projects.get(2).getClient().equals(client));
 	}
 	
 	@When("the employee creates a project without a title or a client")
@@ -118,7 +123,7 @@ public class ProjectSteps {
 
 	@Given("there exist an employee")
 	public void thereExistAnEmployee() {
-	    try {
+		try {
 			app.createEmployee("Erik");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -149,19 +154,29 @@ public class ProjectSteps {
 	
 	@Given("there exists a project with a project leader")
 	public void thereExistsAProjectWithAProjectLeader() {
-	    try {
-			project = app.createProject("TestUnique", "Intern");
-			employee = app.createEmployee("employeeUnique1");
-			app.login(employee.name);
+		try {
+			project = app.createProject("TestUnique", "Intern1");
+		} catch (OperationNotAllowedException e) {
+			System.out.println("ERROR");
+		}
+		try {
+			employee = app.createEmployee("justSomeLeader");
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		app.login(employee.name);
+		try {
 			project.setLeader(employee);
 		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	@Given("the user is not the leader of the project")
 	public void theUserIsNotTheLeaderOfTheProject() { 
-	    try {
+		try {
 			employee = app.createEmployee("employeeUnique9");
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -185,7 +200,6 @@ public class ProjectSteps {
 
 	@Then("the user gets an error message saying: {string}")
 	public void TheUserGetAnErrorMessageSaying(String ErrorMessage) {
-		System.out.println("The error msg is: "+errorMessageHolder.getErrorMessage());
 		assertTrue(errorMessageHolder.getErrorMessage().equals(ErrorMessage));
 	}
 	
@@ -286,12 +300,48 @@ public class ProjectSteps {
 
 	@When("the user sets the project end week to {int}")
 	public void theUserSetsTheProjectEndWeekTo(Integer week) {
-		 try {
-				project.setEndWeek(week);
-			} catch (OperationNotAllowedException e) {
-				errorMessageHolder.setErrorMessage(e.getMessage());
-			}
+	 	try {
+			project.setEndWeek(week);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
+	
+	@When("the user renames the title to {string}")
+	public void theUserRenamesTheTitle(String title) {
+	    try {
+			project.setTitle(title);
+		} catch (OperationNotAllowedException e) { //authenticity exception
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	} 
+
+	@Then("then the title is renamed to {string}")
+	public void thenTheTitleIsRenamd(String title) {
+	    assertTrue(project.getTitle().equals(title));
+	}
+	
+	@Given("there exists a project with title {string} and client {string}")
+	public void thereExistsAProjectWithTitle(String title, String client) {
+		try {
+			project = app.createProject(title,client);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("the project has an activity with estimated time set to {int}")
+	public void theProjectHasAnActivityWithEstimatedTimeSetTo(Integer int1) throws Exception {
+	    project.createActivity("someActivity"+int1).setEstimatedTime(int1);
+	}
+
+	@Then("the projects estimated time is set to {int}")
+	public void theProjectsEstimatedTimeIsSetTo(Integer int1) {
+		System.out.println("Estimated time set to "+project.getEstimatedTime());
+	    assertTrue(project.getEstimatedTime() == int1);
+	}
+	
+	
 }
 	
 

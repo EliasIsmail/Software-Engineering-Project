@@ -11,11 +11,13 @@ import dtu.library.app.Activity;
 import dtu.library.app.App;
 import dtu.library.app.Employee;
 import dtu.library.app.OperationNotAllowedException;
+import dtu.library.app.Project;
 
 public class EmployeeSteps {
 	private App app;
 	private ErrorMessageHolder errorMessageHolder;
 	private Employee employee;
+	private Project project;
 	private Date date = new Date(System.currentTimeMillis());
 	
 	public EmployeeSteps (App app, ErrorMessageHolder errorMessageHolder) {
@@ -24,16 +26,12 @@ public class EmployeeSteps {
 	}
 	@Given("the user is an employee")
 	public void theUserIsAnEmployee() {
-		employee = new Employee("Oliver");
-		if(!app.employees.contains(employee)) {
-			try {
-				employee = app.createEmployee("Oliver");
-				app.login(employee.name);
-			} catch (OperationNotAllowedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}	
+		try {
+			employee = app.createEmployee("Oliver");
+			app.login(employee.name);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@When("the user registers {int} work hours on a given date")
@@ -43,8 +41,7 @@ public class EmployeeSteps {
 			employee.addActivity(app.projects.get(0).activities.get(0));
 			employee.addActivityToLog(date,app.projects.get(0).activities.get(0),workhours);
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
@@ -53,4 +50,36 @@ public class EmployeeSteps {
 	    assertTrue(employee.assignedActivities.get(0).name.equals(app.projects.get(0).activities.get(0).name));
 	}
 	
+	@Given("there exists an employee with name {string}")
+	public void thereExistsAnEmployeeWithName(String name) {
+	    try {
+			employee = app.createEmployee(name);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("there exists a project with title {string} and with client {string}")
+	public void thereExistsAProjectWithTitle(String title, String client) {
+	    try {
+			project = app.createProject(title, client);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I add the employee to the project")
+	public void iAddTheEmployeeToTheProject() {
+	    try {
+			project.addEmployee(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+
+		}
+	}
+	
+	@Then("the employee is added to the project")
+	public void theEmployeeIsAddedToTheProject() {
+	    assertTrue(project.employees.contains(employee));
+	}
 }

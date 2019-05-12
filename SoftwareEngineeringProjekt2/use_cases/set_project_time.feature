@@ -28,6 +28,14 @@ And the user is not the leader of the project
 When the user sets the end week of the project to 3
 Then the following message will be displayed: "User must be leader to execute operation"
 
+Scenario: Get projects estimated time
+Given there exists a project with a project leader
+And the project has an activity with estimated time set to 120
+And the project has an activity with estimated time set to 20
+Then the projects estimated time is set to 140
+
+
+
 #Scenario: The activity end time is after the project endweek
 #Given there exists a project with a project leader
 #And an activity in the project ends in week 4
