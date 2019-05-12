@@ -10,5 +10,5 @@ Scenario: A non-project leader tries to change the projectleader of a project
 Given there exists a project with a project leader
 And the user is not the leader of the project
 When the user attempts to change the leader of the project
-Then the following message will be displayed: "The user isn't leader of the project"
+Then the following message will be displayed: "User must be leader to execute operation"
 
