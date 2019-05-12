@@ -367,8 +367,13 @@ public class viewController {
 				break;
 				
 			case "createEmployee":
-				app.createEmployee(parameter);
-				System.out.println("Employee created successfully");
+				try {
+					app.getEmployee(parameter);
+					System.out.println("Employee already exists");
+				} catch (Exception e){
+					app.createEmployee(parameter);
+					System.out.println("Employee created successfully");
+				}
 				break;
 		
 			case "createProject":
@@ -377,8 +382,13 @@ public class viewController {
 					System.out.println("Not enough parameters");
 					break;
 				}
-				app.createProject(parameters.get(0),parameters.get(1));
-				System.out.println("Project created successfully");
+				try {
+					app.getProject(parameters.get(0), parameters.get(1));
+					System.out.println("Project already exists");
+				} catch (Exception e) {
+					app.createProject(parameters.get(0),parameters.get(1));
+					System.out.println("Project created successfully");
+				}
 				break;
 				
 			case "getEmployees":

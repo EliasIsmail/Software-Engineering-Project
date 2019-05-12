@@ -161,6 +161,7 @@ public class Project {
 			activity.printStatus();
 		}	
 		System.out.println();
+		System.out.println();
 	}
 	
 
