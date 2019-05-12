@@ -20,6 +20,7 @@ public class EmployeeSteps {
 	private ErrorMessageHolder errorMessageHolder;
 	private Employee employee;
 	private Project project;
+	private Activity activity;
 	private Date date = new Date(System.currentTimeMillis());
 	
 	public EmployeeSteps (App app, ErrorMessageHolder errorMessageHolder) {
@@ -32,6 +33,11 @@ public class EmployeeSteps {
 			employee = app.createEmployee("Oliver");
 			app.login(employee.name);
 		} catch (OperationNotAllowedException e) {
+			try {
+				employee = app.getEmployee("Oliver");
+			} catch (Exception e1) {
+				errorMessageHolder.setErrorMessage(e.getMessage());
+			}
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -87,13 +93,22 @@ public class EmployeeSteps {
 	
 	@When("the user removes that log element")
 	public void theUserRemovesThatLogElement() {
-	    employee.removeLogElement(date, app.projects.get(0).activities.get(0));
+		activity = app.projects.get(0).activities.get(0);
+	    employee.removeLogElement(date, activity);
 	}
 
 	@Then("the log element is removed")
 	public void theLogElementIsRemoved() {
-		boolean containsActivity = false;
-		assertTrue(employee.getLogElementFromDate(date) == null);
+		boolean notRemoved = false;
+		if (employee.getLogElementFromDate(date) != null) {
+			for (LogElement logElement: employee.getLogElementFromDate(date)) {
+				if (logElement.activity.equals(activity)) {
+					notRemoved = true;
+					System.out.println("I guess im wrong");
+				}
+			}
+		}
+		assertFalse(notRemoved);
 	}
 	
 	@When("I create an employee with name {string}")

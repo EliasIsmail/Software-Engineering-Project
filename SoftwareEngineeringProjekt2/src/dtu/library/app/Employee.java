@@ -78,7 +78,6 @@ public class Employee {
 	}
 	
 	public boolean removeLogElement(Date date, Activity activity) {
-		
 		boolean removed = false;
 		if(log.containsKey(date)) {
 			LogElement logElement;
@@ -89,7 +88,7 @@ public class Employee {
 					if (log.get(date).size() < 2) {
 						log.remove(date);
 					} else {
-						log.get(date).remove(logElement);
+						log.get(date).remove(logElement); 
 					}
 					removed = true;
 					break;
