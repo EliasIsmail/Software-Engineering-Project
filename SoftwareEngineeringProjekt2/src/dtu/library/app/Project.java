@@ -108,11 +108,10 @@ public class Project {
 			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
-
 			if (startWeek > activity.startWeek) {
 				activity.startWeek = startWeek;
-				if (startWeek > activity.endWeek) {
-					activity.endWeek = startWeek + 1;
+				if (endWeek < startWeek) {
+					endWeek = startWeek+1;
 				}
 			}
 		}
@@ -127,8 +126,8 @@ public class Project {
 		for (Activity activity: activities) {
 			if (endWeek < activity.endWeek) {
 				activity.endWeek = endWeek;
-				if (startWeek < activity.startWeek) {
-					activity.startWeek = startWeek - 1;
+				if (startWeek > endWeek) {
+					startWeek = endWeek-1;
 				}
 			}
 		}

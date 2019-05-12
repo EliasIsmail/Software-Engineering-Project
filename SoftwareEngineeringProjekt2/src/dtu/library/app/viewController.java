@@ -482,6 +482,8 @@ public class viewController {
 			
 			case "getProjects":
 				System.out.println("All projects:");
+				System.out.println("Title, Client");
+				System.out.println();
 				for (Project project: app.projects) {
 					System.out.println(project.getTitle()+", "+project.getClient());
 				}
