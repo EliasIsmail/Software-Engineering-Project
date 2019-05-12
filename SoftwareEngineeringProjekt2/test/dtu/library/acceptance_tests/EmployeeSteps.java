@@ -47,7 +47,9 @@ public class EmployeeSteps {
 	public void theUserRegisters7WorkHoursOnAGivenDate(int workhours) {
 		try {
 			employee.addProject(app.projects.get(0));
-			employee.addActivity(app.projects.get(0).activities.get(0));
+			if (!employee.assignedActivities.contains(app.projects.get(0).activities.get(0))) {
+				employee.addActivity(app.projects.get(0).activities.get(0));
+			}
 			employee.addActivityToLog(date,app.projects.get(0).activities.get(0),workhours);
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());

@@ -103,7 +103,7 @@ public class Employee {
 		if (log.containsKey(date)) {
 			return log.get(date); 
 		}
-		
+		 
 		return null;
 	}
 }
