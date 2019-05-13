@@ -549,6 +549,14 @@ public class viewController {
 			
 			case "setLeader":
 				success = false;
+				
+				if (currentProject.getLeader() != null) {
+					if (currentProject.getLeader().name.equals(parameter)) {
+						System.out.println("Employee already leader");
+						break;
+					}
+				}
+				
 				for (Employee employee: app.employees) {
 					if (employee.name.equals(parameter) && !currentProject.getLeader().name.equals(parameter)) {
 						currentProject.setLeader(employee);
@@ -557,7 +565,7 @@ public class viewController {
 						break;
 					} 
 				}
-				if(!success) System.out.println("Employee not found, else you are already the leader");
+				if(!success) System.out.println("Employee not found");
 				break;
 			
 			/* NOTE: USE getSummary() INSTEAD
