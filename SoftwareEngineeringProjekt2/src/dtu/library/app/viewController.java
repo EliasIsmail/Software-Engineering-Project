@@ -243,20 +243,44 @@ public class viewController {
 		});
 		
 		commands.add(new String[] {
-				
+				//FOR TESTERS LIKE TEACHERS OR TA'S. You may edit within this command string.
 				"login(Admin)",
 				"createEmployee(Tester)",
 				"logout()",
 				"login(Tester)",
+				"createEmployee(emp1)",
+				"createEmployee(emp2)",
+				"createEmployee(emp3)",
 				
 				"createProject(Project1, DTU)",
+				"createProject(Project2, DTU)",
+				"createProject(Project3, DTU)",
 				"openProject(Project1)",
+				"setLeader(Tester)",
+				"addemployee(emp2)",
+				"setStartWeek(3)",
+				"setEndWeek(9)",
+
 				"createActivity(Activity1)",
 				"openActivity(Activity1)",
-				"addemployee(Tester)",
+				"addemployee(emp1)",
+				"setStartWeek(5)",
+				"setEndWeek(7)",
+				"setEstimatedTime(50)",
 				"back()",
-				"back()"
-								
+				
+				"createActivity(Activity2)",
+				"createActivity(Activity3)",
+				"back()",
+				"back()",
+				
+				"openLog()",
+				"addActivity(today,Project1,Activity1,1)",
+				"addActivity(today,Project1,Activity2,2)",
+				"addActivity(today,Project1,Activity3,3)",
+				"back()",
+				
+				//You may edit until here.
 		});
 		
 		if (autoCommand >= commands.size()) {
