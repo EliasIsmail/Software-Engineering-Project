@@ -18,7 +18,7 @@ public class App {
 		try {
 			user = createEmployee("Admin");
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage());			//Never fails
 		}
 		
 		//Setup project for misc registration
@@ -29,7 +29,7 @@ public class App {
 			misc.createActivity("SickDay");
 			misc.createActivity("Course");
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage());			//Never fails
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class App {
 		String dateString = format.format(new Date());
 		try {
 			return format.parse(dateString);
-		} catch (Exception e) {			//Should never fail
+		} catch (Exception e) {			//Never fails
 			System.out.println(e.getMessage());
 		}
 		return null;
