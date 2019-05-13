@@ -320,7 +320,9 @@ public class viewController {
 		System.out.println("Project: "+project.getTitle()+", #"+project.getProjectId() + " for " + project.getClient());
 		System.out.println("Employees: ");
 		for (Employee employee: project.employees) {
-			System.out.println(employee.name);
+			if (!employee.name.equals("Admin")) {
+				System.out.println(employee.name);
+			}
 		}
 		if (project.getLeader() != null) {
 			System.out.println("\nProject leader: "+project.getLeader().name);
@@ -345,7 +347,9 @@ public class viewController {
 		System.out.println("Activity: "+activity.name+" from project "+activity.project.getTitle());
 		System.out.println("Employees: ");
 		for (Employee employee: activity.employees) {
-			System.out.println(employee.name);
+			if (!employee.name.equals("Admin")) {
+				System.out.println(employee.name);
+			}
 		}
 		System.out.println();
 		System.out.println("Start week: " + activity.startWeek);
@@ -450,7 +454,9 @@ public class viewController {
 			case "getEmployees":
 				System.out.println("All employees");
 				for (Employee employee: app.employees) {
-					System.out.println(employee.name);
+					if (!employee.name.equals("Admin")) {
+						System.out.println(employee.name);
+					}
 				}
 				break;
 				
@@ -462,7 +468,9 @@ public class viewController {
 				ArrayList<Employee> occupiedEmployees = app.getOccupiedEmployees(startWeek,endWeek);
 				System.out.println("All occupied employees from week: " +parameters.get(0) + " to week: " + parameters.get(1));
 				for (Employee employee: occupiedEmployees) {
-					System.out.println(employee.name);
+					if (!employee.name.equals("Admin")) {
+						System.out.println(employee.name);
+					}
 				}
 				break;
 			
@@ -476,7 +484,9 @@ public class viewController {
 					
 				System.out.println("All vacant employees from week: "+parameters.get(0) + " to week: " + parameters.get(1));
 				for (Employee employee: vacantEmployees) {
-					System.out.println(employee.name);
+					if (!employee.name.equals("Admin")) {
+						System.out.println(employee.name);
+					}
 				}
 				break;
 			
@@ -558,7 +568,7 @@ public class viewController {
 				}
 				
 				for (Employee employee: app.employees) {
-					if (employee.name.equals(parameter) && !currentProject.getLeader().name.equals(parameter)) {
+					if (employee.name.equals(parameter)) {
 						currentProject.setLeader(employee);
 						System.out.println("Project leader succesfully set");
 						success = true;
