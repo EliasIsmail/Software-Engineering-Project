@@ -242,6 +242,23 @@ public class viewController {
 
 		});
 		
+		commands.add(new String[] {
+				
+				"login(Admin)",
+				"createEmployee(Tester)",
+				"logout()",
+				"login(Tester)",
+				
+				"createProject(Project1, DTU)",
+				"openProject(Project1)",
+				"createActivity(Activity1)",
+				"openActivity(Activity1)",
+				"addemployee(Tester)",
+				"back()",
+				"back()"
+								
+		});
+		
 		if (autoCommand >= commands.size()) {
 			System.out.println("No such auto command");
 			return "back()";

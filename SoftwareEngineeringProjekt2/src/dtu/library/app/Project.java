@@ -71,7 +71,7 @@ public class Project {
 		if (!employees.contains(employee)){
 			employees.add(employee);
 			employee.addProject(this);
-		} 
+		}
 	}
 	
 	public void setLeader(Employee employee) throws OperationNotAllowedException {
@@ -104,7 +104,7 @@ public class Project {
 	
 	public void setStartWeek(int startWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (startWeek < 1 || 53 < startWeek) {
+		if (startWeek < 1 || 53 < startWeek || (endWeek != 0 && startWeek > endWeek)) {
 			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
@@ -120,7 +120,7 @@ public class Project {
 	
 	public void setEndWeek(int endWeek) throws OperationNotAllowedException {
 		checkAuthenticity();
-		if (endWeek < 1 || 53 < endWeek) {
+		if (endWeek < 1 || 53 < endWeek || (startWeek != 0 && endWeek < startWeek)) {
 			throw new OperationNotAllowedException("Undefined week number");
 		}
 		for (Activity activity: activities) {
