@@ -179,7 +179,7 @@ public class App {
 				return;
 			} 
 		}
-	}	
+	}
 	
 	public Project getProject(String title, String client) throws Exception {
 		//find specific project by name

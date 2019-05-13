@@ -102,7 +102,7 @@ public class EmployeeSteps {
 			for (LogElement logElement: employee.getLogElementFromDate(date)) {
 				if (logElement.activity.equals(activity)) {
 					notRemoved = true;
-					System.out.println("I guess im wrong");
+					System.out.println("It has not been removed");
 				}
 			}
 		}
